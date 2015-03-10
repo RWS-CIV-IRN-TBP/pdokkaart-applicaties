@@ -16,7 +16,24 @@
 <script type="text/javascript" src="http://localhost/pdokkaart/api/js/pdok-layers.js"></script>
 <script type="text/javascript">Pdok.addcss("http://localhost/pdokkaart/api/styles/default/style.css");
 Pdok.addcss("http://localhost/pdokkaart/api/styles/api.css");
-var config_165={"mapdiv":"map_165","zoom":5,"showlayerswitcher":true,"showzoom":true,"shownavigation":true,"showscaleline":true,"showmouseposition":true,"geocoder":"{\"div\":\"search\"}","loc":"170000, 470000","baselayers":[{"id":"BRT","visible":true}],"overlays":[{"id":"GELUIDSKAARTEN_NACHT_2006","visible":true},{"id":"GELUIDSKAARTEN_ETMAAL_2006","visible":true},{"id":"GELUIDSKAARTEN_NACHT","visible":true},{"id":"GELUIDSKAARTEN_ETMAAL","visible":true}],"markersdef":"http://localhost/pdokkaart/api/js/pdok-markers.js","layersdef":"http://localhost/pdokkaart/api/js/pdok-layers.js"};
+var config_165={
+    "mapdiv":"map_165",
+    "zoom":5,
+    "showlayerswitcher":true,
+    "showzoom":true,
+    "shownavigation":true,
+    "showscaleline":true,
+    "showmouseposition":true,
+    "geocoder":"{}",
+    "loc":"170000, 470000",
+    "baselayers":[{"id":"BRT","visible":true}],
+    "overlays":[
+        {"id":"GELUIDSKAARTEN_NACHT_2006","visible":true},
+        {"id":"GELUIDSKAARTEN_ETMAAL_2006","visible":true},
+        {"id":"GELUIDSKAARTEN_NACHT","visible":true},
+        {"id":"GELUIDSKAARTEN_ETMAAL","visible":true}],
+    "markersdef":"http://localhost/pdokkaart/api/js/pdok-markers.js",
+    "layersdef":"http://localhost/pdokkaart/api/js/pdok-layers.js"};
 var api_165;
 Pdok.ready( 
 function(){ api_165 = new Pdok.Api(config_165); } );

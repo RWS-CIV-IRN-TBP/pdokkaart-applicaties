@@ -18,28 +18,72 @@ Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
 
 var config_101={
-  "mapdiv": "map_101",
-  "zoom": 3,
-  "showlayerswitcher": true,
-  "showzoom": true,
-  "shownavigation": true,
-  "showscaleline": true,
-  "showmouseposition": true,
-  "geocoder": "{}",
-  "loc": "170000, 470000",
-  "baselayers": [
-    {
-      "id": "BRT",
-      "visible": true
-    }
-  ],
-  "markersdef": "http://kaart.pdok.nl/api/js/pdok-markers.js",
-  "layersdef": "http://kaart.pdok.nl/api/js/pdok-layers.js"
+    "mapdiv": "map_101",
+    "zoom":5,
+    "showlayerswitcher":true,
+    "showzoom":true,
+    "shownavigation":true,
+    "showscaleline":true,
+    "showmouseposition":true,
+    "geocoder":"{}",
+    "loc":"170000, 470000",
+    "baselayers":[{"id":"BRT","visible":true}],
+    "overlays":[
+    //    {"id":"GELUIDSKAARTEN_NACHT_2006","visible":true},
+    //    {"id":"GELUIDSKAARTEN_ETMAAL_2006","visible":true},
+    //    {"id":"GELUIDSKAARTEN_NACHT","visible":true},
+    //    {"id":"GELUIDSKAARTEN_ETMAAL","visible":true}
+    ],
+    "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+    "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"
 };
 var api_101;
 Pdok.ready( 
 function(){ 
-api_101 = new Pdok.Api(config_101);
+    api_101 = new Pdok.Api(config_101);
+    api_101.map.removeLayer( api_101.map.getLayersByName("Markers")[0] );
+    // now add kustlijnkaart layers (in plaats van met wmsurl/wmslayers)
+    var nacht = api_101.createWMSLayer(
+        {
+            name: 'Geluidskaarten nacht',
+            url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
+            layers: 'geluidskaartennacht',
+            transparent:true,
+            singleTile: false
+        })
+    api_101.map.addLayer(nacht);
+    var etmaal = api_101.createWMSLayer(
+        {
+            name: 'Geluidskaarten etmaal',
+            url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
+            layers: 'geluidskaartenetmaal',
+            transparent:true,
+            singleTile: false,
+            visibility: false
+        })
+    api_101.map.addLayer(etmaal);
+    var etmaal2006 = api_101.createWMSLayer(
+        {
+            name: 'Geluidskaarten etmaal 2006',
+            url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
+            layers: 'geluidskaartenetmaal2006',
+            transparent:true,
+            singleTile: false,
+            visibility: false
+        })
+    api_101.map.addLayer(etmaal2006);
+    var nacht2006 = api_101.createWMSLayer(
+        {
+            name: 'Geluidskaarten nacht 2006',
+            url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
+            layers: 'geluidskaartennacht2006',
+            transparent:true,
+            singleTile: false,
+            visibility: false
+        })
+    api_101.map.addLayer(nacht2006);
+
+
 } );
 </script>
 <div id="map_101" class="olMap fullscreen"></div>
