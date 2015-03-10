@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayersPdokKaartExtenders.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-api.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
+<script type="text/javascript">
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+var config_762={
+    "mapdiv":"map_762",
+    "zoom":4,
+    "showlayerswitcher":true,
+    "showzoom":true,
+    "shownavigation":true,
+    "showscaleline":true,
+    "showmouseposition":true,
+    "loc":"122650.88, 487337.6",
+    "baselayers":[{"id":"BRT","visible":true}],
+    "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+    "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+var api;
+Pdok.ready( 
+function(){ 
+    api = new Pdok.Api(config_762);
+
+     function handler(request) {
+        var obj = JSON.parse(request.responseText);
+        var features = [];
+        //api.featuresLayer = new OpenLayers.Layer.Vector();
+        //api.selectControl = new OpenLayers.Control.SelectFeature(api.featuresLayer);
+        //api.map.addControl(api.selectControl);
+        api.enablePopups();
+        //api.selectControl.activate();
+        //console.log(obj);
+        for (var i=0;i<obj.features.length;i++) {
+         //for (var i=0;i<10;i++) {
+             var f = obj.features[i];
+             //console.log(f);
+             /*
+             categoryDescription "Gemeten waterhoogte"
+             eenheid    "cm NAP"
+             iconsubscript "15:40 uur"
+             loc    "TWZZ"
+             locatienaam "Terneuzen Westsluis ZZ"
+             location.lat 373233
+             location.lon 45284
+             meettijd 1423842000
+             net "LWM"
+             par "H10"
+             parameternaam "Waterhoogte"
+             waarde "-126"
+              */
+
+            // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=IJMH&net=LMW&projecttype=waterstanden&category=4
+            var ff = new OpenLayers.Feature.Vector(
+                new OpenLayers.Geometry.Point(f.location.lon, f.location.lat),
+                null,
+                {
+                externalGraphic: "http://kaart.pdok.nl/api/markertypes/flag-blue.png",
+                graphicWidth: 32,
+                graphicHeight: 32,
+                fillOpacity: 1
+                }
+            );
+            var graph_url = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc="+f.loc+"&net="+f.net+"&projecttype=waterstanden&category=4";
+            ff.attributes['name']= '<b>'+f.waarde + ' ' + f.eenheid+'</b>';
+            ff.attributes['description']= '<p>'+ f.iconsubscript+'<br/>'+ f.locatienaam+'<br><img style="width:550px;height:250px;" src="'+graph_url+'"/></p>';
+            features.push(ff);
+         }
+         api.featuresLayer.addFeatures(features);
+         //api.map.addLayer(api.featuresLayer);
+    }
+
+    // meetpunten
+    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=waterstanden&loadprojects=1";
+    var request = OpenLayers.Request.GET({
+        url: data_uri,
+        callback: handler
+    });
+
+} );
+</script>
+<div id="map_762" class="olMap fullscreen"></div>
+
+</body>
+</html>

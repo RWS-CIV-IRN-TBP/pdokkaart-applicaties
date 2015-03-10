@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayersPdokKaartExtenders.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-api.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
+<script type="text/javascript" src="http://kaart.pdok.nl/api/js/pdok-markers.js"></script>
+<script type="text/javascript" src="http://kaart.pdok.nl/api/js/pdok-layers.js"></script>
+<script type="text/javascript">
+
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+
+var config_1703={
+	"mapdiv":"map_1703",
+	"zoom":6,
+	"showlayerswitcher":true,
+	"showzoom":true,
+	"shownavigation":true,
+	"showscaleline":true,
+	"showmouseposition":true,
+	"geocoder":{},
+	"loc":"100737.64303244, 472026.42380819",
+	"baselayers":[{"id":"BRT","visible":true}],
+//	"wmsurl":"http://geoservices.rijkswaterstaat.nl/nis_kustlijnkaart",
+//	"wmslayers":"tr_25_14,tr_50_14,tr_100_14,lab_25_14,lab_50_14,lab_100_14,j_lab_25_14,j_lab_50_14,j_lab_100_14,j_raai_14,bkl_14,rsp_14",
+	"markersdef":"http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/js/pdok-markers.js",
+	"layersdef":"http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/js/pdok-layers.js"
+};
+
+var api_1703;
+Pdok.ready( 
+	function(){
+        api_1703 = new Pdok.Api(config_1703);
+        // remove the obsolete Markers layer
+        api_1703.map.removeLayer( api_1703.map.getLayersByName("Markers")[0] );
+        // now add kustlijnkaart layers (in plaats van met wmsurl/wmslayers)
+        var kustlijnlayer = api_1703.createWMSLayer(
+          {
+            name: 'Kustlijnkaart 2014',
+            url: 'http://geoservices.rijkswaterstaat.nl/nis_kustlijnkaart',
+            layers: 'tr_25_14,tr_50_14,tr_100_14,lab_25_14,lab_50_14,lab_100_14,j_lab_25_14,j_lab_50_14,j_lab_100_14,j_raai_14,bkl_14,rsp_14',
+            transparent:true
+          })
+        api_1703.map.addLayer(kustlijnlayer);
+    }
+);
+</script>
+<div id="map_1703" class="olMap fullscreen"></div>
+
+</body>
+</html>
