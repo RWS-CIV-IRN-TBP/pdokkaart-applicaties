@@ -28,57 +28,51 @@ var api;
 Pdok.ready( 
 function(){ 
     api = new Pdok.Api(config_762);
+    api.map.layers[0].setOpacity(0.5)
 
      function handler(request) {
+        // parsing and showing takes some time.... hack to show the loading panel
+        //document.getElementsByClassName('olControlLoadingPanel')[0].style.display='block';
         var obj = JSON.parse(request.responseText);
         var features = [];
-        //api.featuresLayer = new OpenLayers.Layer.Vector();
-        //api.selectControl = new OpenLayers.Control.SelectFeature(api.featuresLayer);
-        //api.map.addControl(api.selectControl);
-        api.enablePopups();
-        //api.selectControl.activate();
-        //console.log(obj);
         for (var i=0;i<obj.features.length;i++) {
-         //for (var i=0;i<10;i++) {
-             var f = obj.features[i];
-             //console.log(f);
-             /*
-             categoryDescription "Gemeten waterhoogte"
-             eenheid    "cm NAP"
-             iconsubscript "15:40 uur"
-             loc    "TWZZ"
-             locatienaam "Terneuzen Westsluis ZZ"
-             location.lat 373233
-             location.lon 45284
-             meettijd 1423842000
-             net "LWM"
-             par "H10"
-             parameternaam "Waterhoogte"
-             waarde "-126"
-              */
-
-            // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=IJMH&net=LMW&projecttype=waterstanden&category=4
+            //for (var i=0;i<10;i++) {
+            var f = obj.features[i];
             var ff = new OpenLayers.Feature.Vector(
-                new OpenLayers.Geometry.Point(f.location.lon, f.location.lat),
-                null,
-                {
-                externalGraphic: "http://kaart.pdok.nl/api/markertypes/flag-blue.png",
-                graphicWidth: 32,
-                graphicHeight: 32,
-                fillOpacity: 1
-                }
+                    new OpenLayers.Geometry.Point(f.location.lon, f.location.lat),
+                    null,
+                    {
+                        externalGraphic: "http://kaart.pdok.nl/api/markertypes/flag-blue.png",
+                        graphicWidth: 32,
+                        graphicHeight: 32,
+                        fillOpacity: 1,
+                        label: f.waarde,
+                        fontColor: "#ff0000",
+                        fontSize: "11px",
+                        fontFamily: "Courier New, monospace",
+                        fontWeight: "bold",
+                        labelXOffset: "2",
+                        labelYOffset: "-9",
+                        labelOutlineColor: "white",
+                        labelOutlineWidth: 2
+                    }
             );
-            var graph_url = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc="+f.loc+"&net="+f.net+"&projecttype=waterstanden&category=4";
-            ff.attributes['name']= '<b>'+f.waarde + ' ' + f.eenheid+'</b>';
-            ff.attributes['description']= '<p>'+ f.iconsubscript+'<br/>'+ f.locatienaam+'<br><img style="width:550px;height:250px;" src="'+graph_url+'"/></p>';
+            // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=HENO&net=LMW&projecttype=watertemperatuur&category=1
+            var graph_url = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=" + f.loc + "&net=" + f.net + "&projecttype=watertemperatuur&category=1";
+            ff.attributes['name'] = '<b>' + f.waarde + ' ' + f.eenheid + '</b>';
+            // meettijd contains time of measure in SECONDS (!) multiply with 1000 to get Date
+            var time = new Date(f.meettijd * 1000);
+            //ff.attributes['description']= '<p>'+ f.iconsubscript+'<br/>'+ f.locatienaam+'<br><img style="width:550px;height:250px;" src="'+graph_url+'"/></p>';
+            ff.attributes['description'] = '<p>' + zeroPad(time.getHours(),2) + ':' + zeroPad(time.getMinutes(),2) + '<br/>' + f.locatienaam + '<br><img style="width:550px;height:250px;" src="' + graph_url + '"/></p>';
             features.push(ff);
          }
          api.featuresLayer.addFeatures(features);
-         //api.map.addLayer(api.featuresLayer);
+         api.enablePopups();
+         //document.getElementsByClassName('olControlLoadingPanel')[0].style.display='none';
     }
 
     // meetpunten
-    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=waterstanden&loadprojects=1";
+    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=watertemperatuur&loadprojects=0";
     var request = OpenLayers.Request.GET({
         url: data_uri,
         callback: handler
