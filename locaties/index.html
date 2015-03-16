@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayersPdokKaartExtenders.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-api.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
+<script type="text/javascript">
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+var config_762={
+    "mapdiv":"map_762",
+    "zoom":4,
+    "showlayerswitcher":true,
+    "showzoom":true,
+    "shownavigation":true,
+    "showscaleline":true,
+    "showmouseposition":true,
+    "loc":"122650.88, 487337.6",
+    "baselayers":[{"id":"BRT","visible":true}],
+    "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+    "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+var api;
+Pdok.ready( 
+function(){ 
+    api = new Pdok.Api(config_762);
+
+     function handler(request) {
+        var obj = JSON.parse(request.responseText);
+        var features = [];
+        for (var i=0;i<obj.features.length;i++) {
+        //for (var i=0;i<10;i++) {
+            var f = obj.features[i];
+            var ff = new OpenLayers.Feature.Vector(
+                new OpenLayers.Geometry.Point(f.location.lon, f.location.lat),
+                null,
+                {
+                externalGraphic: "./img/locatie_icon_small.png",
+                graphicWidth: 29,
+                graphicHeight: 23,
+                fillOpacity: 1
+                }
+            );
+            /*var graph_url = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc="+f.loc+"&net="+f.net+"&projecttype=waterstanden&category=4";
+            ff.attributes['name']= '<b>'+f.waarde + ' ' + f.eenheid+'</b>';
+            */
+            ff.attributes['description']= f.description;
+
+
+            features.push(ff);
+        }
+        api.featuresLayer.addFeatures(features);
+        api.enablePopups();
+    }
+
+    // meetpunten
+    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=rwsadressen&loadprojects=0";
+    var request = OpenLayers.Request.GET({
+        url: data_uri,
+        callback: handler
+    });
+
+} );
+</script>
+<style>
+    .popinleftbar {
+        background: url("img/locatie_simple.png") no-repeat scroll 0 0 #154273;
+        color: #fff;
+        height: 33px;
+        width: 48px;
+    }
+    .rowodd td {
+        background: none repeat scroll 0 0 #ffffff;
+        border-bottom: 1px solid #c0c0c0;
+        border-top: 1px solid #c0c0c0;
+        padding: 1px 2px 2px 5px;
+        text-align: left;
+    }
+    .roweven td {
+        background: none repeat scroll 0 0 #c0c0c0;
+        padding: 0 2px 1px 5px;
+        text-align: left;
+    }
+    .rowlabel {
+        color: #404040;
+        max-width: 100px;
+        text-align: right;
+        vertical-align: top;
+    }
+    html {
+        font-family: Verdana,Arial,Helvetica,sans-serif;
+    }
+    .olFramedCloudPopupContent td {
+        font-size: 0.8em;
+    }
+     td.title {
+        font-weight: bold;
+        font-size: 1em;
+    }
+    /* popup content is a little wider */
+    .olFramedCloudPopupContent {
+        max-width: 350px !important;
+    }
+    .rwsadressen .subtitle, .rwsadressen .olPopupBar {
+        background: none repeat scroll 0 0 #c2d8ef;
+    }
+    .olPopup .olPopupTable {
+        padding-bottom: 20px;
+    }
+
+</style>
+<div id="map_762" class="olMap fullscreen"></div>
+</body>
+</html>
