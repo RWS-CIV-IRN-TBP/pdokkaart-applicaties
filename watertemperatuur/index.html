@@ -32,13 +32,13 @@ function(){
     api = new Pdok.Api(config_762);
 
     api.map.getLayersByName('Markers')[0].setName('Watertemperatuur');
-    api.map.layers[0].setOpacity(0.5)
+    //api.map.layers[0].setOpacity(0.5)
 
      function handler(request) {
         var obj = JSON.parse(request.responseText);
         var features = [];
         //for (var i=0;i<obj.features.length;i++) {
-        for (var i=0;i<10;i++) {
+        for (var i=0;i<30;i++) {
             var data = obj.features[i];
             var feature = new OpenLayers.Feature.Vector(
                     new OpenLayers.Geometry.Point(data.location.lon, data.location.lat),

@@ -3,7 +3,9 @@ html {
 }
 div .table, div .graph {
     min-height: 250px;
-    max-height: 260px;
+    height: 260px;
+    width: 560px;
+    /*max-height: 260px;*/
     overflow: auto;
 }
 div .graphtablebtn {
