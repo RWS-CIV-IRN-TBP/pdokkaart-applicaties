@@ -9,6 +9,8 @@
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
+<script type="text/javascript" src="../rws.js"></script>
+<link rel="stylesheet" href="../rws.css" type="text/css" />
 <script type="text/javascript">
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
@@ -28,25 +30,25 @@ var api;
 Pdok.ready( 
 function(){ 
     api = new Pdok.Api(config_762);
+
+    api.map.getLayersByName('Markers')[0].setName('Watertemperatuur');
     api.map.layers[0].setOpacity(0.5)
 
      function handler(request) {
-        // parsing and showing takes some time.... hack to show the loading panel
-        //document.getElementsByClassName('olControlLoadingPanel')[0].style.display='block';
         var obj = JSON.parse(request.responseText);
         var features = [];
-        for (var i=0;i<obj.features.length;i++) {
-            //for (var i=0;i<10;i++) {
-            var f = obj.features[i];
-            var ff = new OpenLayers.Feature.Vector(
-                    new OpenLayers.Geometry.Point(f.location.lon, f.location.lat),
-                    null,
+        //for (var i=0;i<obj.features.length;i++) {
+        for (var i=0;i<10;i++) {
+            var data = obj.features[i];
+            var feature = new OpenLayers.Feature.Vector(
+                    new OpenLayers.Geometry.Point(data.location.lon, data.location.lat),
+                    data,
                     {
                         externalGraphic: "http://kaart.pdok.nl/api/markertypes/flag-blue.png",
                         graphicWidth: 32,
                         graphicHeight: 32,
                         fillOpacity: 1,
-                        label: f.waarde,
+                        label: data.waarde,
                         fontColor: "#ff0000",
                         fontSize: "11px",
                         fontFamily: "Courier New, monospace",
@@ -57,18 +59,13 @@ function(){
                         labelOutlineWidth: 2
                     }
             );
-            // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=HENO&net=LMW&projecttype=watertemperatuur&category=1
-            var graph_url = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=" + f.loc + "&net=" + f.net + "&projecttype=watertemperatuur&category=1";
-            ff.attributes['name'] = '<b>' + f.waarde + ' ' + f.eenheid + '</b>';
-            // meettijd contains time of measure in SECONDS (!) multiply with 1000 to get Date
-            var time = new Date(f.meettijd * 1000);
-            //ff.attributes['description']= '<p>'+ f.iconsubscript+'<br/>'+ f.locatienaam+'<br><img style="width:550px;height:250px;" src="'+graph_url+'"/></p>';
-            ff.attributes['description'] = '<p>' + zeroPad(time.getHours(),2) + ':' + zeroPad(time.getMinutes(),2) + '<br/>' + f.locatienaam + '<br><img style="width:550px;height:250px;" src="' + graph_url + '"/></p>';
-            features.push(ff);
+            Geotool.createWaterPopup(feature);
+            features.push(feature);
          }
+
          api.featuresLayer.addFeatures(features);
          api.enablePopups();
-         //document.getElementsByClassName('olControlLoadingPanel')[0].style.display='none';
+
     }
 
     // meetpunten
