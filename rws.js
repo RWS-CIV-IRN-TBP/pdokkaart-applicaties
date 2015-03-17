@@ -54,8 +54,8 @@ Geotool.Calendar = {
 Geotool.switchgraphtable = function(div, graph_url, table_url) {
 
     if (div.innerHTML[0]=='T') {
-        document.querySelectorAll('table')[0].style.display = 'block';
-        document.querySelectorAll('graph')[0].style.display = 'none';
+        document.querySelectorAll('.table')[0].style.display = 'block';
+        document.querySelectorAll('.graph')[0].style.display = 'none';
         div.innerHTML='Grafiek <img src="../img/grafiek.gif"/>';
 
         var col1caption = '&nbps;';
@@ -83,7 +83,7 @@ Geotool.switchgraphtable = function(div, graph_url, table_url) {
                     }
                     html+='</tbody></table>';
 
-                    document.querySelectorAll('table')[0].innerHTML = html;
+                    document.querySelectorAll('.table')[0].innerHTML = html;
     /*
                     s = '<table cellspacing="0" style="width:400px;">'+
                         '<thead>' +
@@ -141,8 +141,8 @@ Geotool.switchgraphtable = function(div, graph_url, table_url) {
             });
     }
     else{
-        document.querySelectorAll('table')[0].style.display = 'none';
-        document.querySelectorAll('graph')[0].style.display = 'block';
+        document.querySelectorAll('.table')[0].style.display = 'none';
+        document.querySelectorAll('.graph')[0].style.display = 'block';
         div.innerHTML='Tabel <img src="../img/tabel.gif"/>';
     }
 
