@@ -63,6 +63,10 @@ Geotool.icons = {
 
 Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories, icons){
 
+    // fix for the label ordering in labels+icons
+    // http://comments.gmane.org/gmane.comp.gis.openlayers.devel.ol3/4156
+    featuresLayer.renderer.textRoot = featuresLayer.renderer.vectorRoot;
+
     if (icons == undefined){
         icons = [Geotool.icons.label_1,
             Geotool.icons.label_1,
