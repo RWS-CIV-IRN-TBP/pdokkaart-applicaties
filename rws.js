@@ -92,6 +92,7 @@ Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories
                         labelYOffset: "2",
                         fillOpacity: 1,
                         label: waarde,
+                        labelSelect: true,   // IMPORTANT, else not clickable in IE !!
                         fontColor: "#ffffff",
                         fontSize: "9px",
                         fontFamily: "Arial,Helvetica,sans-serif;"
