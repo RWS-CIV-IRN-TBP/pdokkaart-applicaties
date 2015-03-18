@@ -9,7 +9,7 @@
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
-<script type="text/javascript" src="../rws.js"></script>
+<!--<script type="text/javascript" src="../rws.js"></script>-->
 <link rel="stylesheet" href="../rws.css" type="text/css" />
 <script type="text/javascript">
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
@@ -17,7 +17,7 @@ Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
 var config_762={
     "mapdiv":"map_762",
     "zoom":4,
-    "showlayerswitcher":true,
+    "showlayerswitcher":false,
     "showzoom":true,
     "shownavigation":true,
     "showscaleline":true,
@@ -51,12 +51,9 @@ function(){
             ff.attributes['name']= '<b>'+f.waarde + ' ' + f.eenheid+'</b>';
             */
             ff.attributes['description']= f.description;
-
-
             features.push(ff);
         }
         api.featuresLayer.addFeatures(features);
-        api.enablePopups();
     }
 
     // meetpunten

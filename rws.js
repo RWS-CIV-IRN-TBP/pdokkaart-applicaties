@@ -51,69 +51,141 @@ Geotool.Calendar = {
     }
 }
 
-Geotool.graphtableswitch = function(div, graph_url, table_url) {
+Geotool.icons = {
+    label_1:{url:'../img/label_1.png', width:29, height:23},
+    label_2:{url:'../img/label_2.png', width:29, height:23},
+    label_3:{url:'../img/label_3.png', width:29, height:23},
+    label_4:{url:'../img/label_4.png', width:29, height:23},
+    label_5:{url:'../img/label_5.png', width:29, height:23},
+    label_1_xl:{url:'../img/label_1_xl.png', width:44, height:23},
+    label_2_xl:{url:'../img/label_2_xl.png', width:44, height:23}
+}
 
+Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories, icons){
+
+    if (icons == undefined){
+        icons = [Geotool.icons.label_1,
+            Geotool.icons.label_1,
+            Geotool.icons.label_1,
+            Geotool.icons.label_1,
+            Geotool.icons.label_1,
+            Geotool.icons.label_1];
+    }
+    function handler(request) {
+        var obj = JSON.parse(request.responseText);
+        var features = [];
+        for (var i=0;i<obj.features.length;i++) {
+        //for (var i=0;i<30;i++) {
+            var data = obj.features[i];
+            // ONLY features from categories (thema's) will be shown/added
+            //console.log(data.category, data.iconnr)
+            var waarde = (data.waarde == null ? '---' : (data.waarde > 0 ? '' + data.waarde : data.waarde));
+            if (OpenLayers.Util.indexOf(categories, data.category)>=0) {
+                var feature = new OpenLayers.Feature.Vector(
+                    new OpenLayers.Geometry.Point(data.location.lon, data.location.lat),
+                    data,
+                    {
+                        externalGraphic: icons[data.iconnr].url,
+                        graphicWidth: icons[data.iconnr].width,
+                        graphicHeight: icons[data.iconnr].height,
+                        labelXOffset: "0",
+                        labelYOffset: "2",
+                        fillOpacity: 1,
+                        label: waarde,
+                        fontColor: "#ffffff",
+                        fontSize: "9px",
+                        fontFamily: "Arial,Helvetica,sans-serif;"
+                    }
+                );
+                // setting some special members here being used when user clicks on the feature
+                // the popup will need this info te create a data and grafiek url
+                feature.projecttype = projecttype;
+                feature.category = data.category;
+                features.push(feature);
+            }
+         }
+         featuresLayer.addFeatures(features);
+    }
+
+    var request = OpenLayers.Request.GET({
+        url: data_uri,
+        callback: handler
+    });
+
+}
+
+Geotool.graphtableswitch = function(div) {
+
+    // use querySelectorAll instead of getElementsByClass here to be IE8 compliant !!
     if (div.innerHTML[0]=='T') {
         document.querySelectorAll('.table')[0].style.display = 'block';
         document.querySelectorAll('.graph')[0].style.display = 'none';
         div.innerHTML='Grafiek <img src="../img/grafiek.gif"/>';
-
-        var colCaption1 = '&nbps;';
-        var colCaption2 = 'Watertemperatuur';
-
-        var request = OpenLayers.Request.GET({
-            url: table_url,
-            callback: function(request){
-
-                var obj = JSON.parse(request.responseText);
-
-                var html = '<table cellspacing="0" style="width:400px;">'+
-                    '<thead>' +
-                        '<tr><th class="rowlabel" colspan="2">&nbsp;</th><th class="rowlabel">&nbsp;</th><th class="rowlabel">Watertemperatuur</th></tr>' +
-                        '<tr><th class="rowlabel">dag</th><th class="rowlabel">&nbsp;tijd&nbsp;</th><th class="rowlabel">&nbsp;</th><th class="rowlabel">grad.C</th></tr>' +
-                    '</thead>'+
-                    '<tbody>';
-                for (var i=obj.TW10.length-1;i>=0;i--){
-                    var row = obj.TW10[i];
-                    var clazz = 'roweven';
-                    if(i%2==1){clazz='rowodd'}
-                    html+='<tr class='+clazz+'><td>'+row.datumdag+'</td><td>'+row.datumtijd+'</td><td></td><td>'+row.waarde+'</td></tr>';
-                }
-                html+='</tbody></table>';
-
-                document.querySelectorAll('.table')[0].innerHTML = html;
-
-            }
-        });
     }
     else{
         document.querySelectorAll('.table')[0].style.display = 'none';
         document.querySelectorAll('.graph')[0].style.display = 'block';
+        div.innerHTML='Tabel <img src="../img/tabel.gif"/>';
     }
-
 }
 
-Geotool.createWaterPopup = function(f, projecttype) {
+Geotool.createWaterPopup = function(f) {
 
     if (!f) {
         return false;
     }
-    //console.log(f)
-    var waarde = (f.data.waarde == null ? '---' : (f.data.waarde > 0 ? '+' + f.data.waarde : f.data.waarde));
-    f.attributes['name'] = '<b>' + f.data.parameternaam +': ' + f.data.waarde + ' ' + f.data.eenheid + '</b><br/>';
 
-    var graph_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+projecttype+'&category=1';
-    var table_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=data&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+projecttype+'&category=1';
+    //console.log(f)
+
+    // create popup with visible graph
+    var waarde = (f.data.waarde == null ? '---' : (f.data.waarde > 0 ? '' + f.data.waarde : f.data.waarde));
+    f.attributes['name'] = '<b>' + f.data.parameternaam +': ' + waarde + ' ' + f.data.eenheid + '</b><br/>';
+
+    var graph_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+ f.projecttype+'&category='+ f.category;
+    var table_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=data&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+ f.projecttype+'&category='+ f.category;
     var meettijd = Geotool.Calendar.formatAsTime(f.data.meettijd) + '&nbsp;uur - ' + Geotool.Calendar.formatAsLongDate(f.data.meettijd);
     var html = '<div id="description"><p></p>'+meettijd+ ' - ' + f.data.locatienaam+'</p></div>';
-    html += '<div class="graph" style="display:block;"><img src="' + graph_url + '" alt="grafiek wordt opgehaald..."/></div>';
+    html += '<div class="graph" style="display:block;"><img src="' + graph_url + '" alt="Grafiek wordt opgehaald..."/></div>';
     html += '<div class="table" style="display:none;">Data ophalen...</div>';
-    html += '<div class="graphtablebtn" onclick="Geotool.graphtableswitch(this,\''+graph_url+'\',\''+table_url+'\')">Tabel <img src="../img/tabel.gif"/></div>';
+    html += '<div class="graphtablebtn" onclick="Geotool.graphtableswitch(this)">Tabel <img src="../img/tabel.gif"/></div>';
 
     f.attributes['description'] = html;
 
+    // retrieve the data needed for the table
+    var request = OpenLayers.Request.GET({
+        url: table_url,
+        callback: function(request){
+
+            var obj = JSON.parse(request.responseText);
+
+            // parameternaam of categoryDescription ??
+            var html = '<table cellspacing="0" style="width:400px;">'+
+                '<thead>' +
+                    '<tr><th class="rowlabel" colspan="2">&nbsp;</th><th class="rowlabel">&nbsp;</th><th class="rowlabel">'+f.data.parameternaam+'</th></tr>' +
+                    '<tr><th class="rowlabel">dag</th><th class="rowlabel">&nbsp;tijd&nbsp;</th><th class="rowlabel">&nbsp;</th><th class="rowlabel">'+ f.data.eenheid+'</th></tr>' +
+                '</thead>'+
+                '<tbody>';
+            var records = obj[f.data.par];
+            for (var i=records.length-1;i>=0;i--){
+                var row = records[i];
+                var clazz = 'roweven';
+                if(i%2==1){clazz='rowodd'}
+                html+='<tr class='+clazz+'><td>'+row.datumdag+'</td><td>'+row.datumtijd+'</td><td></td><td>'+row.waarde+'</td></tr>';
+            }
+            html+='</tbody></table>';
+
+            document.querySelectorAll('.table')[0].innerHTML = html;
+
+        }
+    });
+
     return true;
 }
+
+
+
+
+
 
 /**
  * Overriding the PDOK's onPopupFeatureSelect to be able to squeeze in the createWaterPopup on a select.
@@ -125,7 +197,7 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
 
     feature = evt.feature;
 
-    Geotool.createWaterPopup(feature, 'watertemperatuur');
+    Geotool.createWaterPopup(feature);
 
     var content = "";
     if (feature.attributes['name']){
@@ -140,7 +212,6 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
     var popupLoc = this.map.getLonLatFromPixel(this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy);
     //alert(popupLoc);
     popup = new OpenLayers.Popup.FramedCloud("featurePopup",
-                //feature.geometry.getBounds().getCenterLonLat(),
                 popupLoc,
                 new OpenLayers.Size(100,100),
                 content,
@@ -153,5 +224,4 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
     feature.popup = popup;
     popup.feature = feature;
     this.map.addPopup(popup, true);
-
 };

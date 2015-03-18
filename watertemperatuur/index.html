@@ -22,6 +22,7 @@ var config_762={
     "shownavigation":true,
     "showscaleline":true,
     "showmouseposition":true,
+    "geocoder":{},
     "loc":"122650.88, 487337.6",
     "baselayers":[{"id":"BRT","visible":true}],
     "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
@@ -31,43 +32,13 @@ Pdok.ready(
 function(){ 
     api = new Pdok.Api(config_762);
 
-    api.map.getLayersByName('Markers')[0].setName('Watertemperatuur');
+    // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=watertemperatuur&center=140377%2C475043&mapscale=3072000&height=530&width=670&cookieload=false
 
-    function handler(request) {
-        var obj = JSON.parse(request.responseText);
-        var features = [];
-        for (var i=0;i<obj.features.length;i++) {
-        //for (var i=0;i<30;i++) {
-            var data = obj.features[i];
-            var feature = new OpenLayers.Feature.Vector(
-                    new OpenLayers.Geometry.Point(data.location.lon, data.location.lat),
-                    data,
-                    {
-                        externalGraphic: "../img/watericon.png",
-                        graphicWidth: 29,
-                        graphicHeight: 23,
-                        labelXOffset: "0",
-                        labelYOffset: "2",
-                        fillOpacity: 1,
-                        label: data.waarde,
-                        fontColor: "#ffffff",
-                        fontSize: "9px",
-                        fontFamily: "Arial,Helvetica,sans-serif;"
-                    }
-            );
-            features.push(feature);
-         }
-         api.featuresLayer.addFeatures(features);
-    }
-
-    // meetpunten
+    // watertemperatuur meetpunten url
     var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=watertemperatuur&loadprojects=0";
-    var request = OpenLayers.Request.GET({
-        url: data_uri,
-        callback: handler
-    });
 
-
+    var icons =[{},Geotool.icons.label_5,{},{}]; // only iconnr 1 !
+    Geotool.getWaterData(data_uri, api.featuresLayer, 'watertemperatuur', [1], icons)
 } );
 </script>
 
