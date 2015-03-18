@@ -17,7 +17,7 @@ Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
 var config_762={
     "mapdiv":"map_762",
     "zoom":4,
-    "showlayerswitcher":true,
+    "showlayerswitcher":false,
     "showzoom":true,
     "shownavigation":true,
     "showscaleline":true,
@@ -32,40 +32,32 @@ function(){
     api = new Pdok.Api(config_762);
 
     api.map.getLayersByName('Markers')[0].setName('Watertemperatuur');
-    //api.map.layers[0].setOpacity(0.5)
 
-     function handler(request) {
+    function handler(request) {
         var obj = JSON.parse(request.responseText);
         var features = [];
-        //for (var i=0;i<obj.features.length;i++) {
-        for (var i=0;i<30;i++) {
+        for (var i=0;i<obj.features.length;i++) {
+        //for (var i=0;i<30;i++) {
             var data = obj.features[i];
             var feature = new OpenLayers.Feature.Vector(
                     new OpenLayers.Geometry.Point(data.location.lon, data.location.lat),
                     data,
                     {
-                        externalGraphic: "http://kaart.pdok.nl/api/markertypes/flag-blue.png",
-                        graphicWidth: 32,
-                        graphicHeight: 32,
+                        externalGraphic: "../img/watericon.png",
+                        graphicWidth: 29,
+                        graphicHeight: 23,
+                        labelXOffset: "0",
+                        labelYOffset: "2",
                         fillOpacity: 1,
                         label: data.waarde,
-                        fontColor: "#ff0000",
-                        fontSize: "11px",
-                        fontFamily: "Courier New, monospace",
-                        fontWeight: "bold",
-                        labelXOffset: "2",
-                        labelYOffset: "-9",
-                        labelOutlineColor: "white",
-                        labelOutlineWidth: 2
+                        fontColor: "#ffffff",
+                        fontSize: "9px",
+                        fontFamily: "Arial,Helvetica,sans-serif;"
                     }
             );
-            Geotool.createWaterPopup(feature);
             features.push(feature);
          }
-
          api.featuresLayer.addFeatures(features);
-         api.enablePopups();
-
     }
 
     // meetpunten
@@ -75,14 +67,11 @@ function(){
         callback: handler
     });
 
+
 } );
 </script>
+
 <div id="map_762" class="olMap fullscreen"></div>
-<style>
-     /* popup content is a little wider */
-    .olFramedCloudPopupContent {
-        max-width: 600px !important;
-    }
-</style>
+
 </body>
 </html>

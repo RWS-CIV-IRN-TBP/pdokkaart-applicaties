@@ -51,121 +51,107 @@ Geotool.Calendar = {
     }
 }
 
-Geotool.switchgraphtable = function(div, graph_url, table_url) {
+Geotool.graphtableswitch = function(div, graph_url, table_url) {
 
     if (div.innerHTML[0]=='T') {
         document.querySelectorAll('.table')[0].style.display = 'block';
         document.querySelectorAll('.graph')[0].style.display = 'none';
         div.innerHTML='Grafiek <img src="../img/grafiek.gif"/>';
 
-        var col1caption = '&nbps;';
-        var col2caption = 'Watertemperatuur'; // from objects
+        var colCaption1 = '&nbps;';
+        var colCaption2 = 'Watertemperatuur';
 
+        var request = OpenLayers.Request.GET({
+            url: table_url,
+            callback: function(request){
 
-            var request = OpenLayers.Request.GET({
-                url: table_url,
-                callback: function(request){
+                var obj = JSON.parse(request.responseText);
 
-                    var obj = JSON.parse(request.responseText);
-
-                    var html = '<table cellspacing="0" style="width:400px;">'+
-                        '<thead>' +
-                            '<tr><th class="rowlabel" colspan="2">&nbsp;</th><th class="rowlabel">&nbsp;</th><th class="rowlabel">Watertemperatuur</th></tr>' +
-                            '<tr><th class="rowlabel">dag</th><th class="rowlabel">&nbsp;tijd&nbsp;</th><th class="rowlabel">&nbsp;</th><th class="rowlabel">grad.C</th></tr>' +
-                        '</thead>'+
-                        '<tbody>';
-                    //for (var i=0; i<obj.TW10.length;i++){
-                    for (var i=obj.TW10.length-1;i>=0;i--){
-                        var row = obj.TW10[i];
-                        var clazz = 'roweven';
-                        if(i%2==1){clazz='rowodd'}
-                        html+='<tr class='+clazz+'><td>'+row.datumdag+'</td><td>'+row.datumtijd+'</td><td></td><td>'+row.waarde+'</td></tr>';
-                    }
-                    html+='</tbody></table>';
-
-                    document.querySelectorAll('.table')[0].innerHTML = html;
-    /*
-                    s = '<table cellspacing="0" style="width:400px;">'+
-                        '<thead>' +
-                            '<tr><th class="rowlabel" colspan="2">&nbsp;</th><th class="rowlabel">Windsnelheid</th><th class="rowlabel">Windstoot</th></tr>' +
-                            '<tr><th class="rowlabel">dag</th><th class="rowlabel">&nbsp;tijd&nbsp;</th><th class="rowlabel">m/s</th><th class="rowlabel">m/s</th></tr>' +
-                        '</thead>'+
-                        '<tbody id="windsnelheden_en_windstoten.tbody1">'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '<tr class="rowodd"><td>16/03</td><td>14:40</td><td>5.6</td><td>6.6</td></tr>'+
-                        '<tr class="roweven"><td>16/03</td><td>14:30</td><td>5.4</td><td>6.7</td></tr>'+
-                        '</tbody></table>';
-    */
+                var html = '<table cellspacing="0" style="width:400px;">'+
+                    '<thead>' +
+                        '<tr><th class="rowlabel" colspan="2">&nbsp;</th><th class="rowlabel">&nbsp;</th><th class="rowlabel">Watertemperatuur</th></tr>' +
+                        '<tr><th class="rowlabel">dag</th><th class="rowlabel">&nbsp;tijd&nbsp;</th><th class="rowlabel">&nbsp;</th><th class="rowlabel">grad.C</th></tr>' +
+                    '</thead>'+
+                    '<tbody>';
+                for (var i=obj.TW10.length-1;i>=0;i--){
+                    var row = obj.TW10[i];
+                    var clazz = 'roweven';
+                    if(i%2==1){clazz='rowodd'}
+                    html+='<tr class='+clazz+'><td>'+row.datumdag+'</td><td>'+row.datumtijd+'</td><td></td><td>'+row.waarde+'</td></tr>';
                 }
-            });
+                html+='</tbody></table>';
+
+                document.querySelectorAll('.table')[0].innerHTML = html;
+
+            }
+        });
     }
     else{
         document.querySelectorAll('.table')[0].style.display = 'none';
         document.querySelectorAll('.graph')[0].style.display = 'block';
-        div.innerHTML='Tabel <img src="../img/tabel.gif"/>';
     }
 
 }
 
-Geotool.createWaterPopup = function(f) {
+Geotool.createWaterPopup = function(f, projecttype) {
 
     if (!f) {
         return false;
     }
-
+    //console.log(f)
     var waarde = (f.data.waarde == null ? '---' : (f.data.waarde > 0 ? '+' + f.data.waarde : f.data.waarde));
-    f.attributes['name'] = '<b>' + f.data.waarde + ' ' + f.data.eenheid + '</b><br/>';
+    f.attributes['name'] = '<b>' + f.data.parameternaam +': ' + f.data.waarde + ' ' + f.data.eenheid + '</b><br/>';
 
-    var graph_url = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=" + f.data.loc + "&net=" + f.data.net + "&projecttype=watertemperatuur&category=1";
-    var table_url = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=data&loc=" + f.data.loc + "&net=" + f.data.net + "&projecttype=watertemperatuur&category=1";
+    var graph_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+projecttype+'&category=1';
+    var table_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=data&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+projecttype+'&category=1';
     var meettijd = Geotool.Calendar.formatAsTime(f.data.meettijd) + '&nbsp;uur - ' + Geotool.Calendar.formatAsLongDate(f.data.meettijd);
-    var html = '<div id="description"><p></p>'+meettijd+ '<br/>' + f.data.locatienaam+'</p></div>';
-    html += '<div class="graph" style="display:block;"><img src="' + graph_url + '"/></div>';
+    var html = '<div id="description"><p></p>'+meettijd+ ' - ' + f.data.locatienaam+'</p></div>';
+    html += '<div class="graph" style="display:block;"><img src="' + graph_url + '" alt="grafiek wordt opgehaald..."/></div>';
     html += '<div class="table" style="display:none;">Data ophalen...</div>';
-    html += '<div class="graphtablebtn" onclick="Geotool.switchgraphtable(this,\''+graph_url+'\',\''+table_url+'\')">Tabel <img src="../img/tabel.gif"/></div>';
+    html += '<div class="graphtablebtn" onclick="Geotool.graphtableswitch(this,\''+graph_url+'\',\''+table_url+'\')">Tabel <img src="../img/tabel.gif"/></div>';
 
     f.attributes['description'] = html;
 
     return true;
 }
+
+/**
+ * Overriding the PDOK's onPopupFeatureSelect to be able to squeeze in the createWaterPopup on a select.
+ * This way we do not do all the creation of those popups before hand, but only on a select.
+ *
+ * @param evt
+ */
+Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
+
+    feature = evt.feature;
+
+    Geotool.createWaterPopup(feature, 'watertemperatuur');
+
+    var content = "";
+    if (feature.attributes['name']){
+        content=feature.attributes['name'];
+    }
+    if (feature.attributes['description']){
+        content=content+"<br/>"+feature.attributes['description'];
+    }
+    if (!content || content.length === 0) {
+        content = '&nbsp;';
+    }
+    var popupLoc = this.map.getLonLatFromPixel(this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy);
+    //alert(popupLoc);
+    popup = new OpenLayers.Popup.FramedCloud("featurePopup",
+                //feature.geometry.getBounds().getCenterLonLat(),
+                popupLoc,
+                new OpenLayers.Size(100,100),
+                content,
+                null, true, function(evt) {
+                    this.hide();
+                    // deselect ALL features to be able to select this one again
+                    popup.feature.layer.selectedFeatures=[];
+                }
+            );
+    feature.popup = popup;
+    popup.feature = feature;
+    this.map.addPopup(popup, true);
+
+};

@@ -9,6 +9,8 @@
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
+
+<link rel="stylesheet" href="../rws.css" type="text/css" />
 <script type="text/javascript">
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
@@ -32,31 +34,10 @@ function(){
      function handler(request) {
         var obj = JSON.parse(request.responseText);
         var features = [];
-        //api.featuresLayer = new OpenLayers.Layer.Vector();
-        //api.selectControl = new OpenLayers.Control.SelectFeature(api.featuresLayer);
-        //api.map.addControl(api.selectControl);
         api.enablePopups();
-        //api.selectControl.activate();
-        //console.log(obj);
         for (var i=0;i<obj.features.length;i++) {
          //for (var i=0;i<10;i++) {
              var f = obj.features[i];
-             //console.log(f);
-             /*
-             categoryDescription "Gemeten waterhoogte"
-             eenheid    "cm NAP"
-             iconsubscript "15:40 uur"
-             loc    "TWZZ"
-             locatienaam "Terneuzen Westsluis ZZ"
-             location.lat 373233
-             location.lon 45284
-             meettijd 1423842000
-             net "LWM"
-             par "H10"
-             parameternaam "Waterhoogte"
-             waarde "-126"
-              */
-
             // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=IJMH&net=LMW&projecttype=waterstanden&category=4
             var ff = new OpenLayers.Feature.Vector(
                 new OpenLayers.Geometry.Point(f.location.lon, f.location.lat),
@@ -74,7 +55,6 @@ function(){
             features.push(ff);
          }
          api.featuresLayer.addFeatures(features);
-         //api.map.addLayer(api.featuresLayer);
     }
 
     // meetpunten
@@ -87,11 +67,5 @@ function(){
 } );
 </script>
 <div id="map_762" class="olMap fullscreen"></div>
-<style>
-     /* popup content is a little wider */
-    .olFramedCloudPopupContent {
-        max-width: 600px !important;
-    }
-</style>
 </body>
 </html>

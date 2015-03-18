@@ -29,6 +29,10 @@ div .graphtablebtn {
     text-align: center;
     vertical-align: top;
 }
+/* rws popup content is a little wider */
+.olFramedCloudPopupContent {
+    max-width: 600px !important;
+}
 .olFramedCloudPopupContent td {
     font-size: 0.8em;
 }
