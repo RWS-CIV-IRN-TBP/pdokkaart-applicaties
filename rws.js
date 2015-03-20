@@ -214,7 +214,14 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
     if (!content || content.length === 0) {
         content = '&nbsp;';
     }
-    var popupLoc = this.map.getLonLatFromPixel(this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy);
+    // we get the popup location from the geometry
+    // the original pdok way, did not work on touch devices
+    // another option: feature.geometry.getBounds().getCenterLonLat()
+    var popupLoc = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
+    if (popupLoc == null){
+        // try to get a click from mouse control (not working on touch devices)
+        popupLoc = this.map.getLonLatFromPixel(this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy);
+    }
     //alert(popupLoc);
     popup = new OpenLayers.Popup.FramedCloud("featurePopup",
                 popupLoc,
