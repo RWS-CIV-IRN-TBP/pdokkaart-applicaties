@@ -109,6 +109,13 @@ Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories
                 features.push(feature);
             }
         }
+        // close popups
+        while( featuresLayer.map.popups.length ) {
+            featuresLayer.map.removePopup(featuresLayer.map.popups[0]);
+        }
+        // remove all features in featuresLayer, so we can run this method every 5 minutes
+        featuresLayer.removeAllFeatures();
+        // now add the new ones
         featuresLayer.addFeatures(features);
         if (featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')){
             featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')[0].decreaseCounter();
@@ -145,8 +152,6 @@ Geotool.createWaterPopup = function(f) {
     if (!f) {
         return false;
     }
-
-    //console.log(f)
 
     // create popup with visible graph
     var waarde = (f.data.waarde == null ? '---' : (f.data.waarde > 0 ? '' + f.data.waarde : f.data.waarde));
