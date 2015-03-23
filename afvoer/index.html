@@ -32,6 +32,8 @@ Pdok.ready(
 function(){ 
     api = new Pdok.Api(config_762);
 
+    Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
+
     // afvoer meetpunten url
     var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=afvoer_en_stroomsnelheid&loadprojects=1";
 

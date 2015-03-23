@@ -108,10 +108,16 @@ Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories
                 feature.category = data.category;
                 features.push(feature);
             }
-         }
-         featuresLayer.addFeatures(features);
+        }
+        featuresLayer.addFeatures(features);
+        if (featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')){
+            featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')[0].decreaseCounter();
+        }
     }
-
+    // requests take some time sometimes
+    if (featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')){
+            featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')[0].increaseCounter();
+        }
     var request = OpenLayers.Request.GET({
         url: data_uri,
         callback: handler
@@ -188,10 +194,6 @@ Geotool.createWaterPopup = function(f) {
 }
 
 
-
-
-
-
 /**
  * Overriding the PDOK's onPopupFeatureSelect to be able to squeeze in the createWaterPopup on a select.
  * This way we do not do all the creation of those popups before hand, but only on a select.
@@ -202,7 +204,9 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
 
     feature = evt.feature;
 
-    Geotool.createWaterPopup(feature);
+    if (Geotool.useWaterPopup) {
+        Geotool.createWaterPopup(feature);
+    }
 
     var content = "";
     if (feature.attributes['name']){
@@ -214,15 +218,17 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
     if (!content || content.length === 0) {
         content = '&nbsp;';
     }
-    // we get the popup location from the geometry
-    // the original pdok way, did not work on touch devices
-    // another option: feature.geometry.getBounds().getCenterLonLat()
-    var popupLoc = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
+    // first try: get it from the mouseclick from the MousePosition control (NOT working on touch devices)
+    var popupLoc = this.map.getLonLatFromPixel(this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy);
+    // second try: see if this is a point geometry with an x and an y
+    if (popupLoc == null && feature.geometry && feature.geometry.x && feature.geometry.y) {
+        popupLoc = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
+    }
+    // if still null (non point geometries?): try the center of bbox of geometry
     if (popupLoc == null){
         // try to get a click from mouse control (not working on touch devices)
-        popupLoc = this.map.getLonLatFromPixel(this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy);
+        popupLoc = feature.geometry.getBounds().getCenterLonLat();
     }
-    //alert(popupLoc);
     popup = new OpenLayers.Popup.FramedCloud("featurePopup",
                 popupLoc,
                 new OpenLayers.Size(100,100),
