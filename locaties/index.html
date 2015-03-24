@@ -14,8 +14,8 @@
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
 Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
-var config_762={
-    "mapdiv":"map_762",
+var config_100={
+    "mapdiv":"map_100",
     "zoom":4,
     "showlayerswitcher":false,
     "showzoom":true,
@@ -26,16 +26,15 @@ var config_762={
     "baselayers":[{"id":"BRT","visible":true}],
     "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
     "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
-var api;
+var api100;
 Pdok.ready( 
 function(){ 
-    api = new Pdok.Api(config_762);
+    api100 = new Pdok.Api(config_100);
 
      function handler(request) {
         var obj = JSON.parse(request.responseText);
         var features = [];
         for (var i=0;i<obj.features.length;i++) {
-        //for (var i=0;i<10;i++) {
             var f = obj.features[i];
             var ff = new OpenLayers.Feature.Vector(
                 new OpenLayers.Geometry.Point(f.location.lon, f.location.lat),
@@ -47,16 +46,13 @@ function(){
                 fillOpacity: 1
                 }
             );
-            /*var graph_url = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc="+f.loc+"&net="+f.net+"&projecttype=waterstanden&category=4";
-            ff.attributes['name']= '<b>'+f.waarde + ' ' + f.eenheid+'</b>';
-            */
             ff.attributes['description']= f.description;
             features.push(ff);
         }
-        api.featuresLayer.addFeatures(features);
+        api100.featuresLayer.addFeatures(features);
     }
 
-    // meetpunten
+    // rws adressen / locaties
     var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=rwsadressen&loadprojects=0";
     var request = OpenLayers.Request.GET({
         url: data_uri,
@@ -84,6 +80,6 @@ function(){
     }
 
 </style>
-<div id="map_762" class="olMap fullscreen"></div>
+<div id="map_100" class="olMap fullscreen"></div>
 </body>
 </html>
