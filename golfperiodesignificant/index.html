@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayersPdokKaartExtenders.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-api.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
+<script type="text/javascript" src="../rws.js"></script>
+<script type="text/javascript">
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
+var config_764={
+    "mapdiv":"map_764",
+    "zoom":4,
+    "showlayerswitcher":false,
+    "showzoom":true,
+    "shownavigation":true,
+    "showscaleline":true,
+    "showmouseposition":true,
+    "geocoder":{},
+    "loc":"122650.88, 487337.6",
+    "baselayers":[{"id":"BRT","visible":true}],
+    "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+    "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+var api;
+Pdok.ready( 
+function(){ 
+    api = new Pdok.Api(config_764);
+
+    Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
+
+    // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=golfgegevens&center=140377%2C475043&mapscale=3072000&legend=1&height=530&width=670&cookieload=true
+
+    // golfgegevens meetpunten url
+    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=golfgegevens&loadprojects=0";
+
+    var icons =[{},{},Geotool.icons.label_5,{},{}]; // only iconnr/category 2 !
+    var params = [ {key:'TH1d3',name:'Sign. Golfperiode',units:'sec'} ];
+    Geotool.getWaterData(data_uri, api.featuresLayer, 'golfgegevens', [2], icons, params);
+} );
+</script>
+
+<div id="map_764" class="olMap fullscreen"></div>
+
+</body>
+</html>
