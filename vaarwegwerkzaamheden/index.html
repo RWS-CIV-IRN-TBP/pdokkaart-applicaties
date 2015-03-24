@@ -74,7 +74,6 @@ Pdok.ready(
             var features = [];
             for (var i=0;i<obj.features.length;i++) {
                 var f = obj.features[i];
-                console.log(f.icon)
                 var icon = './img/vaarwegwerk_02_icon_small.png';
                 if (f.icon.url.indexOf('vaarwegwerk_05_icon.png')>0){
                    icon = './img/vaarwegwerk_05_icon_small.png';
@@ -99,7 +98,15 @@ Pdok.ready(
 
         // vaarwegwerkzaamheden
         // TODO make start and end dynamic: one year?
+        var now = new Date().getTime();
+        // from milliseconds to seconds
+        now = now/1000;
+        var today = Geotool.Calendar.formatAsLongUSDate(now);
+        var period = 365 * 24 * 60 * 60; // one year of milliseconds
+        var end = Geotool.Calendar.formatAsLongUSDate(now+period);
+        console.log(today, end)
         var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=vaarwegen&loadprojects=1&startdate=2015-03-24&enddate=2015-06-22";
+        // var data_uri = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=vaarwegen&loadprojects=1&startdate='+today+'&enddate='+end;
         var request = OpenLayers.Request.GET({
             url: data_uri,
             callback: handler
