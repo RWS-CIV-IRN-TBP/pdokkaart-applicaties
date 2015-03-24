@@ -51,7 +51,7 @@ Geotool.Calendar = {
     },
     formatAsLongUSDate: function(timestampInSeconds){
         var d = new Date(timestampInSeconds*1000);
-        return d.getFullYear()+'-'+(d.getMonth()+1) + '-' +d.getDate();
+        return d.getFullYear()+'-'+(d.getMonth() < 10 ? '0' : '')+(d.getMonth()+1) + '-' +(d.getDate() < 10 ? '0' : '')+d.getDate();
     }
 }
 

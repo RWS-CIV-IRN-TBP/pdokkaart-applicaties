@@ -104,9 +104,8 @@ Pdok.ready(
         var today = Geotool.Calendar.formatAsLongUSDate(now);
         var period = 365 * 24 * 60 * 60; // one year of milliseconds
         var end = Geotool.Calendar.formatAsLongUSDate(now+period);
-        console.log(today, end)
-        var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=vaarwegen&loadprojects=1&startdate=2015-03-24&enddate=2015-06-22";
-        // var data_uri = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=vaarwegen&loadprojects=1&startdate='+today+'&enddate='+end;
+        //var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=vaarwegen&loadprojects=1&startdate=2015-03-24&enddate=2015-06-22";
+        var data_uri = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=vaarwegen&loadprojects=1&startdate='+today+'&enddate='+end;
         var request = OpenLayers.Request.GET({
             url: data_uri,
             callback: handler
