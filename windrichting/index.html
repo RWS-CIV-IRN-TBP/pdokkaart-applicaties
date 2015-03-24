@@ -29,25 +29,24 @@ var config_762={
     "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
 var api;
 Pdok.ready( 
-function(){
-
+function(){ 
     api = new Pdok.Api(config_762);
 
     Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
-    // NAP meetpunten url
-    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=waterstanden&loadprojects=1";
+    // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=windsnelheden_en_windstoten&center=140377%2C475043&mapscale=3072000&legend=1&height=530&width=670&cookieload=true
 
-    var icons = [{},Geotool.icons.label_1,Geotool.icons.label_2,Geotool.icons.label_3,Geotool.icons.label_4] // only iconnr 1, 2, 3, 4
-    var params = [ {key:'H10',name:'Waterhoogte',units:'cm NAP'},
-                   {key:'H10A',name:'Astronomisch getij',units:'cm NAP'},
-                   {key:'H10V',name:'Verwachte waterstand',units:'cm NAP'}];
-    Geotool.getWaterData(data_uri, api.featuresLayer, 'waterstanden', [1,2,3,4], icons, params);
+    // wind meetpunten url
+    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=windsnelheden_en_windstoten&loadprojects=1";
 
-    api = new Pdok.Api(config_762);
 
+    var icons =[{},{},Geotool.icons.label_5,{},{}]; // windrichting = category 2, iconnr 2
+    var params = [ {key:'WR10',name:'Windrichting',units:'graden'} ];
+    Geotool.getWaterData(data_uri, api.featuresLayer, 'windsnelheden_en_windstoten', [2], icons, params);
 } );
 </script>
+
 <div id="map_762" class="olMap fullscreen"></div>
+
 </body>
 </html>

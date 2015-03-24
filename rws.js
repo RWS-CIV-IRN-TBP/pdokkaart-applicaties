@@ -61,7 +61,54 @@ Geotool.icons = {
     label_2_xl:{url:'../img/label_2_xl.png', width:44, height:23}
 }
 
-Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories, icons){
+
+/**
+ * Retrieve JSON waterdata from url, create features for them and place them on the map in the featuresLayer
+ *
+ * @param data_uri: String url to retrieve the JSON feature(!) data to view as features on the map
+ *
+ * The returned data is an object with a property 'features' containing an array of features, for example
+ * http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=windsnelheden_en_windstoten&loadprojects=1
+
+     {  "locatienaam":"North Cormorant",
+        "parameternaam":"Windsnelheid",
+        "par":"WC10",
+        "loc":"NC1",
+        "net":"LMW",
+        "waarde":"12.9",
+        "eenheid":"m\/s",
+        "category":1,
+        "iconnr":1,
+        "popupsize":"600",
+        "graphsize":"550",
+        "waardeh10a":null,
+        "waardeh10v":null,
+        "waardeq10v":null,
+        "iconsubscript":"13:10 uur",
+        "meettijd":"1427116200",
+        "link_wn":null,
+        "ids":["NC1LMWWC10"],
+        "location":{"lat":"1494693","lon":"-72282"},
+        "categoryDescription":"Windsnelheden en windstoten",
+        "icon":{}
+      }
+ *
+ * @param featuresLayer: vector layer used to place the features in
+ * @param projecttype: String used in the table and graph url's in the popups. eg 'waterstanden'
+ * @param categories: Array of integers, containing the 'category'-values that you want to show on the map.
+ *                      waterdata uri features contain a category, and sometimes one data url contains several
+ *                      categories or thema's, which you want to 'filter' for your map
+ * @param icons: Array of objects, containing an icon path for every 'iconnr' available in the data, eg:
+ *                [{},Geotool.icons.label_1,Geotool.icons.label_2,Geotool.icons.label_3,Geotool.icons.label_4]
+ *                for data having iconnr values 1,2,3 and 4
+ * @param params: Array of strings, containing the parameters which have to be shown in the table in the feature popup
+ *                Every param (eg Th0_B2) has it's own column in that table
+ *                Eg, the windsnelheden_en_windstoten data:
+ *                 http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=data&loc=P11&net=LMW&projecttype=windsnelheden_en_windstoten&category=1
+ *                has WC10 and WC10MXS3
+ */
+
+Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories, icons, params){
 
     // fix for the label ordering in labels+icons
     // http://comments.gmane.org/gmane.comp.gis.openlayers.devel.ol3/4156
@@ -106,6 +153,7 @@ Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories
                 // the popup will need this info te create a data and grafiek url
                 feature.projecttype = projecttype;
                 feature.category = data.category;
+                feature.params = params;
                 features.push(feature);
             }
         }
@@ -155,12 +203,19 @@ Geotool.createWaterPopup = function(f) {
 
     // create popup with visible graph
     var waarde = (f.data.waarde == null ? '---' : (f.data.waarde > 0 ? '' + f.data.waarde : f.data.waarde));
-    f.attributes['name'] = '<b>' + f.data.parameternaam +': ' + waarde + ' ' + f.data.eenheid + '</b><br/>';
+    // categoryDescription or parameternaam, some datasets have both, some have one of them :-(
+    var paramname = f.data.categoryDescription;
+    if (paramname == undefined){
+        paramname = f.data.parameternaam;
+    }
+    f.attributes['name'] = '<b>' + paramname +': ' + waarde + ' ' + f.data.eenheid + '</b>';
 
     var graph_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+ f.projecttype+'&category='+ f.category;
     var table_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=data&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+ f.projecttype+'&category='+ f.category;
-    var meettijd = Geotool.Calendar.formatAsTime(f.data.meettijd) + '&nbsp;uur - ' + Geotool.Calendar.formatAsLongDate(f.data.meettijd);
-    var html = '<div id="description"><p></p>'+meettijd+ ' - ' + f.data.locatienaam+'</p></div>';
+
+    var meettijd = Geotool.Calendar.formatAsLongDate(f.data.meettijd)  + ' - ' +  Geotool.Calendar.formatAsTime(f.data.meettijd) + '&nbsp;uur';
+
+    var html = '<div id="description"><p>'+meettijd+ ' - ' + f.data.locatienaam+'</p></div>';
     html += '<div class="graph" style="display:block;"><img src="' + graph_url + '" alt="Grafiek wordt opgehaald..."/></div>';
     html += '<div class="table" style="display:none;">Data ophalen...</div>';
     html += '<div class="graphtablebtn" onclick="Geotool.graphtableswitch(this)">Tabel <img src="../img/tabel.gif"/></div>';
@@ -174,24 +229,111 @@ Geotool.createWaterPopup = function(f) {
 
             var obj = JSON.parse(request.responseText);
 
-            // parameternaam of categoryDescription ??
-            var html = '<table cellspacing="0" style="width:400px;">'+
-                '<thead>' +
-                    '<tr><th class="rowlabel" colspan="2">&nbsp;</th><th class="rowlabel">&nbsp;</th><th class="rowlabel">'+f.data.parameternaam+'</th></tr>' +
-                    '<tr><th class="rowlabel">dag</th><th class="rowlabel">&nbsp;tijd&nbsp;</th><th class="rowlabel">&nbsp;</th><th class="rowlabel">'+ f.data.eenheid+'</th></tr>' +
-                '</thead>'+
-                '<tbody>';
-            var records = obj[f.data.par];
-            for (var i=records.length-1;i>=0;i--){
-                var row = records[i];
+            //console.log(obj);
+
+            var params = f.params;
+
+            // creating a 'table' object,
+            // with a 'row'-object for every timestamp ('tijd')
+            // which get's 'record'-attributes for every param
+            // eg given 'WC10' and 'WC10MXS3' as params:
+            // table = {
+            //          '1426633200': {'WC10':{data}, 'WC10MXS3':{data}},
+            //          '1426633800': {'WC10':{data}, 'WC10MXS3':{data}}
+            //          etc
+            //          }
+            var table = {};
+            var timestamps = [];
+            for (var i=0; i<params.length;i++) {
+                var param = params[i].key;
+                if (obj[param]) { // some dataset have different parameters within their feature (waterhoogte etc)
+                    for (var j = 0; j < obj[param].length; j++) {
+                        var row = obj[param][j];
+                        var timestamp = obj[param][j]['tijd'];  // string like '1426633800'
+                        if (table[timestamp] == undefined) {
+                            table[timestamp] = {};
+                            timestamps.push(timestamp);
+                        }
+                        table[timestamp][param] = obj[param][j];
+                    }
+                }
+            }
+            // sort all available timestamps
+            timestamps = timestamps.sort();
+
+            //console.log(table)
+
+            var html = '';
+            // we check datumdag and datumtijd for every parameter, because we never know WHICH param is available at this timestamp
+            var datumdag;
+            var datumtijd;
+            // max three params in one table (at this moment)
+            var param0, param1, param2;
+            var param0value='';
+            var param1value='';
+            var param2value='';
+            var param0name='';
+            var param1name='';
+            var param2name='';
+            var param0units='';
+            var param1units='';
+            var param2units='';
+            function checkValue(val){
+                if (val == null || val == undefined){
+                    return '-'
+                }
+                else {
+                    return val
+                }
+            }
+            for (var i=timestamps.length-1;i>=0;i--){
+                var timestamp = timestamps[i];
                 var clazz = 'roweven';
                 if(i%2==1){clazz='rowodd'}
-                html+='<tr class='+clazz+'><td>'+row.datumdag+'</td><td>'+row.datumtijd+'</td><td></td><td>'+row.waarde+'</td></tr>';
+                if (params[0]) {
+                    param0 = params[0].key;
+                    // IF there is data for this timestamp for this param
+                    if (table[timestamp][param0]) {
+                        param0value = checkValue(table[timestamp][param0].waarde);
+                        datumdag = table[timestamp][param0].datumdag;
+                        datumtijd = table[timestamp][param0].datumtijd;
+                        param0name = params[0].name;
+                        param0units = params[0].units;
+                    }
+                }
+                if (params[1]){
+                    param1 = params[1].key;
+                    if(table[timestamp][param1]) {
+                        param1value = checkValue(table[timestamp][param1].waarde);
+                        datumdag = table[timestamp][param1].datumdag;
+                        datumtijd = table[timestamp][param1].datumtijd;
+                        param1name = params[1].name;
+                        param1units = params[1].units;
+
+                    }
+                }
+                if (params[2]){
+                    param2 = params[2].key;
+                    if(table[timestamp][param2]) {
+                        param2value = checkValue(table[timestamp][param2].waarde);
+                        datumdag = table[timestamp][param2].datumdag;
+                        datumtijd = table[timestamp][param2].datumtijd;
+                        param2name = params[2].name;
+                        param2units = params[2].units;
+                    }
+                }
+                html+='<tr class='+clazz+'><td>'+datumdag+'</td><td>'+datumtijd+'</td><td>'+param0value+'</td><td>'+param1value+'</td><td>'+param2value+'</td></tr>';
             }
+            html = '<table cellspacing="0" style="width:400px;">'+
+                '<thead>' +
+                    '<tr><th class="rowlabel" colspan="2">&nbsp;</th><th class="rowlabel">'+param0name+'</th><th class="rowlabel">'+param1name+'</th><th class="rowlabel">'+param2name+'</th></tr>' +
+                    '<tr><th class="rowlabel">dag</th><th class="rowlabel">&nbsp;tijd&nbsp;</th><th class="rowlabel">'+param0units+'</th><th class="rowlabel">'+param1units+'</th><th class="rowlabel">'+param2units+'</th></tr>' +
+                '</thead>'+
+                '<tbody>' + html;
+
             html+='</tbody></table>';
 
             document.querySelectorAll('.table')[0].innerHTML = html;
-
         }
     });
 

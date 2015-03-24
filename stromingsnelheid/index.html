@@ -16,38 +16,37 @@ Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
 Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
 var config_762={
     "mapdiv":"map_762",
-    "zoom":4,
+    "zoom":6,
     "showlayerswitcher":false,
     "showzoom":true,
     "shownavigation":true,
     "showscaleline":true,
     "showmouseposition":true,
     "geocoder":{},
-    "loc":"122650.88, 487337.6",
+    "loc":"95286,422339",
     "baselayers":[{"id":"BRT","visible":true}],
     "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
     "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
 var api;
 Pdok.ready( 
-function(){
-
+function(){ 
     api = new Pdok.Api(config_762);
 
     Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
-    // NAP meetpunten url
-    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=waterstanden&loadprojects=1";
+    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=afvoer_en_stroomsnelheid&loadprojects=1";
 
-    var icons = [{},Geotool.icons.label_1,Geotool.icons.label_2,Geotool.icons.label_3,Geotool.icons.label_4] // only iconnr 1, 2, 3, 4
-    var params = [ {key:'H10',name:'Waterhoogte',units:'cm NAP'},
-                   {key:'H10A',name:'Astronomisch getij',units:'cm NAP'},
-                   {key:'H10V',name:'Verwachte waterstand',units:'cm NAP'}];
-    Geotool.getWaterData(data_uri, api.featuresLayer, 'waterstanden', [1,2,3,4], icons, params);
+    // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=afvoer_en_stroomsnelheid&center=155000%2C395908&mapscale=3072000&legend=1&height=530&width=670&cookieload=true
 
-    api = new Pdok.Api(config_762);
+    // 2 = stroomsnelheid is category 2 from afvoer_en_stroomsnelheid
+    var icons = [{},{},Geotool.icons.label_2,{}] // only iconnr 2 used
+    var params = [ {key:'SS10',name:'Stroomsnelheid',units:'m/sec'}];
+    Geotool.getWaterData(data_uri, api.featuresLayer, 'afvoer_en_stroomsnelheid', [2], icons, params);
 
 } );
 </script>
+
 <div id="map_762" class="olMap fullscreen"></div>
+
 </body>
 </html>

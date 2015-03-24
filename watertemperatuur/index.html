@@ -40,7 +40,8 @@ function(){
     var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=watertemperatuur&loadprojects=0";
 
     var icons =[{},Geotool.icons.label_5,{},{}]; // only iconnr 1 !
-    Geotool.getWaterData(data_uri, api.featuresLayer, 'watertemperatuur', [1], icons)
+    var params = [ {key:'TW10',name:'Watertemperatuur',units:'grad.C'} ];
+    Geotool.getWaterData(data_uri, api.featuresLayer, 'watertemperatuur', [1], icons, params);
 } );
 </script>
 
