@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayersPdokKaartExtenders.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-api.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
+<script type="text/javascript" src="../rws.js"></script>
+<script type="text/javascript">
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
+var config_102={
+    "mapdiv":"map_102",
+    "zoom":5,
+    "showlayerswitcher":false,
+    "showzoom":true,
+    "shownavigation":true,
+    "showscaleline":true,
+    "showmouseposition":true,
+    "geocoder":{},
+    "loc":"192806,328368",
+    "baselayers":[{"id":"BRT","visible":true}],
+    "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+    "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+var api_102;
+Pdok.ready( 
+function(){
+
+    api_102 = new Pdok.Api(config_102);
+
+    Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
+
+    // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=waterstandentaw&center=176074%2C333545&mapscale=768000&height=530&width=670&cookieload=true
+
+    // TAW meetpunten url
+    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=waterstandentaw&loadprojects=0";
+
+    var icons = [{},Geotool.icons.label_1_xl,{},{},{},{},{},{}] // only iconnr 1
+    var params = [ {key:'xH10R',name:'Waterhoogte',units:'cm TAW'}];
+    Geotool.getWaterData(data_uri, api_102.featuresLayer, 'waterstandentaw', [1], icons, params);
+
+} );
+</script>
+<div id="map_102" class="olMap fullscreen"></div>
+</body>
+</html>
