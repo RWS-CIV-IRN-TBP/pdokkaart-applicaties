@@ -14,8 +14,8 @@
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
 Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
-var config_763={
-    "mapdiv":"map_763",
+var config_702={
+    "mapdiv":"map_702",
     "zoom":4,
     "showlayerswitcher":false,
     "showzoom":true,
@@ -27,10 +27,10 @@ var config_763={
     "baselayers":[{"id":"BRT","visible":true}],
     "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
     "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
-var api;
+var api_702;
 Pdok.ready( 
 function(){ 
-    api = new Pdok.Api(config_763);
+    api_702 = new Pdok.Api(config_702);
 
     Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
@@ -39,14 +39,14 @@ function(){
     // golfgegevens meetpunten url
     var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=golfgegevens&loadprojects=0";
 
-    var icons =[{},Geotool.icons.label_5,{},{}]; // only iconnr/category 1 !
+    var icons =[{},Geotool.icons.label_5_xl,{},{}]; // only iconnr/category 1 !
     var params = [ {key:'H1d3',name:'Sign. Golfhoogte',units:'cm'},
                    {key:'Hm0',name:'Golfhoogte sign',units:'cm'}];
-    Geotool.getWaterData(data_uri, api.featuresLayer, 'golfgegevens', [1], icons, params);
+    Geotool.getWaterData(data_uri, api_702.featuresLayer, 'golfgegevens', [1], icons, params);
 } );
 </script>
 
-<div id="map_763" class="olMap fullscreen"></div>
+<div id="map_702" class="olMap fullscreen"></div>
 
 </body>
 </html>

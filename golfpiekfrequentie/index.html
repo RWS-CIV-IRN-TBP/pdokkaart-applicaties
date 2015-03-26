@@ -14,8 +14,8 @@
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
 Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
-var config_763={
-    "mapdiv":"map_763",
+var config_705={
+    "mapdiv":"map_705",
     "zoom":4,
     "showlayerswitcher":false,
     "showzoom":true,
@@ -27,10 +27,10 @@ var config_763={
     "baselayers":[{"id":"BRT","visible":true}],
     "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
     "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
-var api;
+var api_705;
 Pdok.ready( 
 function(){ 
-    api = new Pdok.Api(config_763);
+    api_705 = new Pdok.Api(config_705);
 
     Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
@@ -41,11 +41,11 @@ function(){
 
     var icons =[{},{},{},{},Geotool.icons.label_5,{}]; // only iconnr/category 4 !
     var params = [ {key:'Fp',name:'Piekfrequentie',units:'mHz'}];
-    Geotool.getWaterData(data_uri, api.featuresLayer, 'golfgegevens', [4], icons, params);
+    Geotool.getWaterData(data_uri, api_705.featuresLayer, 'golfgegevens', [4], icons, params);
 } );
 </script>
 
-<div id="map_763" class="olMap fullscreen"></div>
+<div id="map_705" class="olMap fullscreen"></div>
 
 </body>
 </html>

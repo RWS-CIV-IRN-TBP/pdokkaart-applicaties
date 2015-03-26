@@ -14,8 +14,8 @@
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
 Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
-var config_764={
-    "mapdiv":"map_764",
+var config_704={
+    "mapdiv":"map_704",
     "zoom":4,
     "showlayerswitcher":false,
     "showzoom":true,
@@ -27,10 +27,10 @@ var config_764={
     "baselayers":[{"id":"BRT","visible":true}],
     "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
     "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
-var api;
+var api_704;
 Pdok.ready( 
 function(){ 
-    api = new Pdok.Api(config_764);
+    api_704 = new Pdok.Api(config_704);
 
     Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
@@ -41,11 +41,11 @@ function(){
 
     var icons =[{},{},Geotool.icons.label_5,{},{}]; // only iconnr/category 2 !
     var params = [ {key:'TH1d3',name:'Sign. Golfperiode',units:'sec'} ];
-    Geotool.getWaterData(data_uri, api.featuresLayer, 'golfgegevens', [2], icons, params);
+    Geotool.getWaterData(data_uri, api_704.featuresLayer, 'golfgegevens', [2], icons, params);
 } );
 </script>
 
-<div id="map_764" class="olMap fullscreen"></div>
+<div id="map_704" class="olMap fullscreen"></div>
 
 </body>
 </html>

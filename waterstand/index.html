@@ -27,11 +27,11 @@ var config_762={
     "baselayers":[{"id":"BRT","visible":true}],
     "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
     "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
-var api;
+var api_101;
 Pdok.ready( 
 function(){
 
-    api = new Pdok.Api(config_762);
+    api_101 = new Pdok.Api(config_762);
 
     Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
@@ -42,9 +42,7 @@ function(){
     var params = [ {key:'H10',name:'Waterhoogte',units:'cm NAP'},
                    {key:'H10A',name:'Astronomisch getij',units:'cm NAP'},
                    {key:'H10V',name:'Verwachte waterstand',units:'cm NAP'}];
-    Geotool.getWaterData(data_uri, api.featuresLayer, 'waterstanden', [1,2,3,4], icons, params);
-
-    api = new Pdok.Api(config_762);
+    Geotool.getWaterData(data_uri, api_101.featuresLayer, 'waterstanden', [1,2,3,4], icons, params);
 
 } );
 </script>

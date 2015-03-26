@@ -14,8 +14,8 @@
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
 Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
 Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
-var config_762={
-    "mapdiv":"map_762",
+var config_201={
+    "mapdiv":"map_201",
     "zoom":6,
     "showlayerswitcher":false,
     "showzoom":true,
@@ -27,10 +27,10 @@ var config_762={
     "baselayers":[{"id":"BRT","visible":true}],
     "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
     "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
-var api;
+var api_201;
 Pdok.ready( 
 function(){ 
-    api = new Pdok.Api(config_762);
+    api_201 = new Pdok.Api(config_201);
 
     Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
@@ -41,12 +41,12 @@ function(){
     // 2 = stroomsnelheid is category 2 from afvoer_en_stroomsnelheid
     var icons = [{},{},Geotool.icons.label_2,{}] // only iconnr 2 used
     var params = [ {key:'SS10',name:'Stroomsnelheid',units:'m/sec'}];
-    Geotool.getWaterData(data_uri, api.featuresLayer, 'afvoer_en_stroomsnelheid', [2], icons, params);
+    Geotool.getWaterData(data_uri, api_201.featuresLayer, 'afvoer_en_stroomsnelheid', [2], icons, params);
 
 } );
 </script>
 
-<div id="map_762" class="olMap fullscreen"></div>
+<div id="map_201" class="olMap fullscreen"></div>
 
 </body>
 </html>
