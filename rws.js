@@ -62,7 +62,8 @@ Geotool.icons = {
     label_4:{url:'../img/label_4.png', width:29, height:23},
     label_5:{url:'../img/label_5.png', width:29, height:23},
     label_1_xl:{url:'../img/label_1_xl.png', width:44, height:23},
-    label_2_xl:{url:'../img/label_2_xl.png', width:44, height:23}
+    label_2_xl:{url:'../img/label_2_xl.png', width:44, height:23},
+    label_5_xl:{url:'../img/label_5_xl.png', width:44, height:23}
 }
 
 
