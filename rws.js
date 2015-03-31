@@ -126,6 +126,10 @@ Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories
     function handler(request) {
         var obj = JSON.parse(request.responseText);
         var features = [];
+        var  labelYOffset = 2;  // FF, Chrome etc
+        if (navigator.appVersion.indexOf('MSIE 10')>=0 || navigator.userAgent.indexOf('Trident')>=0) {
+            labelYOffset = -1;  // IE >= 10
+        }
         for (var i=0;i<obj.features.length;i++) {
         //for (var i=0;i<30;i++) {
             var data = obj.features[i];
@@ -141,7 +145,7 @@ Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories
                         graphicWidth: icons[data.iconnr].width,
                         graphicHeight: icons[data.iconnr].height,
                         labelXOffset: "0",
-                        labelYOffset: "2",
+                        labelYOffset: labelYOffset,
                         fillOpacity: 1,
                         label: waarde,
                         labelSelect: true,   // IMPORTANT, else not clickable in IE !!
