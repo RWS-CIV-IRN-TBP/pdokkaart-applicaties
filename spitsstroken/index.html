@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayersPdokKaartExtenders.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-api.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
+<script type="text/javascript" src="../rws.js"></script>
+<script type="text/javascript">
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
+
+var config_547={
+    "mapdiv":"map_547",
+    "zoom":8,
+    "showlayerswitcher":true,
+    "showzoom":true,
+    "shownavigation":true,
+    "showscaleline":true,
+    "showmouseposition":true,
+    "geocoder":{},
+    "loc":"125748.98282711, 482006.02903004",
+    "baselayers":[{"id":"BRT","visible":true}],
+    "overlays":[{"id":null,"visible":true}],
+    "wmsurl":"http://geoservices.rijkswaterstaat.nl/weggeg?",
+    "wmslayers":"AAA78",
+    "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+    "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"
+};
+
+var api_547;
+Pdok.ready(
+    function(){ api_547 = new Pdok.Api(config_547); }
+);
+
+</script>
+
+<div id="map_547" class="olMap fullscreen"></div>
+
+
+</body>
+</html>
