@@ -26,16 +26,32 @@ var config_547={
     "geocoder":{},
     "loc":"125748.98282711, 482006.02903004",
     "baselayers":[{"id":"BRT","visible":true}],
-    "overlays":[{"id":null,"visible":true}],
-    "wmsurl":"http://geoservices.rijkswaterstaat.nl/weggeg?",
-    "wmslayers":"AAA78",
     "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
     "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"
 };
 
 var api_547;
 Pdok.ready(
-    function(){ api_547 = new Pdok.Api(config_547); }
+    function(){
+        api_547 = new Pdok.Api(config_547);
+        api_547.map.removeLayer( api_547.map.getLayersByName("Markers")[0] );
+        var spitsstroken = api_547.createWMSLayer(
+        {
+            name: 'Spitsstroken',
+            url: 'http://geoservices.rijkswaterstaat.nl/weggeg',
+            layers: 'AAA78',
+            transparent:true,
+            singleTile: false,
+            //wmsinfoformat: 'application/vnd.ogc.gml'
+            wmsinfoformat: 'text/plain'
+        })
+        // create sld parameter url
+        var sldurl = window.location.protocol+'//'+window.location.host+window.location.pathname+'spits.xml';
+        //console.log(sldurl); sldurl = 'http://duif.net/spits.xml';
+        spitsstroken.mergeNewParams({sld:sldurl})
+
+        api_547.map.addLayer(spitsstroken);
+    }
 );
 
 </script>
