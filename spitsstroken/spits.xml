@@ -1,0 +1,27 @@
+<StyledLayerDescriptor version="1.0.0">
+<NamedLayer>
+<Name>AAA78</Name>
+<UserStyle>
+<Title>xxx</Title>
+<FeatureTypeStyle>
+<Rule>
+<ogc:Filter>
+<ogc:PropertyIsEqualTo>
+    <ogc:PropertyName>OMSCHR</ogc:PropertyName>
+    <ogc:Literal>Spitsstrook</ogc:Literal>
+</ogc:PropertyIsEqualTo>
+</ogc:Filter>
+<LineSymbolizer>
+<Geometry>
+<PropertyName>center-line</PropertyName>
+</Geometry>
+<Stroke>
+<CssParameter name="stroke">#ff0000</CssParameter>
+<CssParameter name="stroke-width">6</CssParameter>
+</Stroke>
+</LineSymbolizer>
+</Rule>
+</FeatureTypeStyle>
+</UserStyle>
+</NamedLayer>
+</StyledLayerDescriptor>
