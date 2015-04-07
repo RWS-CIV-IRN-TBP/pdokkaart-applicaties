@@ -1,9 +1,14 @@
-# rws
+# Pdokkaart applicaties
 
-Dit zijn een aantal 'apps' op basis van een zelfgehoste PdokKaart applicatie.
+Deze repository bevat diverse applicaties op basis van de Pdokkaart. Deze applicaties vervangen de geotool applicaties die momenteel in de website verwerkt zijn. De applicaties zijn responsive en worden ontsloten via de nieuwe rijkswaterstaat.nl website.
 
-Let op: in elke index.html wordt verwezen naar een 'pdokserver' als api server,
-deze moet worden vervangend door een werkende api url.
-(simple shell scriptje pdok2server werkt onder linux)
+# Afhankelijkheden
+* pdokkaart
+* webserver
+* proxy script
+
+
+# Tips
+In elke index.html wordt verwezen naar een 'pdokserver' als api server, deze moet worden vervangend door een werkende api url. Hiervoor kan het script pdok2server worden gebruikt. (werkt onder linux op met behulp van sed)
 
 
