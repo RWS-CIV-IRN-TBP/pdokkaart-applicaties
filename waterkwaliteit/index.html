@@ -69,7 +69,7 @@ Pdok.ready(
                 url: wms,
                 layers: 'leefgebied',
                 transparent:true,
-                singleTile: true,
+                singleTile: false,
                 visibility: true
             });
         var water = api_762.createWMSLayer(
@@ -78,7 +78,7 @@ Pdok.ready(
                 url: wms,
                 layers: 'Water',
                 transparent:true,
-                singleTile: true,
+                singleTile: false,
                 visibility: true
             });
         var vis = api_762.createWMSLayer(
@@ -87,7 +87,7 @@ Pdok.ready(
                 url: wms,
                 layers: 'vis',
                 transparent:true,
-                singleTile: true,
+                singleTile: false,
                 visibility: true
             });
         // add to map
