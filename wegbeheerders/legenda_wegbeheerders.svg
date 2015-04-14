@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="250"
+   height="200"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="legenda_wegbeheerders.svg"
+   inkscape:export-filename="/var/www/rws/wegbeheerders/legenda_wegbeheerders.png"
+   inkscape:export-xdpi="100"
+   inkscape:export-ydpi="100">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="80.584473"
+     inkscape:cy="-29.506396"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1279"
+     inkscape:window-height="1401"
+     inkscape:window-x="2646"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-852.36218)">
+    <g
+       id="g3901"
+       transform="translate(-1.2058365,46.424707)">
+      <g
+         id="g3802">
+        <rect
+           style="fill:#fda4a8;fill-opacity:1;stroke:#e2162f;stroke-width:0.89370525;stroke-miterlimit:4;stroke-opacity:0.94117647;stroke-dasharray:none"
+           id="rect2985"
+           width="45.214344"
+           height="7.697473"
+           x="-222.60287"
+           y="789.52594"
+           transform="matrix(0.94918772,-0.31471046,0.28494898,0.95854269,0,0)"
+           ry="0" />
+        <text
+           xml:space="preserve"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+           x="69.065071"
+           y="825.88214"
+           id="text2987"
+           sodipodi:linespacing="125%"><tspan
+             sodipodi:role="line"
+             id="tspan2989"
+             x="69.065071"
+             y="825.88214"
+             style="font-size:12px">Rijkswegen</tspan></text>
+      </g>
+      <g
+         inkscape:transform-center-y="-40.92745"
+         inkscape:transform-center-x="21.31638"
+         id="g3802-5"
+         transform="translate(0,40.804975)">
+        <rect
+           style="fill:#fce1cf;fill-opacity:0.94117647;stroke:#f4944a;stroke-width:0.89370525;stroke-miterlimit:4;stroke-opacity:0.94117647;stroke-dasharray:none"
+           id="rect2985-6"
+           width="45.214344"
+           height="7.697473"
+           x="-222.60287"
+           y="789.52594"
+           transform="matrix(0.94918772,-0.31471046,0.28494898,0.95854269,0,0)"
+           ry="0" />
+        <text
+           xml:space="preserve"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+           x="69.065071"
+           y="825.88214"
+           id="text2987-3"
+           sodipodi:linespacing="125%"><tspan
+             sodipodi:role="line"
+             id="tspan2989-6"
+             x="69.065071"
+             y="825.88214"
+             style="font-size:12px">Provinciaal beheer</tspan></text>
+      </g>
+      <g
+         inkscape:transform-center-y="-40.92745"
+         inkscape:transform-center-x="21.31638"
+         id="g3802-5-3"
+         transform="translate(0,81.609936)">
+        <rect
+           style="fill:#b1e9b8;fill-opacity:0.94117647;stroke:#49ab6e;stroke-width:0.89370525;stroke-miterlimit:4;stroke-opacity:0.94117647;stroke-dasharray:none"
+           id="rect2985-6-4"
+           width="45.214344"
+           height="7.697473"
+           x="-222.60287"
+           y="789.52594"
+           transform="matrix(0.94918772,-0.31471046,0.28494898,0.95854269,0,0)"
+           ry="0" />
+        <text
+           xml:space="preserve"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+           x="69.065071"
+           y="825.88214"
+           id="text2987-3-9"
+           sodipodi:linespacing="125%"><tspan
+             sodipodi:role="line"
+             id="tspan2989-6-8"
+             x="69.065071"
+             y="825.88214"
+             style="font-size:12px">Gemeentelijk beheer</tspan></text>
+      </g>
+      <g
+         inkscape:transform-center-y="-40.92745"
+         inkscape:transform-center-x="21.31638"
+         id="g3802-5-3-2"
+         transform="translate(0,163.21985)">
+        <rect
+           style="fill:#d2d2d2;fill-opacity:0.94117647;stroke:#575757;stroke-width:0.89370525;stroke-miterlimit:4;stroke-opacity:0.94117647;stroke-dasharray:none"
+           id="rect2985-6-4-9"
+           width="45.214344"
+           height="7.697473"
+           x="-222.60287"
+           y="789.52594"
+           transform="matrix(0.94918772,-0.31471046,0.28494898,0.95854269,0,0)"
+           ry="0" />
+        <text
+           xml:space="preserve"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+           x="69.065071"
+           y="825.88214"
+           id="text2987-3-9-2"
+           sodipodi:linespacing="125%"><tspan
+             sodipodi:role="line"
+             id="tspan2989-6-8-3"
+             x="69.065071"
+             y="825.88214"
+             style="font-size:12px">Overig beheer</tspan></text>
+      </g>
+      <g
+         inkscape:transform-center-y="-40.92745"
+         inkscape:transform-center-x="21.31638"
+         id="g3802-5-3-0"
+         transform="translate(0,122.41489)">
+        <rect
+           style="fill:#d3cff2;fill-opacity:0.94117647;stroke:#9184ee;stroke-width:0.89370525;stroke-miterlimit:4;stroke-opacity:0.94117647;stroke-dasharray:none"
+           id="rect2985-6-4-8"
+           width="45.214344"
+           height="7.697473"
+           x="-222.60287"
+           y="789.52594"
+           transform="matrix(0.94918772,-0.31471046,0.28494898,0.95854269,0,0)"
+           ry="0" />
+        <text
+           xml:space="preserve"
+           style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+           x="69.065071"
+           y="825.88214"
+           id="text2987-3-9-4"
+           sodipodi:linespacing="125%"><tspan
+             sodipodi:role="line"
+             id="tspan2989-6-8-7"
+             x="69.065071"
+             y="825.88214"
+             style="font-size:12px">Beheer waterschappen</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>

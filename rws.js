@@ -395,3 +395,22 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
     popup.feature = feature;
     this.map.addPopup(popup, true);
 };
+
+/**
+ * VERY simple legend: just one image
+ *
+ * @param map map to attach legend to
+ * @param url url of image
+ */
+Geotool.legend = function(map, url){
+    var legend = document.createElement('div');
+    legend.setAttribute('id', 'legend');
+    var legend_head = document.createElement('div');
+    legend_head.setAttribute('id', 'legend_head');
+    legend_head.innerHTML = 'Legenda';
+    var legend_img = document.createElement('img');
+    legend_img.setAttribute('src', url);
+    legend.appendChild(legend_head);
+    legend.appendChild(legend_img);
+    map.div.appendChild(legend);
+}
