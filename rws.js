@@ -4,6 +4,8 @@
  */
 var Geotool = Geotool || {};
 
+Geotool.version = '1.1.1'
+
 Geotool.Calendar = {
 
     monthNames: [ "januari",
