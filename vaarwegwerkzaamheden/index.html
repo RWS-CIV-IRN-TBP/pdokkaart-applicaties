@@ -43,7 +43,6 @@ Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
 Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
 var config_780={
     "mapdiv":"map_780",
-    "showlayerswitcher":false,
     "showzoom":true,
     "shownavigation":true,
     "showscaleline":true,
@@ -51,7 +50,8 @@ var config_780={
     "geocoder":"{}",
     "zoom":4,
     "loc":"122650.88, 487337.6",
-    "baselayers":[{"id":"BRT","visible":true}],
+    "showlayerswitcher":true,
+    "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
     "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
     "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
 var api780;
