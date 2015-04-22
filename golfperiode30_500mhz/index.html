@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width" name="viewport"/>
 <meta charset="utf-8"/>
 </head>
+
 <body>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
@@ -15,38 +17,40 @@
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
 <script type="text/javascript" src="../rws.js"></script>
 <script type="text/javascript">
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
-Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
-var config_703={
-    "mapdiv":"map_703",
-    "zoom":4,
-    "showzoom":true,
-    "shownavigation":true,
-    "showscaleline":true,
-    "showmouseposition":true,
-    "geocoder":{},
-    "loc":"122650.88, 487337.6",
-    "showlayerswitcher":true,
-    "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-    "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-    "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
-var api_703;
-Pdok.ready( 
-function(){ 
-    api_703 = new Pdok.Api(config_703);
 
-    Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+    Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
+    var config_703={
+        "mapdiv":"map_703",
+        "zoom":4,
+        "showzoom":true,
+        "shownavigation":true,
+        "showscaleline":true,
+        "showmouseposition":true,
+        "geocoder":{},
+        "loc":"122650.88, 487337.6",
+        "showlayerswitcher":true,
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
+        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+    var api_703;
+    Pdok.ready(
+        function(){
+            api_703 = new Pdok.Api(config_703, Geotool.ready);
 
-    // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=golfgegevens&center=140377%2C475043&mapscale=3072000&legend=1&height=530&width=670&cookieload=true
+            Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
-    // golfgegevens meetpunten url
-    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=golfgegevens&loadprojects=0";
+            // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=golfgegevens&center=140377%2C475043&mapscale=3072000&legend=1&height=530&width=670&cookieload=true
 
-    var icons =[{},{},{},{},{},Geotool.icons.label_5]; // only iconnr/category 5 !
-    var params = [ {key:'Tm02',name:'Golfperiode 30-500mHz',units:'s'}];
-    Geotool.getWaterData(data_uri, api_703.featuresLayer, 'golfgegevens', [5], icons, params);
-} );
+            // golfgegevens meetpunten url
+            var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=golfgegevens&loadprojects=0";
+
+            var icons =[{},{},{},{},{},Geotool.icons.label_5]; // only iconnr/category 5 !
+            var params = [ {key:'Tm02',name:'Golfperiode 30-500mHz',units:'s'}];
+            Geotool.getWaterData(data_uri, api_703.featuresLayer, 'golfgegevens', [5], icons, params);
+        }
+    );
 </script>
 
 <div id="map_703" class="olMap fullscreen"></div>

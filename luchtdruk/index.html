@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width" name="viewport"/>
 <meta charset="utf-8"/>
 </head>
+
 <body>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
@@ -15,40 +17,41 @@
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
 <script type="text/javascript" src="../rws.js"></script>
 <script type="text/javascript">
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
-Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+    Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
 
-var config_272={
-    "mapdiv":"map_272",
-    "zoom":4,
-    "showzoom":true,
-    "shownavigation":true,
-    "showscaleline":true,
-    "showmouseposition":true,
-    "geocoder":{},
-    "loc":"122650.88, 487337.6",
-    "showlayerswitcher":true,
-    "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-    "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-    "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
-var api_272;
-Pdok.ready( 
-function(){ 
-    api_272 = new Pdok.Api(config_272);
+    var config_272={
+        "mapdiv":"map_272",
+        "zoom":4,
+        "showzoom":true,
+        "shownavigation":true,
+        "showscaleline":true,
+        "showmouseposition":true,
+        "geocoder":{},
+        "loc":"122650.88, 487337.6",
+        "showlayerswitcher":true,
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
+        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+    var api_272;
+    Pdok.ready(
+        function(){
+            api_272 = new Pdok.Api(config_272, Geotool.ready);
 
-    Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
+            Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
-    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=luchtgegevens&loadprojects=1";
+            var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=luchtgegevens&loadprojects=1";
 
-    // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=luchtgegevens&center=140377%2C475043&mapscale=3072000&legend=1&height=530&width=670&cookieload=true
+            // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=luchtgegevens&center=140377%2C475043&mapscale=3072000&legend=1&height=530&width=670&cookieload=true
 
-    // 2 = luchttemperatuur
-    var icons = [{},{},Geotool.icons.label_5,{},{}] // only iconnr 2 used
-    var params = [ {key:'PQFF10',name:'Luchtdruk',units:'hPa'}];
-    Geotool.getWaterData(data_uri, api_272.featuresLayer, 'luchtgegevens', [2], icons, params);
+            // 2 = luchttemperatuur
+            var icons = [{},{},Geotool.icons.label_5,{},{}] // only iconnr 2 used
+            var params = [ {key:'PQFF10',name:'Luchtdruk',units:'hPa'}];
+            Geotool.getWaterData(data_uri, api_272.featuresLayer, 'luchtgegevens', [2], icons, params);
 
-} );
+        }
+    );
 </script>
 
 <div id="map_272" class="olMap fullscreen"></div>

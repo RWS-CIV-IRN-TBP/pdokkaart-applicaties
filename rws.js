@@ -416,3 +416,23 @@ Geotool.legend = function(map, url){
     legend.appendChild(legend_img);
     map.div.appendChild(legend);
 }
+
+/**
+ * generic Geotool ready function, called after Pdok.ready is finished (as callback)
+ * to be used for some general rws functions, like renaming layers, etc
+ */
+Geotool.ready = function(api) {
+
+    // add rws permalink
+    var permalinkControl = new OpenLayers.Control.Permalink();
+    api.map.addControl(permalinkControl);
+    permalinkControl.element.innerHTML='<img src="../img/permalink.gif">';
+
+    // change pdok names to rws names
+    if (api.map.getLayersByName("BRT Achtergrondkaart (WMTS)").length>0) {
+        api.map.getLayersByName("BRT Achtergrondkaart (WMTS)")[0].setName("Kaartweergave");
+    }
+    if(api.map.getLayersByName("PDOK achtergrond luchtfoto\'s (WMTS)").length>0){
+        api.map.getLayersByName("PDOK achtergrond luchtfoto\'s (WMTS)")[0].setName("Luchtfoto");
+    }
+}

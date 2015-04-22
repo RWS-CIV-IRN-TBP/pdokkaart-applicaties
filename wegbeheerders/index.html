@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width" name="viewport"/>
 <meta charset="utf-8"/>
 </head>
+
 <body>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
@@ -13,225 +15,221 @@
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
-<style>
-
-.wegbeheerder {
-    padding: 2px;
-}
-
-.wegbeheerder_R {
-  background: #FF8D95; /*#de0707;*/
-}
-.wegbeheerder_W {
-  background: #CBC9EE; /*#5e53c7;*/
-}
-.wegbeheerder_P {
-  background: #FFE2CE; /*#f06804;*/
-}
-.wegbeheerder_G {
-  background: #A4E5AB; /*#1aa931;*/
-}
-.wegbeheerder_T {
-    background: #D0D0CE; /*#282828;*/
-}
-
-</style>
 <script type="text/javascript" src="../rws.js"></script>
 <script type="text/javascript">
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
-Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
-var config_762={
-    "mapdiv":"map_762",
-    "showlayerswitcher":false,
-    "showzoom":true,
-    "shownavigation":true,
-    "showscaleline":true,
-    "showmouseposition":true,
-    "zoom":4,
-    "loc":"122650.88, 487337.6",
-    "baselayers":[{"id":"BRT","visible":true}],
-    "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-    "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
-var api_762;
 
-var Geotool = Geotool || {};
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+    Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
 
-/**
- * Method: selectWMSLayer
- * Callback for the zoomend event of the Map, that will select the correct
- * WMS layer for getFeatureInfo requests. The idea is to query only
- * the roads that are visible in the underlying tilecache. E.g. when
- * zoomed out, only rijkswegen are visible.
- */
-Geotool.selectWMSLayer = function() {
-    var zoom = api_762.map.getZoom();
-    var layer = api_762.wmsLayer;
-    if (zoom < 5) {
-        layer = api_762.wmsLayer_R;
-    } else if (zoom < 8) {
-        layer = api_762.wmsLayer_PR;
-    }
-    // Set the map property (without adding the layer to the map), because
-    // that is needed to know the projection in the WMS URL.
-    layer.setMap(api_762.map);
-    api_762.map.activeLayer = layer;
-}
-
-Geotool.formatMarkerDescription = function(attrs, streetName) {
-    var html = "<div class='olPopupContentDescription'>";
-    if (attrs.BEGINKM && attrs.BEGINKM != "0" && attrs.EINDKM != "0") {
-        html += "<p>Hectometer: <span class='wb_tekst1'>" + (Math.round(attrs.BEGINKM * 10) / 10)
-                + " - " + (Math.round(attrs.EINDKM * 10) / 10);
-        if (attrs.RPE_CODE) {
-            html += " ("
-                + (attrs.RPE_CODE == "R" ? "Re" : (attrs.RPE_CODE == "L" ? "Li" : ""))
-                + ")";
+    var Geotool = Geotool || {};
+    /**
+     * Method: selectWMSLayer
+     * Callback for the zoomend event of the Map, that will select the correct
+     * WMS layer for getFeatureInfo requests. The idea is to query only
+     * the roads that are visible in the underlying tilecache. E.g. when
+     * zoomed out, only rijkswegen are visible.
+     */
+    Geotool.selectWMSLayer = function() {
+        var zoom = api_762.map.getZoom();
+        var layer = api_762.wmsLayer;
+        if (zoom < 5) {
+            layer = api_762.wmsLayer_R;
+        } else if (zoom < 8) {
+            layer = api_762.wmsLayer_PR;
         }
-        html += "</span></p>";
+        // Set the map property (without adding the layer to the map), because
+        // that is needed to know the projection in the WMS URL.
+        layer.setMap(api_762.map);
+        api_762.map.activeLayer = layer;
     }
-    if (attrs.TELNO1 || (attrs.CONTACTPERSOON1 && attrs.CONTACTPERSOON1.indexOf("@") > 0) || attrs.LINK1) {
-        html += "<p><span class='wb_tekst1'>Neem contact met ons op ...</span><br>"
-            +"voor al uw vragen, mededelingen of klachten.</p>";
-    }
-    html += "<table border='0' cellpadding='0' cellspacing='0'>";
-    if (attrs.TELNO1) {
-        html += "<tr><td>Bel:</td><td class='wb_tekst2'>" + attrs.TELNO1 + "</td></tr>";
-    }
-    if (attrs.CONTACTPERSOON1) {
-        if (attrs.CONTACTPERSOON1.indexOf("@") > 0) {
-            html += "<tr><td>Mail:</td><td class='wb_tekst2'><a href='mailto:" + attrs.CONTACTPERSOON1 + "'>" + attrs.CONTACTPERSOON1 + "</a></td></tr>";
-        } else {
-            html += "<tr><td>Contactpersoon:</td><td class='wb_tekst2'>" + attrs.CONTACTPERSOON1 + "</td></tr>";
+
+    Geotool.formatMarkerDescription = function(attrs, streetName) {
+        var html = "<div class='olPopupContentDescription'>";
+        if (attrs.BEGINKM && attrs.BEGINKM != "0" && attrs.EINDKM != "0") {
+            html += "<p>Hectometer: <span class='wb_tekst1'>" + (Math.round(attrs.BEGINKM * 10) / 10)
+                    + " - " + (Math.round(attrs.EINDKM * 10) / 10);
+            if (attrs.RPE_CODE) {
+                html += " ("
+                    + (attrs.RPE_CODE == "R" ? "Re" : (attrs.RPE_CODE == "L" ? "Li" : ""))
+                    + ")";
+            }
+            html += "</span></p>";
         }
+        if (attrs.TELNO1 || (attrs.CONTACTPERSOON1 && attrs.CONTACTPERSOON1.indexOf("@") > 0) || attrs.LINK1) {
+            html += "<p><span class='wb_tekst1'>Neem contact met ons op ...</span><br>"
+                +"voor al uw vragen, mededelingen of klachten.</p>";
+        }
+        html += "<table border='0' cellpadding='0' cellspacing='0'>";
+        if (attrs.TELNO1) {
+            html += "<tr><td>Bel:</td><td class='wb_tekst2'>" + attrs.TELNO1 + "</td></tr>";
+        }
+        if (attrs.CONTACTPERSOON1) {
+            if (attrs.CONTACTPERSOON1.indexOf("@") > 0) {
+                html += "<tr><td>Mail:</td><td class='wb_tekst2'><a href='mailto:" + attrs.CONTACTPERSOON1 + "'>" + attrs.CONTACTPERSOON1 + "</a></td></tr>";
+            } else {
+                html += "<tr><td>Contactpersoon:</td><td class='wb_tekst2'>" + attrs.CONTACTPERSOON1 + "</td></tr>";
+            }
+        }
+        if (attrs.LINK1) {
+            html += "<tr><td>Bekijk:</td><td class='wb_tekst2'><a target='_blank' href='" + attrs.LINK1 + "'>" + attrs.LINK1 + "</a></td></tr>";
+        }
+        html += "</table>";
+        if (attrs.DISKFOTO) {
+            var title = 'Foto omgeving van ' + streetName + ', ' + attrs.GME_NAAM;
+            // HTML in title is not allowed. Remove it.
+            title = title.replace(/<[bB][rR]\/?>/, '\n');
+            title = title.replace(/<[^>]*>/, ' ');
+            title = title.replace(/"/, '&quot;');
+            html += '<img class="kustwerkfoto" src="http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/fotos/kunstwerken/' + attrs.DISKFOTO + '" border="0" title="' + title + '">';
+        }
+        html += "</div>";
+        return html;
     }
-    if (attrs.LINK1) {
-        html += "<tr><td>Bekijk:</td><td class='wb_tekst2'><a target='_blank' href='" + attrs.LINK1 + "'>" + attrs.LINK1 + "</a></td></tr>";
-    }
-    html += "</table>";
-    if (attrs.DISKFOTO) {
-        var title = 'Foto omgeving van ' + streetName + ', ' + attrs.GME_NAAM;
-        // HTML in title is not allowed. Remove it.
-        title = title.replace(/<[bB][rR]\/?>/, '\n');
-        title = title.replace(/<[^>]*>/, ' ');
-        title = title.replace(/"/, '&quot;');
-        html += '<img class="kustwerkfoto" src="http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/fotos/kunstwerken/' + attrs.DISKFOTO + '" border="0" title="' + title + '">';
-    }
-    html += "</div>";
-    return html;
-}
 
-Pdok.ready(
-    function(){
-        api_762 = new Pdok.Api(config_762);
+    var config_762={
+        "mapdiv":"map_762",
+        "showlayerswitcher":false,
+        "showzoom":true,
+        "shownavigation":true,
+        "showscaleline":true,
+        "showmouseposition":true,
+        "zoom":4,
+        "loc":"122650.88, 487337.6",
+        "baselayers":[{"id":"BRT","visible":true}],
+        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+    var api_762;
+    Pdok.ready(
+        function(){
+            api_762 = new Pdok.Api(config_762, Geotool.ready);
 
-        var tilecache_files_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/tilecache/';
-        var attribution = '<span style="color:black">&copy; &nbsp; <a href="http://creativecommons.org/licenses/by-sa/2.0/" title="Creative Commons Attribution-ShareAlike 2.0">OpenStreetMap</a></span>';
-        var layer = new OpenLayers.Layer.TileCache( 'RWS Kaart', tilecache_files_url, 'wegbeheerders_topo2',
-          {
-            'format':'image/jpeg',
-            'buffer': 0,
-            isBaseLayer: true,
-            'projection': 'EPSG:28992', 'units':'m', 'attribution': attribution,
-            serverResolutions: [1720.32, 860.16, 430.08, 215.04, 107.52, 53.76, 26.88, 13.44, 6.72, 3.36, 1.68]
-          } );
-        api_762.map.addLayer(layer);
-        api_762.map.setBaseLayer(layer);
+            var tilecache_files_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/tilecache/';
+            var attribution = '<span style="color:black">&copy; &nbsp; <a href="http://creativecommons.org/licenses/by-sa/2.0/" title="Creative Commons Attribution-ShareAlike 2.0">OpenStreetMap</a></span>';
+            var layer = new OpenLayers.Layer.TileCache( 'RWS Kaart', tilecache_files_url, 'wegbeheerders_topo2',
+              {
+                'format':'image/jpeg',
+                'buffer': 0,
+                isBaseLayer: true,
+                'projection': 'EPSG:28992', 'units':'m', 'attribution': attribution,
+                serverResolutions: [1720.32, 860.16, 430.08, 215.04, 107.52, 53.76, 26.88, 13.44, 6.72, 3.36, 1.68]
+              } );
+            api_762.map.addLayer(layer);
+            api_762.map.setBaseLayer(layer);
 
-        // make wmslayers for different zoomlevels
-        api_762.wmsLayer = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo', 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo', 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
-        api_762.wmsLayer_PR = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo_PR', 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo' + "_PR", 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
-        api_762.wmsLayer_R = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo_R', 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo' + "_R", 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
-        // as we are on NL zoomlevel, we set the active info layer to R (Rijkswegen only)
-        api_762.map.activeLayer = api_762.wmsLayer_R;
-        // Make sure it is never visible, so it is not drawn. It is only needed
-        // for the getFeatureInfo control to know which WMS to query.
-        // For this reason, the wmsLayer is also not added to the group or map,
-        // because it would be made visible when the group is made visible.
-        api_762.wmsLayer.setVisibility(false);
-        api_762.wmsLayer_PR.setVisibility(false);
-        api_762.wmsLayer_R.setVisibility(false);
-        // setting default style so selected features are highlighted yellow:
-        api_762.featuresLayer.style =
-            OpenLayers.Util.extend(OpenLayers.Feature.Vector.style['default'],
-            {
-                strokeWidth:'5',
-                strokeColor:'#ffff00',
-                pointRadius:'3'
-            });
+            // make wmslayers for different zoomlevels
+            api_762.wmsLayer = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo', 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo', 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
+            api_762.wmsLayer_PR = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo_PR', 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo' + "_PR", 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
+            api_762.wmsLayer_R = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo_R', 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo' + "_R", 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
+            // as we are on NL zoomlevel, we set the active info layer to R (Rijkswegen only)
+            api_762.map.activeLayer = api_762.wmsLayer_R;
+            // Make sure it is never visible, so it is not drawn. It is only needed
+            // for the getFeatureInfo control to know which WMS to query.
+            // For this reason, the wmsLayer is also not added to the group or map,
+            // because it would be made visible when the group is made visible.
+            api_762.wmsLayer.setVisibility(false);
+            api_762.wmsLayer_PR.setVisibility(false);
+            api_762.wmsLayer_R.setVisibility(false);
+            // setting default style so selected features are highlighted yellow:
+            api_762.featuresLayer.style =
+                OpenLayers.Util.extend(OpenLayers.Feature.Vector.style['default'],
+                {
+                    strokeWidth:'5',
+                    strokeColor:'#ffff00',
+                    pointRadius:'3'
+                });
 
-        api_762.map.events.on({ 'zoomend': Geotool.selectWMSLayer });
+            api_762.map.events.on({ 'zoomend': Geotool.selectWMSLayer });
 
-        var info = new OpenLayers.Control.WMSGetFeatureInfo({
-            url: 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/wegbeheerders',
-            title: 'Klik voor info over wegbeheerder',
-            queryVisible: false,
-            // hover: true, // no hovering for now...
-            layers: [api_762.map.activeLayer],
-            infoFormat: 'application/vnd.ogc.gml',
-            eventListeners: {
-                beforegetfeatureinfo: function() {
-                    api_762.featuresLayer.removeAllFeatures();
-                    this.layers = [api_762.map.activeLayer];
-                },
-                getfeatureinfo: function(event) {
-                    if (event.features[0]) {
+            var info = new OpenLayers.Control.WMSGetFeatureInfo({
+                url: 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/wegbeheerders',
+                title: 'Klik voor info over wegbeheerder',
+                queryVisible: false,
+                // hover: true, // no hovering for now...
+                layers: [api_762.map.activeLayer],
+                infoFormat: 'application/vnd.ogc.gml',
+                eventListeners: {
+                    beforegetfeatureinfo: function() {
+                        api_762.featuresLayer.removeAllFeatures();
+                        this.layers = [api_762.map.activeLayer];
+                    },
+                    getfeatureinfo: function(event) {
+                        if (event.features[0]) {
 
-                        var feature = event.features[0];
-                        var attrs = feature.attributes;
-                        // als geen rijksweg en zoom < 2: klaar
-                        if (attrs.WEGBEHSRT != "R" && api_762.map.getZoom() < 3){
-                            // Do not add feature
-                            return false;
+                            var feature = event.features[0];
+                            var attrs = feature.attributes;
+                            // als geen rijksweg en zoom < 2: klaar
+                            if (attrs.WEGBEHSRT != "R" && api_762.map.getZoom() < 3){
+                                // Do not add feature
+                                return false;
+                            }
+                            else if ((attrs.WEGBEHSRT != "R" &&  attrs.WEGBEHSRT != "P") && api_762.map.getZoom() < 6){
+                                // als geen rijksweg of provincieweg en zoom  < 6: klaar
+                                // Do not add feature
+                                return false;
+                            }
+
+                            // anders tonen
+                            var streetName = attrs.STT_NAAM;
+                            streetName = streetName.replace(/ryksweg/i, "Rijksweg");
+                            streetName = streetName.replace(/rykswg/i, "Rijksweg");
+                            streetName = streetName.replace(/ryksw$/i, "Rijksweg");
+                            streetName = streetName.replace(/rijksweg/i, "Rijksweg");
+                            streetName = streetName.replace(/rijkswg/i, "Rijksweg");
+                            streetName = streetName.replace(/rijksw$/i, "Rijksweg");
+                            streetName = streetName.replace(/rijksw /i, "Rijksweg ");
+                            if ((attrs.WEGBEHSRT == "R" || attrs.WEGBEHSRT == "P") && attrs.ROUTENAAM) {
+                                streetName = streetName.replace(/-?[an][0-9]+/i, "");
+                                streetName = attrs.ROUTENAAM + " " + streetName;
+                            }
+                            var wegbeheerder = (attrs.NAAMLANG ? attrs.NAAMLANG : attrs.BHRNAAM);
+                            var maxsnelheid = (attrs.MAXSNELHEID ? attrs.MAXSNELHEID : "");
+                            var html = "<div class='wegbeheerder wegbeheerder_" + attrs.WEGBEHSRT + "'>"
+                                    + "<div class='olPopupContentTitle'>"
+                                 //   + "<p class='wb_maxsnelheid'>" + maxsnelheid + "</p>"
+                                    + "<p class='title'>" + streetName + "</p>"
+                                    + "<p class='subtitle'>" + wegbeheerder + "</p></div>";
+
+                            feature.attributes['name'] = '<div class="wegbeheerder wegbeheerder_' + attrs.WEGBEHSRT+'"><b>'+streetName+'</b><br/>'+wegbeheerder+'</div>';
+                            //feature.attributes['description'] = html;
+                            feature.attributes['description'] = Geotool.formatMarkerDescription(attrs, streetName);
+                            api_762.featuresLayer.addFeatures(feature);
+                            api_762.selectControl.select(feature);
+
                         }
-                        else if ((attrs.WEGBEHSRT != "R" &&  attrs.WEGBEHSRT != "P") && api_762.map.getZoom() < 6){
-                            // als geen rijksweg of provincieweg en zoom  < 6: klaar
-                            // Do not add feature
-                            return false;
-                        }
-
-                        // anders tonen
-                        var streetName = attrs.STT_NAAM;
-                        streetName = streetName.replace(/ryksweg/i, "Rijksweg");
-                        streetName = streetName.replace(/rykswg/i, "Rijksweg");
-                        streetName = streetName.replace(/ryksw$/i, "Rijksweg");
-                        streetName = streetName.replace(/rijksweg/i, "Rijksweg");
-                        streetName = streetName.replace(/rijkswg/i, "Rijksweg");
-                        streetName = streetName.replace(/rijksw$/i, "Rijksweg");
-                        streetName = streetName.replace(/rijksw /i, "Rijksweg ");
-                        if ((attrs.WEGBEHSRT == "R" || attrs.WEGBEHSRT == "P") && attrs.ROUTENAAM) {
-                            streetName = streetName.replace(/-?[an][0-9]+/i, "");
-                            streetName = attrs.ROUTENAAM + " " + streetName;
-                        }
-                        var wegbeheerder = (attrs.NAAMLANG ? attrs.NAAMLANG : attrs.BHRNAAM);
-                        var maxsnelheid = (attrs.MAXSNELHEID ? attrs.MAXSNELHEID : "");
-                        var html = "<div class='wegbeheerder wegbeheerder_" + attrs.WEGBEHSRT + "'>"
-                                + "<div class='olPopupContentTitle'>"
-                             //   + "<p class='wb_maxsnelheid'>" + maxsnelheid + "</p>"
-                                + "<p class='title'>" + streetName + "</p>"
-                                + "<p class='subtitle'>" + wegbeheerder + "</p></div>";
-
-                        feature.attributes['name'] = '<div class="wegbeheerder wegbeheerder_' + attrs.WEGBEHSRT+'"><b>'+streetName+'</b><br/>'+wegbeheerder+'</div>';
-                        //feature.attributes['description'] = html;
-                        feature.attributes['description'] = Geotool.formatMarkerDescription(attrs, streetName);
-                        api_762.featuresLayer.addFeatures(feature);
-                        api_762.selectControl.select(feature);
-
                     }
                 }
-            }
-        });
+            });
 
-        api_762.map.addControl(info);
-        info.activate();
+            api_762.map.addControl(info);
+            info.activate();
 
-        // add legend
-        Geotool.legend(api_762.map, 'legenda_wegbeheerders.png')
+            // add legend
+            Geotool.legend(api_762.map, 'legenda_wegbeheerders.png')
 
-    }
-
-);
+        }
+    );
 </script>
+<style>
+    .wegbeheerder {
+        padding: 2px;
+    }
+    .wegbeheerder_R {
+      background: #FF8D95; /*#de0707;*/
+    }
+    .wegbeheerder_W {
+      background: #CBC9EE; /*#5e53c7;*/
+    }
+    .wegbeheerder_P {
+      background: #FFE2CE; /*#f06804;*/
+    }
+    .wegbeheerder_G {
+      background: #A4E5AB; /*#1aa931;*/
+    }
+    .wegbeheerder_T {
+        background: #D0D0CE; /*#282828;*/
+    }
+</style>
 <div id="map_762" class="olMap fullscreen"></div>
 </body>
 </html>

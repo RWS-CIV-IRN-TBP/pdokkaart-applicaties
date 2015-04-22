@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width" name="viewport"/>
 <meta charset="utf-8"/>
 </head>
+
 <body>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
@@ -15,49 +17,48 @@
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
 <script type="text/javascript" src="../rws.js"></script>
 <script type="text/javascript">
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
-Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+    Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
 
-var config_547={
-    "mapdiv":"map_547",
-    "zoom":8,
-    "showzoom":true,
-    "shownavigation":true,
-    "showscaleline":true,
-    "showmouseposition":true,
-    "geocoder":{},
-    "loc":"125748.98282711, 482006.02903004",
-    "showlayerswitcher":true,
-    "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-    "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-    "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"
-};
+    var config_547={
+        "mapdiv":"map_547",
+        "zoom":8,
+        "showzoom":true,
+        "shownavigation":true,
+        "showscaleline":true,
+        "showmouseposition":true,
+        "geocoder":{},
+        "loc":"125748.98282711, 482006.02903004",
+        "showlayerswitcher":true,
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
+        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"
+    };
 
-var api_547;
-Pdok.ready(
-    function(){
-        api_547 = new Pdok.Api(config_547);
-        api_547.map.removeLayer( api_547.map.getLayersByName("Markers")[0] );
-        var spitsstroken = api_547.createWMSLayer(
-        {
-            name: 'Spitsstroken',
-            url: 'http://geoservices.rijkswaterstaat.nl/weggeg',
-            layers: 'AAA78',
-            transparent:true,
-            singleTile: false,
-            //wmsinfoformat: 'application/vnd.ogc.gml'
-            wmsinfoformat: 'text/plain'
-        })
-        // create sld parameter url
-        var sldurl = window.location.protocol+'//'+window.location.host+window.location.pathname+'spits.xml';
-        //console.log(sldurl); sldurl = 'http://duif.net/spits.xml';
-        spitsstroken.mergeNewParams({sld:sldurl})
+    var api_547;
+    Pdok.ready(
+        function(){
+            api_547 = new Pdok.Api(config_547, Geotool.ready);
+            api_547.map.removeLayer( api_547.map.getLayersByName("Markers")[0] );
+            var spitsstroken = api_547.createWMSLayer(
+            {
+                name: 'Spitsstroken',
+                url: 'http://geoservices.rijkswaterstaat.nl/weggeg',
+                layers: 'AAA78',
+                transparent:true,
+                singleTile: false,
+                //wmsinfoformat: 'application/vnd.ogc.gml'
+                wmsinfoformat: 'text/plain'
+            })
+            // create sld parameter url
+            var sldurl = window.location.protocol+'//'+window.location.host+window.location.pathname+'spits.xml';
+            //console.log(sldurl); sldurl = 'http://duif.net/spits.xml';
+            spitsstroken.mergeNewParams({sld:sldurl})
 
-        api_547.map.addLayer(spitsstroken);
-    }
-);
-
+            api_547.map.addLayer(spitsstroken);
+        }
+    );
 </script>
 
 <div id="map_547" class="olMap fullscreen"></div>

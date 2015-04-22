@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width" name="viewport"/>
 <meta charset="utf-8"/>
 </head>
+
 <body>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
@@ -15,39 +17,41 @@
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
 <script type="text/javascript" src="../rws.js"></script>
 <script type="text/javascript">
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
-Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
-var config_201={
-    "mapdiv":"map_201",
-    "zoom":6,
-    "showzoom":true,
-    "shownavigation":true,
-    "showscaleline":true,
-    "showmouseposition":true,
-    "geocoder":{},
-    "loc":"95286,422339",
-    "showlayerswitcher":true,
-    "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-    "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-    "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
-var api_201;
-Pdok.ready( 
-function(){ 
-    api_201 = new Pdok.Api(config_201);
 
-    Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+    Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
+    var config_201={
+        "mapdiv":"map_201",
+        "zoom":6,
+        "showzoom":true,
+        "shownavigation":true,
+        "showscaleline":true,
+        "showmouseposition":true,
+        "geocoder":{},
+        "loc":"95286,422339",
+        "showlayerswitcher":true,
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
+        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+    var api_201;
+    Pdok.ready(
+        function(){
+            api_201 = new Pdok.Api(config_201, Geotool.ready);
 
-    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=afvoer_en_stroomsnelheid&loadprojects=1";
+            Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
-    // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=afvoer_en_stroomsnelheid&center=155000%2C395908&mapscale=3072000&legend=1&height=530&width=670&cookieload=true
+            var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=afvoer_en_stroomsnelheid&loadprojects=1";
 
-    // 2 = stroomsnelheid is category 2 from afvoer_en_stroomsnelheid
-    var icons = [{},{},Geotool.icons.label_2,{}] // only iconnr 2 used
-    var params = [ {key:'SS10',name:'Stroomsnelheid',units:'m/sec'}];
-    Geotool.getWaterData(data_uri, api_201.featuresLayer, 'afvoer_en_stroomsnelheid', [2], icons, params);
+            // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=afvoer_en_stroomsnelheid&center=155000%2C395908&mapscale=3072000&legend=1&height=530&width=670&cookieload=true
 
-} );
+            // 2 = stroomsnelheid is category 2 from afvoer_en_stroomsnelheid
+            var icons = [{},{},Geotool.icons.label_2,{}] // only iconnr 2 used
+            var params = [ {key:'SS10',name:'Stroomsnelheid',units:'m/sec'}];
+            Geotool.getWaterData(data_uri, api_201.featuresLayer, 'afvoer_en_stroomsnelheid', [2], icons, params);
+
+        }
+    );
 </script>
 
 <div id="map_201" class="olMap fullscreen"></div>

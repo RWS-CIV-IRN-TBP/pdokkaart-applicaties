@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width" name="viewport"/>
 <meta charset="utf-8"/>
 </head>
+
 <body>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
@@ -15,40 +17,42 @@
 <script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
 <script type="text/javascript" src="../rws.js"></script>
 <script type="text/javascript">
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
-Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
 
-var config_251={
-    "mapdiv":"map_251",
-    "zoom":4,
-    "showzoom":true,
-    "shownavigation":true,
-    "showscaleline":true,
-    "showmouseposition":true,
-    "geocoder":{},
-    "loc":"85017,443520",
-    "showlayerswitcher":true,
-    "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-    "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-    "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
-var api_251;
-Pdok.ready( 
-function(){ 
-    api_251 = new Pdok.Api(config_251);
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+    Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
 
-    Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
+    var config_251={
+        "mapdiv":"map_251",
+        "zoom":4,
+        "showzoom":true,
+        "shownavigation":true,
+        "showscaleline":true,
+        "showmouseposition":true,
+        "geocoder":{},
+        "loc":"85017,443520",
+        "showlayerswitcher":true,
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
+        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+    var api_251;
+    Pdok.ready(
+        function(){
+            api_251 = new Pdok.Api(config_251, Geotool.ready);
 
-    var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=chlorositeit&loadprojects=0";
+            Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
-    // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=chlorositeit&center=85757%2C403218&mapscale=1536000&height=530&width=670
+            var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=chlorositeit&loadprojects=0";
 
-    // 1 = chlorositeit / zoutgehalte
-    var icons = [{}, Geotool.icons.label_5_xl,{},{},{}] // only iconnr 1 used
-    var params = [ {key:'CL10',name:'Zoutgehalte',units:'mg Cl/l'}];
-    Geotool.getWaterData(data_uri, api_251.featuresLayer, 'chlorositeit', [1], icons, params);
+            // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=chlorositeit&center=85757%2C403218&mapscale=1536000&height=530&width=670
 
-} );
+            // 1 = chlorositeit / zoutgehalte
+            var icons = [{}, Geotool.icons.label_5_xl,{},{},{}] // only iconnr 1 used
+            var params = [ {key:'CL10',name:'Zoutgehalte',units:'mg Cl/l'}];
+            Geotool.getWaterData(data_uri, api_251.featuresLayer, 'chlorositeit', [1], icons, params);
+
+        }
+    );
 </script>
 
 <div id="map_251" class="olMap fullscreen"></div>

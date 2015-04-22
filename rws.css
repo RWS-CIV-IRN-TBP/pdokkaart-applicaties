@@ -58,3 +58,16 @@ div .graphtablebtn {
     font-weight: bold;
     padding-bottom: 10px;
 }
+
+.olControlPermalink {
+    background: url("img/permalink.gif") no-repeat center;
+    width: 54px;
+    height: 15px;
+    border: 1px solid black;
+    top:3px;
+    right:3px;
+}
+.olControlLoadingPanel {
+    left: 10px;
+    top:65px;
+}
