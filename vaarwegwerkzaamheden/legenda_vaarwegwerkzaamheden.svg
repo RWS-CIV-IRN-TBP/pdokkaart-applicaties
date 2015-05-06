@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Gegenereerd door Microsoft Visio 11.0, SVG Export, v1.0 legenda_vaarwegwerkzaamheden.svg Page-1 -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events"
+		xmlns:v="http://schemas.microsoft.com/visio/2003/SVGExtensions/" width="8.26772in" height="11.6929in"
+		viewBox="0 0 595.276 841.89" xml:space="preserve" color-interpolation-filters="sRGB" class="st5">
+	<v:documentProperties v:langID="1043" v:metric="true" v:viewMarkup="false">
+		<v:userDefs>
+			<v:ud v:nameU="msvSubprocessMaster" v:prompt="" v:val="VT4(Rectangle)"/>
+			<v:ud v:nameU="msvNoAutoConnect" v:val="VT0(1):26"/>
+		</v:userDefs>
+	</v:documentProperties>
+
+	<style type="text/css">
+	<![CDATA[
+		.st1 {fill:#ffffff;stroke:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.25}
+		.st2 {fill:none;stroke:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.25}
+		.st3 {fill:#000000;font-family:Microsoft Sans Serif;font-size:0.833336em}
+		.st4 {fill:none;stroke:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.75}
+		.st5 {fill:none;fill-rule:evenodd;font-size:12px;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}
+	]]>
+	</style>
+
+	<g v:mID="0" v:index="1" v:groupContext="foregroundPage">
+		<v:userDefs>
+			<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
+			<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
+			<v:ud v:nameU="msvThemeOrder" v:val="VT0(0):26"/>
+		</v:userDefs>
+		<title>Pagina-1</title>
+		<v:pageProperties v:drawingScale="0.0393701" v:pageScale="0.0393701" v:drawingUnits="24" v:shadowOffsetX="8.50394"
+				v:shadowOffsetY="-8.50394"/>
+		<v:layer v:name="Verbindingslijn" v:index="0"/>
+		<g id="shape12-1" v:mID="12" v:groupContext="shape" transform="translate(18.2126,-758.268)">
+			<title>Rechthoek</title>
+			<v:userDefs>
+				<v:ud v:nameU="visVersion" v:val="VT0(14):26"/>
+				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
+				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
+			</v:userDefs>
+			<rect x="0" y="776.268" width="141.732" height="65.622" class="st1"/>
+		</g>
+		<g id="shape6-3" v:mID="6" v:groupContext="shape" transform="translate(52.4409,-797.244)">
+			<title>Blad.6</title>
+			<desc>Alle werkzaamheden</desc>
+			<v:userDefs>
+				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
+				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="58.1102" cy="831.26" width="116.23" height="21.2598"/>
+			<rect x="0" y="820.63" width="116.22" height="21.2598" class="st2"/>
+			<text x="4" y="834.26" class="st3" v:langID="1043"><v:paragraph/><v:tabList/>Alle werkzaamheden</text>		</g>
+		<g id="shape1-6" v:mID="1" v:groupContext="shape" transform="translate(24.5581,-797.711)">
+			<title>Blad.1</title>
+			<rect v:rectContext="foreign" x="0" y="824.64" width="21.75" height="17.25" class="st4"/>
+			<image x="0" y="824.64" width="21.75" height="17.25" preserveAspectRatio="none" xlink:href="data:image/png;base64,iV
+						BORw0KGgoAAAANSUhEUgAAAB0AAAAXCAYAAAD3CERpAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAc
+						dvqGQAAAH3SURBVEhL5ZS9S8NAGIczCGqwVTfBQUS6ODu1s9jB4hbd1KFTQQcnuwpSnPwHFBd1cxaK6OZgQIu0CEI/bLU1ftVUrUk1P+
+						9ODa290KR+LL7wkL7v/e6ehiYV8IclfBZtkq2tv86HNMBwLBVFKFNTyPT389ct+Jb0cmKCHVBcXuauW0GrKWm6pwf66Sm0w0O83t8jNz
+						TEzfFoWnq3uIgXRcHZwACednbwtL3NzfFoSpodHIRRLuMqFGL9uc8Ho1LB5fh4XZZHU9LS5iaeDw6Q6ugwZ+rqKvSTE6Tc7posD8fSi+
+						FhGJqGvN/Pej2RQH5kBJm+Pvbb3szP1+35iiNpyuXCsyyjtLFhzl6LRSiTk+zz9ewsEzd6hRxJr4JBJjnzeMxZtZR+Ke3oCOramrnOw7
+						aUviL0ab1dWKiZvxQKKEiS2ecDARiPj+zhqs5VY1t6t7QELR5Hsq2tZp7p7a3pKaX1dZT39pBsb69bo9iSnnu9LGg8PLA/A+342JpYDJ
+						VcjuWV6WnuebRs3elP8o+lf1XVUnIV/ObAgkgkEtZ1XX3fDkSj0RVezhZkP7k2loqiOJZOp/epUFXVnCRJQV7OFh9SN6GzEdlsdobkDV
+						mWt0j/eYiX0E3XbUOlDugid7kbDofnyOZRgoeTseQ71ULwEbpY57gE4Q3+/0nyLX5tdAAAAABJRU5ErkJggg=="/>
+			<rect v:rectContext="foreign" x="0" y="824.64" width="21.75" height="17.25" class="st4"/>
+		</g>
+		<g id="shape2-10" v:mID="2" v:groupContext="shape" transform="translate(25.1113,-769.606)">
+			<title>Blad.2</title>
+			<rect v:rectContext="foreign" x="0" y="824.882" width="21.4447" height="17.0079" class="st4"/>
+			<image x="0" y="824.882" width="21.4447" height="17.0079" preserveAspectRatio="none" xlink:href="data:image/png;base64,
+						iVBORw0KGgoAAAANSUhEUgAAAB0AAAAXCAYAAAD3CERpAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7D
+						AcdvqGQAAALZSURBVEhLvVRbSJRBFN6Hnnwoe+1FCKQLRBeoRDElioQ0SWnpAlGYRQghG/WwWRssxIKUSy+h0UNED615yWvumqulabpq
+						YpblUm7+eVsz27yxtn7NOfrLUiP7L5Xf8jFzZs85339m5owOKwidCjLWPdr+37komsLUKrqldC/uu20YmRnjBARlagj57x9gQ3G8NCaY
+						hLBEs5qN8Pl/cODMz1m8m+iD7VM5Pvo8vDY0PYITDVnSWJUEzaJX2i0cQGJvvvWizduJ8s8OHHGe5QpTn52GZ1Jhn8ymS9IcRIIm0fiq
+						w/AH/CgqLYa9xwllchDz4qeCPuR6501sLN6D4elRTM5NYduTfdJcBE2idIaEssZK5FzNgdvtZvt3kLC+/hzPb/XkS3MRNInStnV87Ubt
+						4HP0uftgMpnQ2trKCVQoigJXVzvWP47hM+4afyvNRQgpGlW4i7c2oToNuysO8mXxer0wm82w2+1oaWmB1WqFwWBAQUEBkuzHUep5irHZ
+						cWk+TaL05bRtqh1Tkcwt4vP5kJeXx1XbbDZ4PAs3eH/NURallgrOo5IQUpRY5Kni1thUksBVq/D7/QgEAosWuLqowp18HC9HXdJcBE2i
+						dz88ZOe0ugzkdt/huQzZr0w4Vn+e5+bXVmkugibRHWUHuA2oAmqLy21mtlVQhRmNBmwVbUItQ+ceXRQnzUXQJEqkhif0TriRUnuS1xKr
+						0xFbeYjnVOEXcda0/fRgBMcGk6BZlHjqRfbSM/hdjDWKE86hJkzNTfMaXZ70ujPSWJWEsESJm0sScaPrNl8U2kba8obhZlzryP0/D/6/
+						4B+iK4VgUTHqkpYWlqHFYjGK/vQthAMOh+OezE8TRbwYQ4tGRESk9vf3N5OgeJUUvV6fKfPTxEXR1YJrQnFgYOCC8J93uVzFwlaTxAqu
+						pf81k0TDYKSo0mk0Gi+K4GTBaInPsvwbrBKME4xkK2zodL8AMurcZwtWXb8AAAAASUVORK5CYII="/>
+			<rect v:rectContext="foreign" x="0" y="824.882" width="21.4447" height="17.0079" class="st4"/>
+		</g>
+		<g id="shape3-14" v:mID="3" v:groupContext="shape" transform="translate(52.4409,-768.898)">
+			<title>Blad.3</title>
+			<desc>Werk in voorbereiding</desc>
+			<v:userDefs>
+				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
+				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="58.1102" cy="831.26" width="116.23" height="21.2598"/>
+			<rect x="0" y="820.63" width="116.22" height="21.2598" class="st2"/>
+			<text x="4" y="834.26" class="st3" v:langID="1043"><v:paragraph/><v:tabList/>Werk in voorbereiding</text>		</g>
+	</g>
+</svg>

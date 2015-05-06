@@ -58,6 +58,9 @@
                     features.push(ff);
                 }
                 api100.featuresLayer.addFeatures(features);
+
+               // add legend
+               Geotool.legend(api100.map, 'legenda_locaties.png');
             }
 
             // rws adressen / locaties

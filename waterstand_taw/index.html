@@ -49,6 +49,9 @@
             var icons = [{},Geotool.icons.label_1_xl,{},{},{},{},{},{}] // only iconnr 1
             var params = [ {key:'xH10R',name:'Waterhoogte',units:'cm TAW'}];
             Geotool.getWaterData(data_uri, api_102.featuresLayer, 'waterstandentaw', [1], icons, params);
+
+            // add legend
+            Geotool.legend(api_102.map, 'legenda_waterstand_taw.png');
         }
     );
 </script>

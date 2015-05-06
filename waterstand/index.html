@@ -51,6 +51,9 @@
                            {key:'H10V',name:'Verwachte waterstand',units:'cm NAP'}];
             Geotool.getWaterData(data_uri, api_101.featuresLayer, 'waterstanden', [1,2,3,4], icons, params);
 
+            // add legend
+            Geotool.legend(api_101.map, 'legenda_waterstand.png');
+
         }
     );
 </script>
