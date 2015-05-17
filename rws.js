@@ -411,10 +411,23 @@ Geotool.legend = function(map, url){
     legend_head.setAttribute('id', 'legend_head');
     legend_head.innerHTML = 'Legenda';
     var legend_img = document.createElement('img');
+    legend_img.setAttribute('id', 'legend_img');
     legend_img.setAttribute('src', url);
     legend.appendChild(legend_head);
     legend.appendChild(legend_img);
     map.div.appendChild(legend);
+    legend_img.pdokIsVisible = false;
+    legend_head.onclick = function() {
+        legendImage = document.getElementById("legend_img");
+        if (legendImage.pdokIsVisible) {
+            legendImage.style.display = "none";
+            legendImage.pdokIsVisible = false;
+        } else {
+            legendImage.style.display = "block";
+            legendImage.pdokIsVisible = true;
+        } 
+    }
+    
 }
 
 /**
