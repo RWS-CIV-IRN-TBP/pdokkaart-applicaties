@@ -57,6 +57,14 @@ div .graphtablebtn {
     font-weight: bold;
     padding-bottom: 10px;
     width: 250px;
+    float: left;
+}
+
+#legend_toggle {
+    font-weight: bold;
+    float: left;
+    /*padding-bottom: 10px;
+    width: 250px;*/
 }
 
 #legend_img {

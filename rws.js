@@ -410,24 +410,31 @@ Geotool.legend = function(map, url){
     var legend_head = document.createElement('div');
     legend_head.setAttribute('id', 'legend_head');
     legend_head.innerHTML = 'Legenda';
+    var legend_toggle = document.createElement('div');
+    legend_toggle.setAttribute('id', 'legend_toggle');
+    legend_toggle.innerHTML = '+';
     var legend_img = document.createElement('img');
     legend_img.setAttribute('id', 'legend_img');
     legend_img.setAttribute('src', url);
     legend.appendChild(legend_head);
+    legend.appendChild(legend_toggle);
     legend.appendChild(legend_img);
     map.div.appendChild(legend);
     legend_img.pdokIsVisible = false;
     legend_head.onclick = function() {
-        legendImage = document.getElementById("legend_img");
+        var legendImage = document.getElementById("legend_img");
+        var legendToggle = document.getElementById("legend_toggle");
         if (legendImage.pdokIsVisible) {
             legendImage.style.display = "none";
             legendImage.pdokIsVisible = false;
+            legendToggle.innerHTML = '+';
         } else {
             legendImage.style.display = "block";
             legendImage.pdokIsVisible = true;
-        } 
+            legendToggle.innerHTML = '-';
+        }
+    legend_toggle.onclick = legend_head.onclick;    
     }
-    
 }
 
 /**
