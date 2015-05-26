@@ -410,7 +410,7 @@ Geotool.legend = function(map, url){
     var legend_head = document.createElement('div');
     legend_head.setAttribute('id', 'legend_head');
     legend_head.innerHTML = 'Legenda';
-    var legend_toggle = document.createElement('div');
+    var legend_toggle = document.createElement('span');
     legend_toggle.setAttribute('id', 'legend_toggle');
     legend_toggle.innerHTML = '+';
     var legend_img = document.createElement('img');

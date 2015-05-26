@@ -69,6 +69,7 @@ div .graphtablebtn {
 
 #legend_img {
     display: none;
+    clear: both;
 }
 
 .olControlPermalink {
