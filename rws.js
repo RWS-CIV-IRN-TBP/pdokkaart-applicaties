@@ -455,4 +455,8 @@ Geotool.ready = function(api) {
     if(api.map.getLayersByName("PDOK achtergrond luchtfoto\'s (WMTS)").length>0){
         api.map.getLayersByName("PDOK achtergrond luchtfoto\'s (WMTS)")[0].setName("Luchtfoto");
     }
+
+    // rws want to have layer switcher closed at beginning
+    api.map.getControlsByClass("OpenLayers.Control.LayerSwitcher")[0].minimizeControl()
+
 }
