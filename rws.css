@@ -91,3 +91,6 @@ div .graphtablebtn {
     left: 10px;
     top:65px;
 }
+div.olControlPermalink > a > img{
+    border: 0;
+}
