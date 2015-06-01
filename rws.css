@@ -43,7 +43,7 @@ div .graphtablebtn {
 
 #legend {
     background: none repeat scroll 0 0 white;
-    border: 1px solid #394FA6;
+    border: 1px solid #ccc;
     bottom: 50px;
     max-height: 75%;
     overflow-x: hidden;
@@ -83,7 +83,7 @@ div .graphtablebtn {
     background: url("img/permalink.gif") no-repeat center;
     width: 54px;
     height: 15px;
-    border: 1px solid black;
+    border: 1px solid #ccc;
     top:3px;
     right:3px;
 }
