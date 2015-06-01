@@ -61,10 +61,17 @@ div .graphtablebtn {
 }
 
 #legend_toggle {
-    font-weight: bold;
+    background: #273397 none repeat scroll 0 0;
+    border-radius: 4px;
+    color: white;
     float: left;
-    /*padding-bottom: 10px;
-    width: 250px;*/
+    font-size: 18px;
+    font-weight: bold;
+    height: 23px;
+    opacity: 0.8;
+    text-align: center;
+    width: 22px;
+    font-family: "Lucida Grande",Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
 }
 
 #legend_img {
