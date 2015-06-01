@@ -433,8 +433,8 @@ Geotool.legend = function(map, url){
             legendImage.pdokIsVisible = true;
             legendToggle.innerHTML = '-';
         }
-    legend_toggle.onclick = legend_head.onclick;    
     }
+    legend_toggle.onclick = legend_head.onclick;
 }
 
 /**
