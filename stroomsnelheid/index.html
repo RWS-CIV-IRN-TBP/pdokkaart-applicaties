@@ -8,18 +8,18 @@
 </head>
 
 <body>
-<script type="text/javascript" src="http://zuidt.nl/pdokkaart/api/js/OpenLayers.js"></script>
-<script type="text/javascript" src="http://zuidt.nl/pdokkaart/api/js/proj4js-compressed.js"></script>
-<script type="text/javascript" src="http://zuidt.nl/pdokkaart/api/js/OpenLayersPdokKaartExtenders.js"></script>
-<script type="text/javascript" src="http://zuidt.nl/pdokkaart/api/js/pdok-api.js"></script>
-<script type="text/javascript" src="http://zuidt.nl/pdokkaart/api/js/geozetlib.js"></script>
-<script type="text/javascript" src="http://zuidt.nl/pdokkaart/api/js/pdok-markers.js"></script>
-<script type="text/javascript" src="http://zuidt.nl/pdokkaart/api/js/pdok-layers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayersPdokKaartExtenders.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-api.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
 <script type="text/javascript" src="../rws.js"></script>
 <script type="text/javascript">
 
-    Pdok.addcss("http://zuidt.nl/pdokkaart/api/styles/default/style.css");
-    Pdok.addcss("http://zuidt.nl/pdokkaart/api/styles/api.css");
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
     Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
     var config_800={
         "mapdiv":"map_800",
@@ -32,8 +32,8 @@
         "loc":"122650.88, 487337.6",
         "showlayerswitcher":true,
         "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-        "markersdef":"http://zuidt.nl/pdokkaart/api/js/pdok-markers.js",
-        "layersdef":"http://zuidt.nl/pdokkaart/api/js/pdok-layers.js"};
+        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
     var api800;
     Pdok.ready(
         function(){
