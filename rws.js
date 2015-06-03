@@ -457,6 +457,8 @@ Geotool.ready = function(api) {
     }
 
     // rws want to have layer switcher closed at beginning
-    api.map.getControlsByClass("OpenLayers.Control.LayerSwitcher")[0].minimizeControl()
+    if (api.map.getControlsByClass("OpenLayers.Control.LayerSwitcher").length>0) {
+        api.map.getControlsByClass("OpenLayers.Control.LayerSwitcher")[0].minimizeControl();
+    }
 
 }
