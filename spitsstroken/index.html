@@ -22,13 +22,13 @@
 
     var config_547={
         "mapdiv":"map_547",
-        "zoom":8,
         "showzoom":true,
         "shownavigation":true,
         "showscaleline":true,
         "showmouseposition":true,
         "geocoder":{},
-        "loc":"125748.98282711, 482006.02903004",
+        "zoom":4,
+        "loc":"122650.88, 487337.6",
         "showlayerswitcher":true,
         "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
         "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
@@ -46,9 +46,10 @@
                 url: 'http://geoservices.rijkswaterstaat.nl/weggeg',
                 layers: 'AAA78',
                 transparent:true,
-                singleTile: false,
+                singleTile: false
+                // disabling popup
                 //wmsinfoformat: 'application/vnd.ogc.gml'
-                wmsinfoformat: 'text/plain'
+                //wmsinfoformat: 'text/plain'
             })
             // create sld parameter url
             var sldurl = window.location.protocol+'//'+window.location.host+window.location.pathname+'spits.xml';
