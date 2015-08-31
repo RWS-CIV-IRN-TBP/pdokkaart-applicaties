@@ -4,7 +4,7 @@
  */
 var Geotool = Geotool || {};
 
-Geotool.version = '1.2.0'
+Geotool.version = '1.2.1'
 
 Geotool.Calendar = {
 
