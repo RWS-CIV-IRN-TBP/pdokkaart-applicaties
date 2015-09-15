@@ -21,6 +21,23 @@
 </Stroke>
 </LineSymbolizer>
 </Rule>
+<Rule>
+<ogc:Filter>
+<ogc:PropertyIsEqualTo>
+    <ogc:PropertyName>OMSCHR</ogc:PropertyName>
+    <ogc:Literal>Plusstrook</ogc:Literal>
+</ogc:PropertyIsEqualTo>
+</ogc:Filter>
+<LineSymbolizer>
+<Geometry>
+<PropertyName>center-line</PropertyName>
+</Geometry>
+<Stroke>
+<CssParameter name="stroke">#ff0000</CssParameter>
+<CssParameter name="stroke-width">6</CssParameter>
+</Stroke>
+</LineSymbolizer>
+</Rule>
 </FeatureTypeStyle>
 </UserStyle>
 </NamedLayer>
