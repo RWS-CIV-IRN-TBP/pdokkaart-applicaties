@@ -51,10 +51,11 @@
                 //wmsinfoformat: 'application/vnd.ogc.gml'
                 //wmsinfoformat: 'text/plain'
             })
+            // create sld parameter url, remove index.html if page is called with that
+            var pathname = window.location.pathname.replace('index.html', '');
+            var sldurl = window.location.protocol+'//'+window.location.host+pathname+'spits.xml';
             // create sld parameter url
-            var sldurl = window.location.protocol+'//'+window.location.host+window.location.pathname+'spits.xml';
-            //console.log(sldurl); sldurl = 'http://duif.net/spits.xml';
-            spitsstroken.mergeNewParams({sld:sldurl})
+           spitsstroken.mergeNewParams({sld:sldurl})
 
             api_547.map.addLayer(spitsstroken);
         }
