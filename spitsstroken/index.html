@@ -8,16 +8,16 @@
 </head>
 
 <body>
-<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
-<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
-<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-api.js"></script>
-<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
-<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
-<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
+<script type="text/javascript" src="http://zuidt.nl/pdokkaart/api/js/OpenLayers.js"></script>
+<script type="text/javascript" src="http://zuidt.nl/pdokkaart/api/js/proj4js-compressed.js"></script>
+<script type="text/javascript" src="http://zuidt.nl/pdokkaart/api/js/pdok-api.js"></script>
+<script type="text/javascript" src="http://zuidt.nl/pdokkaart/api/js/geozetlib.js"></script>
+<script type="text/javascript" src="http://zuidt.nl/pdokkaart/api/js/pdok-markers.js"></script>
+<script type="text/javascript" src="http://zuidt.nl/pdokkaart/api/js/pdok-layers.js"></script>
 <script type="text/javascript" src="../rws.js"></script>
 <script type="text/javascript">
-    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
-    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+    Pdok.addcss("http://zuidt.nl/pdokkaart/api/styles/default/style.css");
+    Pdok.addcss("http://zuidt.nl/pdokkaart/api/styles/api.css");
     Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
 
     var config_547={
@@ -31,8 +31,8 @@
         "loc":"122650.88, 487337.6",
         "showlayerswitcher":true,
         "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"
+        "markersdef":"http://zuidt.nl/pdokkaart/api/js/pdok-markers.js",
+        "layersdef":"http://zuidt.nl/pdokkaart/api/js/pdok-layers.js"
     };
 
     var api_547;
@@ -51,8 +51,9 @@
                 //wmsinfoformat: 'application/vnd.ogc.gml'
                 //wmsinfoformat: 'text/plain'
             })
-            // create sld parameter url
-            var sldurl = window.location.protocol+'//'+window.location.host+window.location.pathname+'spits.xml';
+            // create sld parameter url, remove index.html if page is called with that
+            var pathname = window.location.pathname.replace('index.html', '');
+            var sldurl = window.location.protocol+'//'+window.location.host+pathname+'spits.xml';
             //console.log(sldurl); sldurl = 'http://duif.net/spits.xml';
             spitsstroken.mergeNewParams({sld:sldurl})
 
