@@ -48,15 +48,6 @@
             api_101 = new Pdok.Api(config_101, Geotool.ready);
             api_101.map.removeLayer( api_101.map.getLayersByName("Markers")[0] );
             // now add kustlijnkaart layers (in plaats van met wmsurl/wmslayers)
-            var nacht = api_101.createWMSLayer(
-                {
-                    name: 'Geluidskaarten nacht',
-                    url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
-                    layers: 'geluidskaartennacht',
-                    transparent:true,
-                    singleTile: false
-                })
-            api_101.map.addLayer(nacht);
             var etmaal = api_101.createWMSLayer(
                 {
                     name: 'Geluidskaarten etmaal',
@@ -64,9 +55,19 @@
                     layers: 'geluidskaartenetmaal',
                     transparent:true,
                     singleTile: false,
-                    visibility: false
+                    visibility: true
                 })
             api_101.map.addLayer(etmaal);
+            var nacht = api_101.createWMSLayer(
+                {
+                    name: 'Geluidskaarten nacht',
+                    url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
+                    layers: 'geluidskaartennacht',
+                    transparent:true,
+                    singleTile: false,
+                    visibility: false
+                })
+            api_101.map.addLayer(nacht);
             var etmaal2006 = api_101.createWMSLayer(
                 {
                     name: 'Geluidskaarten etmaal 2006',
