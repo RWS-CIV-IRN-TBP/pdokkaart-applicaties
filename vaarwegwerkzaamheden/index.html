@@ -61,20 +61,23 @@
                     var f = obj.features[i];
                     var icon = './img/vaarwegwerk_02_icon_small.png';
                     if (f.icon.url.indexOf('vaarwegwerk_05_icon.png')>0){
-                       icon = './img/vaarwegwerk_05_icon_small.png';
+                       // 22052015 RD: not showing future works anymore
+                       //icon = './img/vaarwegwerk_05_icon_small.png';
                     }
-                    var ff = new OpenLayers.Feature.Vector(
-                        new OpenLayers.Geometry.Point(f.location.lon, f.location.lat),
-                        null,
-                        {
-                            externalGraphic: icon,
-                            graphicWidth: 29,
-                            graphicHeight: 23,
-                            fillOpacity: 1
-                        }
-                    );
-                    ff.attributes['description']= f.description;
-                    features.push(ff);
+                    else {
+                        var ff = new OpenLayers.Feature.Vector(
+                                new OpenLayers.Geometry.Point(f.location.lon, f.location.lat),
+                                null,
+                                {
+                                    externalGraphic: icon,
+                                    graphicWidth: 29,
+                                    graphicHeight: 23,
+                                    fillOpacity: 1
+                                }
+                        );
+                        ff.attributes['description'] = f.description;
+                        features.push(ff);
+                    }
                 }
                 api780.featuresLayer.addFeatures(features);
 
@@ -116,9 +119,11 @@
     }
     .vaarwegwerk_1 .popinleftbar {
         background: #de0707 url('./img/vaarwegwerk_02_simple.png') 0px 0px no-repeat;
+        width:46px;
     }
     .vaarwegwerk_2 .popinleftbar {
         background: #de0707 url('./img/vaarwegwerk_05_simple.png') 0px 0px no-repeat;
+        width:46px;
     }
 </style>
 <div id="map_780" class="olMap fullscreen"></div>

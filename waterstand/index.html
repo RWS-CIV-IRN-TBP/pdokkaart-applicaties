@@ -48,8 +48,13 @@
             var params = [ {key:'H10',name:'Waterhoogte',units:'cm NAP'},
                            {key:'H10A',name:'Astronomisch getij',units:'cm NAP'},
                            {key:'H10V',name:'Verwachte waterstand',units:'cm NAP'}];
-            Geotool.getWaterData(data_uri, api_101.featuresLayer, 'waterstanden', [1,2,3,4], icons, params);
 
+            Geotool.getWaterData(data_uri, api_101.featuresLayer, 'waterstanden', [1,2,3,4], icons, params);
+            /*
+            setInterval(function() {
+                  Geotool.getWaterData(data_uri, api_101.featuresLayer, 'waterstanden', [1,2,3,4], icons, params);
+                }, 20000);
+            */
             // add legend
             Geotool.legend(api_101.map, 'legenda_waterstand.png');
 
