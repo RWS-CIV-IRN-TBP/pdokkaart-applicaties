@@ -47,12 +47,14 @@
         function(){
             api_101 = new Pdok.Api(config_101, Geotool.ready);
             api_101.map.removeLayer( api_101.map.getLayersByName("Markers")[0] );
-            // now add kustlijnkaart layers (in plaats van met wmsurl/wmslayers)
+            // now add geluidskaart layers (in plaats van met wmsurl/wmslayers)
             var etmaal = api_101.createWMSLayer(
                 {
                     name: 'Geluidskaarten etmaal',
-                    url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
-                    layers: 'geluidskaartenetmaal',
+                    // url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
+                    // layers: 'geluidskaartenetmaal',
+                    url: 'http://geoservices.rijkswaterstaat.nl/dvs_geluidskaarten',
+                    layers: 'gm_et_2007',
                     transparent:true,
                     singleTile: false,
                     visibility: true
@@ -61,8 +63,10 @@
             var nacht = api_101.createWMSLayer(
                 {
                     name: 'Geluidskaarten nacht',
-                    url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
-                    layers: 'geluidskaartennacht',
+                    // url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
+                    // layers: 'geluidskaartennacht',
+                    url: 'http://geoservices.rijkswaterstaat.nl/dvs_geluidskaarten',
+                    layers: 'gm_nacht_2007',
                     transparent:true,
                     singleTile: false,
                     visibility: false
@@ -71,8 +75,10 @@
             var etmaal2006 = api_101.createWMSLayer(
                 {
                     name: 'Geluidskaarten etmaal 2006',
-                    url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
-                    layers: 'geluidskaartenetmaal2006',
+                    // url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
+                    // layers: 'geluidskaartenetmaal2006',
+                    url: 'http://geoservices.rijkswaterstaat.nl/dvs_geluidskaarten',
+                    layers: 'AAA500',
                     transparent:true,
                     singleTile: false,
                     visibility: false
@@ -81,8 +87,10 @@
             var nacht2006 = api_101.createWMSLayer(
                 {
                     name: 'Geluidskaarten nacht 2006',
-                    url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
-                    layers: 'geluidskaartennacht2006',
+                    // url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
+                    // layers: 'geluidskaartennacht2006',
+                    url: 'http://geoservices.rijkswaterstaat.nl/dvs_geluidskaarten',
+                    layers: 'AAA600',
                     transparent:true,
                     singleTile: false,
                     visibility: false
@@ -90,7 +98,9 @@
             api_101.map.addLayer(nacht2006);
 
             // add legend
-            Geotool.legend(api_101.map, 'legenda_geluidskaart.png');
+            //Geotool.legend(api_101.map, 'legenda_geluidskaart.png');
+            // get legend from wms
+            Geotool.legend(api_101.map, 'http://geoservices.rijkswaterstaat.nl/dvs_geluidskaarten?version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=AAA600&format=image/png&STYLE=DEFAULT');
         }
     );
 
