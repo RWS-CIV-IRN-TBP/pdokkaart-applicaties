@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<!-- Gegenereerd door Microsoft Visio 11.0, SVG Export, v1.0 legenda_kustlijnkaart.svg Page-1 -->
+<!-- Gegenereerd door Microsoft Visio 11.0, SVG Export, v1.0 legenda_kustlijnkaart.svg Pagina-1 -->
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events"
 		xmlns:v="http://schemas.microsoft.com/visio/2003/SVGExtensions/" width="8.26772in" height="11.6929in"
-		viewBox="0 0 595.276 841.89" xml:space="preserve" color-interpolation-filters="sRGB" class="st16">
-	<v:documentProperties v:langID="1043" v:metric="true" v:viewMarkup="false">
+		viewBox="0 0 595.276 841.889" xml:space="preserve" color-interpolation-filters="sRGB" class="st15">
+	<v:documentProperties v:langID="1043" v:metric="true">
 		<v:userDefs>
 			<v:ud v:nameU="msvSubprocessMaster" v:prompt="" v:val="VT4(Rectangle)"/>
 			<v:ud v:nameU="msvNoAutoConnect" v:val="VT0(1):26"/>
@@ -23,12 +23,11 @@
 		.st8 {fill:none;stroke:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.25}
 		.st9 {fill:#000000;font-family:Microsoft Sans Serif;font-size:0.833336em}
 		.st10 {font-size:1em}
-		.st11 {fill:#cdcdcd;fill-opacity:0.5;stroke:#cdcdcd;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0.5;stroke-width:0.5}
-		.st12 {fill:#ffff00;stroke:#404040;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.5}
-		.st13 {stroke:#e49740;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.25}
-		.st14 {stroke:#00fdc3;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.25}
-		.st15 {stroke:#a700e4;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.25}
-		.st16 {fill:none;fill-rule:evenodd;font-size:12px;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}
+		.st11 {fill:none}
+		.st12 {stroke:#e49740;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.25}
+		.st13 {stroke:#00fdc3;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.25}
+		.st14 {stroke:#a700e4;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.25}
+		.st15 {fill:none;fill-rule:evenodd;font-size:12px;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}
 	]]>
 	</style>
 
@@ -43,10 +42,6 @@
 			<image x="0" y="0" width="64" height="64" image-rendering="optimizeSpeed"
 					xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABASURBVChTY1j1v/7/i/93/qMDkBhIjgHGQFaELMaALoDMBgGwAhCASaCbRpwCmCSIRmaDFaALgACyGAFv1v8HANOP7EF+6XI9AAAAAElFTkSuQmCC"/>
 		</pattern>
-		<linearGradient id="grad30-58" v:fillPattern="30" v:foreground="#f0f0f0" v:background="#ffffff" x1="0" y1="1" x2="0" y2="0">
-			<stop offset="0" style="stop-color:#f0f0f0;stop-opacity:1"/>
-			<stop offset="1" style="stop-color:#ffffff;stop-opacity:1"/>
-		</linearGradient>
 	</defs>
 	<g v:mID="0" v:index="1" v:groupContext="foregroundPage">
 		<v:userDefs>
@@ -55,198 +50,177 @@
 			<v:ud v:nameU="msvThemeOrder" v:val="VT0(0):26"/>
 		</v:userDefs>
 		<title>Pagina-1</title>
-		<v:pageProperties v:drawingScale="0.0393701" v:pageScale="0.0393701" v:drawingUnits="24" v:shadowOffsetX="8.50394"
-				v:shadowOffsetY="-8.50394"/>
+		<v:pageProperties v:drawingScale="0.0393701" v:pageScale="0.0393701" v:drawingUnits="24" v:shadowOffsetX="8.50393"
+				v:shadowOffsetY="-8.50393"/>
 		<v:layer v:name="Verbindingslijn" v:index="0"/>
-		<g id="shape12-1" v:mID="12" v:groupContext="shape" transform="translate(15.1299,-555.591)">
+		<g id="shape1-1" v:mID="1" v:groupContext="shape" transform="translate(15.1302,-586.772)">
 			<title>Rechthoek</title>
 			<v:userDefs>
 				<v:ud v:nameU="visVersion" v:val="VT0(14):26"/>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<rect x="0" y="573.591" width="190.382" height="268.299" class="st1"/>
+			<rect x="0" y="604.772" width="190.382" height="237.117" class="st1"/>
 		</g>
-		<g id="shape1-3" v:mID="1" v:groupContext="shape" transform="translate(18,-795.118)">
+		<g id="shape2-3" v:mID="2" v:groupContext="shape" transform="translate(18.0003,-795.117)">
 			<title>Vierkant</title>
 			<v:userDefs>
 				<v:ud v:nameU="visVersion" v:val="VT0(14):26"/>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<g id="shadow1-4" v:groupContext="shadow" v:shadowOffsetX="1.44" v:shadowOffsetY="-1.44" v:shadowType="1"
+			<g id="shadow2-4" v:groupContext="shadow" v:shadowOffsetX="1.44" v:shadowOffsetY="-1.44" v:shadowType="1"
 					transform="matrix(1,0,0,1,1.44,1.44)" class="st2">
-				<rect x="0" y="824.882" width="17.0079" height="17.0079" class="st3"/>
+				<rect x="0" y="824.881" width="17.0079" height="17.0079" class="st3"/>
 			</g>
-			<rect x="0" y="824.882" width="17.0079" height="17.0079" class="st4"/>
+			<rect x="0" y="824.881" width="17.0079" height="17.0079" class="st4"/>
 		</g>
-		<g id="shape2-7" v:mID="2" v:groupContext="shape" transform="translate(18,-757.458)">
+		<g id="shape3-7" v:mID="3" v:groupContext="shape" transform="translate(18.0003,-757.457)">
 			<title>Vierkant.2</title>
 			<v:userDefs>
 				<v:ud v:nameU="visVersion" v:val="VT0(14):26"/>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<g id="shadow2-8" v:groupContext="shadow" v:shadowOffsetX="1.44" v:shadowOffsetY="-1.44" v:shadowType="1"
+			<g id="shadow3-8" v:groupContext="shadow" v:shadowOffsetX="1.44" v:shadowOffsetY="-1.44" v:shadowType="1"
 					transform="matrix(1,0,0,1,1.44,1.44)" class="st2">
-				<rect x="0" y="824.882" width="17.0079" height="17.0079" class="st3"/>
+				<rect x="0" y="824.881" width="17.0079" height="17.0079" class="st3"/>
 			</g>
-			<rect x="0" y="824.882" width="17.0079" height="17.0079" class="st5"/>
+			<rect x="0" y="824.881" width="17.0079" height="17.0079" class="st5"/>
 		</g>
-		<g id="shape3-13" v:mID="3" v:groupContext="shape" transform="translate(18,-719.798)">
+		<g id="shape4-13" v:mID="4" v:groupContext="shape" transform="translate(18.0003,-719.797)">
 			<title>Vierkant.3</title>
 			<v:userDefs>
 				<v:ud v:nameU="visVersion" v:val="VT0(14):26"/>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<g id="shadow3-14" v:groupContext="shadow" v:shadowOffsetX="1.44" v:shadowOffsetY="-1.44" v:shadowType="1"
+			<g id="shadow4-14" v:groupContext="shadow" v:shadowOffsetX="1.44" v:shadowOffsetY="-1.44" v:shadowType="1"
 					transform="matrix(1,0,0,1,1.44,1.44)" class="st2">
-				<rect x="0" y="824.882" width="17.0079" height="17.0079" class="st3"/>
+				<rect x="0" y="824.881" width="17.0079" height="17.0079" class="st3"/>
 			</g>
-			<rect x="0" y="824.882" width="17.0079" height="17.0079" class="st6"/>
+			<rect x="0" y="824.881" width="17.0079" height="17.0079" class="st6"/>
 		</g>
-		<g id="shape4-19" v:mID="4" v:groupContext="shape" transform="translate(18,-682.137)">
+		<g id="shape5-19" v:mID="5" v:groupContext="shape" transform="translate(18.0003,-682.136)">
 			<title>Vierkant.4</title>
 			<v:userDefs>
 				<v:ud v:nameU="visVersion" v:val="VT0(14):26"/>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<g id="shadow4-20" v:groupContext="shadow" v:shadowOffsetX="1.44" v:shadowOffsetY="-1.44" v:shadowType="1"
+			<g id="shadow5-20" v:groupContext="shadow" v:shadowOffsetX="1.44" v:shadowOffsetY="-1.44" v:shadowType="1"
 					transform="matrix(1,0,0,1,1.44,1.44)" class="st2">
-				<rect x="0" y="824.882" width="17.0079" height="17.0079" class="st3"/>
+				<rect x="0" y="824.881" width="17.0079" height="17.0079" class="st3"/>
 			</g>
-			<rect x="0" y="824.882" width="17.0079" height="17.0079" class="st7"/>
+			<rect x="0" y="824.881" width="17.0079" height="17.0079" class="st7"/>
 		</g>
-		<g id="shape6-23" v:mID="6" v:groupContext="shape" transform="translate(42.5197,-786.614)">
+		<g id="shape6-23" v:mID="6" v:groupContext="shape" transform="translate(42.52,-786.613)">
 			<title>Blad.6</title>
 			<desc>Aangroeiende trend, geen overschrijding van de basiskustlijn</desc>
 			<v:userDefs>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
-			<v:textRect cx="83.8346" cy="824.173" width="167.67" height="35.4331"/>
-			<rect x="0" y="806.457" width="167.669" height="35.4331" class="st8"/>
+			<v:textBlock v:margins="rect(3.99999,3.99999,3.99999,3.99999)" v:tabSpace="42.5196"/>
+			<v:textRect cx="83.8341" cy="824.172" width="167.67" height="35.433"/>
+			<rect x="0" y="806.456" width="167.669" height="35.433" class="st8"/>
 			<text x="4" y="821.17" class="st9" v:langID="1043"><v:paragraph/><v:tabList/>Aangroeiende trend, geen <tspan x="4"
 						dy="1.2em" class="st10">overschrijding van de basiskustlijn</tspan></text>		</g>
-		<g id="shape7-27" v:mID="7" v:groupContext="shape" transform="translate(42.5197,-748.346)">
+		<g id="shape7-27" v:mID="7" v:groupContext="shape" transform="translate(42.52,-748.345)">
 			<title>Blad.7</title>
 			<desc>Aangroeiende trend, wel een overschrijding van de basiskustlijn</desc>
 			<v:userDefs>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
-			<v:textRect cx="83.8346" cy="824.173" width="167.67" height="35.4331"/>
-			<rect x="0" y="806.457" width="167.669" height="35.4331" class="st8"/>
+			<v:textBlock v:margins="rect(3.99999,3.99999,3.99999,3.99999)" v:tabSpace="42.5196"/>
+			<v:textRect cx="83.8341" cy="824.172" width="167.67" height="35.433"/>
+			<rect x="0" y="806.456" width="167.669" height="35.433" class="st8"/>
 			<text x="4" y="821.17" class="st9" v:langID="1043"><v:paragraph/><v:tabList/>Aangroeiende trend, wel een <tspan x="4"
 						dy="1.2em" class="st10">overschrijding van de basiskustlijn</tspan></text>		</g>
-		<g id="shape9-31" v:mID="9" v:groupContext="shape" transform="translate(42.5197,-710.079)">
+		<g id="shape8-31" v:mID="8" v:groupContext="shape" transform="translate(42.52,-710.078)">
 			<title>Blad.9</title>
 			<desc>Erosieve trend, geen overschrijding van de basiskustlijn</desc>
 			<v:userDefs>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
-			<v:textRect cx="83.8346" cy="824.173" width="167.67" height="35.4331"/>
-			<rect x="0" y="806.457" width="167.669" height="35.4331" class="st8"/>
+			<v:textBlock v:margins="rect(3.99999,3.99999,3.99999,3.99999)" v:tabSpace="42.5196"/>
+			<v:textRect cx="83.8341" cy="824.172" width="167.67" height="35.433"/>
+			<rect x="0" y="806.456" width="167.669" height="35.433" class="st8"/>
 			<text x="4" y="821.17" class="st9" v:langID="1043"><v:paragraph/><v:tabList/>Erosieve trend, geen overschrijding <tspan
 						x="4" dy="1.2em" class="st10">van de basiskustlijn</tspan></text>		</g>
-		<g id="shape10-35" v:mID="10" v:groupContext="shape" transform="translate(42.5197,-673.228)">
+		<g id="shape9-35" v:mID="9" v:groupContext="shape" transform="translate(42.52,-673.227)">
 			<title>Blad.10</title>
 			<desc>Erosieve trend en een overschrijding van de basiskustlijn</desc>
 			<v:userDefs>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
-			<v:textRect cx="83.8346" cy="824.173" width="167.67" height="35.4331"/>
-			<rect x="0" y="806.457" width="167.669" height="35.4331" class="st8"/>
+			<v:textBlock v:margins="rect(3.99999,3.99999,3.99999,3.99999)" v:tabSpace="42.5196"/>
+			<v:textRect cx="83.8341" cy="824.172" width="167.67" height="35.433"/>
+			<rect x="0" y="806.456" width="167.669" height="35.433" class="st8"/>
 			<text x="4" y="821.17" class="st9" v:langID="1043"><v:paragraph/><v:tabList/>Erosieve trend en een <tspan x="4"
 						dy="1.2em" class="st10">overschrijding van de basiskustlijn</tspan></text>		</g>
-		<g id="shape11-39" v:mID="11" v:groupContext="shape" transform="translate(42.5197,-639.921)">
-			<title>Blad.11</title>
-			<desc>Geplande suppleties</desc>
-			<v:userDefs>
-				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
-				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
-			</v:userDefs>
-			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
-			<v:textRect cx="83.8346" cy="824.173" width="167.67" height="35.4331"/>
-			<rect x="0" y="806.457" width="167.669" height="35.4331" class="st8"/>
-			<text x="4" y="827.17" class="st9" v:langID="1043"><v:paragraph/><v:tabList/>Geplande suppleties</text>		</g>
-		<g id="shape13-42" v:mID="13" v:groupContext="shape" transform="translate(42.5197,-612.283)">
+		<g id="shape11-39" v:mID="11" v:groupContext="shape" transform="translate(41.599,-642.047)">
 			<title>Blad.13</title>
 			<desc>Jarkus-raaien</desc>
 			<v:userDefs>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
-			<v:textRect cx="83.8346" cy="824.173" width="167.67" height="35.4331"/>
-			<rect x="0" y="806.457" width="167.669" height="35.4331" class="st8"/>
+			<v:textBlock v:margins="rect(3.99999,3.99999,3.99999,3.99999)" v:tabSpace="42.5196"/>
+			<v:textRect cx="83.8341" cy="824.172" width="167.67" height="35.433"/>
+			<rect x="0" y="806.456" width="167.669" height="35.433" class="st8"/>
 			<text x="4" y="827.17" class="st9" v:langID="1043"><v:paragraph/><v:tabList/>Jarkus-raaien</text>		</g>
-		<g id="shape14-45" v:mID="14" v:groupContext="shape" transform="translate(42.5197,-584.646)">
+		<g id="shape12-42" v:mID="12" v:groupContext="shape" transform="translate(41.599,-614.41)">
 			<title>Blad.14</title>
 			<desc>Rijksstrandpalen</desc>
 			<v:userDefs>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
-			<v:textRect cx="83.8346" cy="824.173" width="167.67" height="35.4331"/>
-			<rect x="0" y="806.457" width="167.669" height="35.4331" class="st8"/>
+			<v:textBlock v:margins="rect(3.99999,3.99999,3.99999,3.99999)" v:tabSpace="42.5196"/>
+			<v:textRect cx="83.8341" cy="824.172" width="167.67" height="35.433"/>
+			<rect x="0" y="806.456" width="167.669" height="35.433" class="st8"/>
 			<text x="4" y="827.17" class="st9" v:langID="1043"><v:paragraph/><v:tabList/>Rijksstrandpalen</text>		</g>
-		<g id="shape15-48" v:mID="15" v:groupContext="shape" transform="translate(43.0157,-556.299)">
+		<g id="shape13-45" v:mID="13" v:groupContext="shape" transform="translate(42.095,-586.063)">
 			<title>Blad.15</title>
 			<desc>Basiskustlijn (BKL)</desc>
 			<v:userDefs>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
-			<v:textRect cx="83.8346" cy="824.173" width="167.67" height="35.4331"/>
-			<rect x="0" y="806.457" width="167.669" height="35.4331" class="st8"/>
+			<v:textBlock v:margins="rect(3.99999,3.99999,3.99999,3.99999)" v:tabSpace="42.5196"/>
+			<v:textRect cx="83.8341" cy="824.172" width="167.67" height="35.433"/>
+			<rect x="0" y="806.456" width="167.669" height="35.433" class="st8"/>
 			<text x="4" y="827.17" class="st9" v:langID="1043"><v:paragraph/><v:tabList/>Basiskustlijn (BKL)</text>		</g>
-		<g id="shape5-51" v:mID="5" v:groupContext="shape" transform="translate(23.3858,-654.398)">
-			<title>Cirkel</title>
-			<v:userDefs>
-				<v:ud v:nameU="visVersion" v:val="VT0(14):26"/>
-				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
-				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
-			</v:userDefs>
-			<g id="shadow5-52" v:groupContext="shadow" v:shadowOffsetX="1.44" v:shadowOffsetY="-1.44" v:shadowType="1"
-					transform="matrix(1,0,0,1,1.44,1.44)" class="st2">
-				<path d="M0 838.35 A3.54331 3.54331 0 0 1 7.09 838.35 A3.54331 3.54331 0 1 1 0 838.35 Z" class="st11"/>
-			</g>
-			<path d="M0 838.35 A3.54331 3.54331 0 0 1 7.09 838.35 A3.54331 3.54331 0 1 1 0 838.35 Z" class="st12"/>
-		</g>
-		<g id="shape16-55" v:mID="16" v:groupContext="shape" v:layerMember="0" transform="translate(19.8425,-623.116)">
+		<g id="shape15-48" v:mID="15" v:groupContext="shape" v:layerMember="0" transform="translate(20.3418,-656.42)">
 			<title>Dynamische verbindingslijn</title>
 			<v:userDefs>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<path d="M1.42 838.35 L12.76 831.26" class="st13"/>
+			<path d="M0 841.89 L11.34 834.8 L0 841.89 Z" class="st11"/>
+			<path d="M0 841.89 L11.34 834.8" class="st12"/>
 		</g>
-		<g id="shape17-60" v:mID="17" v:groupContext="shape" v:layerMember="0" transform="translate(19.8425,-595.377)">
+		<g id="shape16-51" v:mID="16" v:groupContext="shape" v:layerMember="0" transform="translate(20.3418,-628.681)">
 			<title>Dynamische verbindingslijn.17</title>
 			<v:userDefs>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<path d="M1.42 838.35 L12.76 831.26" class="st14"/>
+			<path d="M0 841.89 L11.34 834.8 L0 841.89 Z" class="st11"/>
+			<path d="M0 841.89 L11.34 834.8" class="st13"/>
 		</g>
-		<g id="shape18-64" v:mID="18" v:groupContext="shape" v:layerMember="0" transform="translate(20.3386,-567.638)">
+		<g id="shape17-54" v:mID="17" v:groupContext="shape" v:layerMember="0" transform="translate(20.8379,-600.942)">
 			<title>Dynamische verbindingslijn.18</title>
 			<v:userDefs>
 				<v:ud v:nameU="msvThemeColors" v:val="VT0(36):26"/>
 				<v:ud v:nameU="msvThemeEffects" v:val="VT0(16):26"/>
 			</v:userDefs>
-			<path d="M1.42 838.35 L12.76 831.26" class="st15"/>
+			<path d="M0 841.89 L11.34 834.8 L0 841.89 Z" class="st11"/>
+			<path d="M0 841.89 L11.34 834.8" class="st14"/>
 		</g>
 	</g>
 </svg>
