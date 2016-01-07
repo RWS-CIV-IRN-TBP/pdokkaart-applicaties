@@ -49,7 +49,7 @@
 
             // afvoer is category 1 en 3 !
             var icons = [{},Geotool.icons.label_1_xl,{},Geotool.icons.label_2_xl] // only iconnr 1 en 3
-            var params = [ {key:'Q10',name:'Afvoer',units:'m3/sec'}];
+            var params = [ {key:'Q10',name:'Afvoer',units:'m3/sec'}, {key:'Q10V',name:'Afvoer Verwacht',units:'m3/sec'}];
             Geotool.getWaterData(data_uri, api_202.featuresLayer, 'afvoer_en_stroomsnelheid', [1,3], icons, params);
 
             // add legend
