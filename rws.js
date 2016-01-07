@@ -219,7 +219,6 @@ Geotool.createWaterPopup = function(f) {
 
     var graph_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+ f.projecttype+'&category='+ f.category;
     var table_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=data&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+ f.projecttype+'&category='+ f.category;
-
     var meettijd = Geotool.Calendar.formatAsLongDate(f.data.meettijd)  + ' - ' +  Geotool.Calendar.formatAsTime(f.data.meettijd) + '&nbsp;uur';
 
     var html = '<div id="description"><p>'+meettijd+ ' - ' + f.data.locatienaam+'</p></div>';
@@ -235,7 +234,6 @@ Geotool.createWaterPopup = function(f) {
         callback: function(request){
 
             var obj = JSON.parse(request.responseText);
-
             //console.log(obj);
 
             var params = f.params;
@@ -255,7 +253,6 @@ Geotool.createWaterPopup = function(f) {
                 var param = params[i].key;
                 if (obj[param]) { // some dataset have different parameters within their feature (waterhoogte etc)
                     for (var j = 0; j < obj[param].length; j++) {
-                        var row = obj[param][j];
                         var timestamp = obj[param][j]['tijd'];  // string like '1426633800'
                         if (table[timestamp] == undefined) {
                             table[timestamp] = {};
@@ -271,20 +268,6 @@ Geotool.createWaterPopup = function(f) {
             //console.log(table)
 
             var html = '';
-            // we check datumdag and datumtijd for every parameter, because we never know WHICH param is available at this timestamp
-            var datumdag;
-            var datumtijd;
-            // max three params in one table (at this moment)
-            var param0, param1, param2;
-            var param0value='';
-            var param1value='';
-            var param2value='';
-            var param0name='';
-            var param1name='';
-            var param2name='';
-            var param0units='';
-            var param1units='';
-            var param2units='';
             function checkValue(val){
                 if (val == null || val == undefined){
                     return '-'
@@ -293,7 +276,21 @@ Geotool.createWaterPopup = function(f) {
                     return val
                 }
             }
+            var param0name='';
+            var param1name='';
+            var param2name='';
             for (var i=timestamps.length-1;i>=0;i--){
+                // we check datumdag and datumtijd for every parameter, because we never know WHICH param is available at this timestamp
+                var datumdag;
+                var datumtijd;
+                // max three params in one table (at this moment)
+                var param0, param1, param2;
+                var param0value='';
+                var param1value='';
+                var param2value='';
+                var param0units='';
+                var param1units='';
+                var param2units='';
                 var timestamp = timestamps[i];
                 var clazz = 'roweven';
                 if(i%2==1){clazz='rowodd'}
@@ -316,7 +313,6 @@ Geotool.createWaterPopup = function(f) {
                         datumtijd = table[timestamp][param1].datumtijd;
                         param1name = params[1].name;
                         param1units = params[1].units;
-
                     }
                 }
                 if (params[2]){
@@ -357,6 +353,7 @@ Geotool.createWaterPopup = function(f) {
 Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
 
     feature = evt.feature;
+    //console.log(feature)
 
     if (Geotool.useWaterPopup) {
         Geotool.createWaterPopup(feature);
