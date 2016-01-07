@@ -1,0 +1,74 @@
+<html>
+<head>
+</head>
+<body>
+    
+<section class="section">
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-api.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
+<script type="text/javascript" src="../rws.js"></script>
+<script type="text/javascript">
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
+
+var config_515={
+  "mapdiv": "map_515",
+  "zoom": 7,
+  "showscaleline": true,
+  "showmouseposition": true,
+  "loc": "119747.84, 547852.8613239",
+  "baselayers": [
+    {
+      "id": "BRT",
+      "visible": true
+    },
+    {
+      "id": "LUFO",
+      "visible": false
+    }
+  ],
+  "markersdef": "http://pdokserver/pdokkaart/api/js/pdok-markers.js",
+  "layersdef": "http://pdokserver/pdokkaart/api/js/pdok-layers.js"
+};
+var api_515;
+Pdok.ready( function(){
+    api_515 = new Pdok.Api(config_515);
+    api_515.map.removeLayer( api_515.map.getLayersByName("Markers")[0] );
+
+   var zeegras_service = 'http://geoservices.rijkswaterstaat.nl/zeegras';
+   var single_tile = true;
+   var transparant = true;
+   var visibility = false;
+   var rup_2014 = api_515.createWMSLayer({
+        name: 'Ruppia m 2014', layers: 'rup_2014',
+        url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: true})
+   api_515.map.addLayer(rup_2014);
+   var rup_2011 = api_515.createWMSLayer({
+        name: 'Ruppia m 2011', layers: 'rup_2011',
+        url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
+   api_515.map.addLayer(rup_2011);
+   var rup_2010 = api_515.createWMSLayer({
+        name: 'Ruppia m 2010', layers: 'rup_2010',
+        url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
+   api_515.map.addLayer(rup_2010);
+   var rup_2008 = api_515.createWMSLayer({
+        name: 'Ruppia m 2008', layers: 'rup_2008',
+        url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
+   api_515.map.addLayer(rup_2008);
+
+   // add legend
+   Geotool.legend(api_515.map, 'http://geoservices.rijkswaterstaat.nl/zeegras?version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=rup_2014&format=image/png&STYLE=DEFAULT');
+
+} );
+</script>
+
+<div id="map_515" class="olMap fullscreen"></div>
+
+</body>
+</html>
+       
