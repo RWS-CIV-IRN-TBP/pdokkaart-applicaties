@@ -114,6 +114,7 @@
         function DeleteDraw() {
             api_561.map.layers[2].removeAllFeatures();
             api_561.map.layers[3].removeAllFeatures();
+            cleanLocationValues();
         }
 
         function cleanLocationValues() {
@@ -601,7 +602,7 @@ Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$scm', 'aspnetForm', ['t
                 <br/>
                 <div id="map_561" class="olMap big"></div>
 
-                <input type="button" id="delete_button" value="wis" onclick="DeleteDraw()" class="button" style="font-size: 110%; margin-top: 5px;" title="wis nieuwe locatie" disabled="disabled"/>
+                <input type="button" id="delete_button" value="wis" onclick="DeleteDraw()" class="button" style="font-size: 110%; margin-top: 5px;" title="wis nieuwe locatie" _disabled="disabled"/>
                 
             </div>
             <input type="hidden" name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$PdokControl$KmlCoordinates" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_PdokControl_KmlCoordinates" />
