@@ -1,0 +1,906 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="ctl00_ctl00_MasterHead"><title>
+	Toepassingslocatie
+</title><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" /><meta http-equiv="Content-Language" content="nl-NL" /><meta name="inleiding" content="In het Besluit en de Regeling bodemkwaliteit komt het bodembeleid van de laatste jaren samen. De regeling heeft gevolgen voor: kwaliteitsborging (Kwalibo), bouwstoffen, grond en baggerspecie" /><meta name="onderwerp" content="Bodem" /><meta name="trefwoord" content="bodemkwaliteit, bouwstoffen, grond, bagger" /><link href="../../Assets/Css/Rijkshuisstijl_blauw.css" rel="stylesheet" type="text/css" /><link href="../../favicon.ico" rel="icon" type="image/x-icon" />
+    <!--[if lt IE 7]>
+    <link href="../../Assets/Css/Rijkshuisstijl_blauwIE6.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    <!-- JSCalendar Stylesheet-->
+    <link href="../../Assets/JSCalendar/calendar-blue.css" type="text/css" rel="Stylesheet" />
+    
+
+    <script type="text/javascript">
+        window.history.forward(1);
+
+        function callKey(e, sender) {
+            // window.event.keyCode      
+            var keynum;
+            var keychar;
+            var numcheck;
+            if (window.event) // IE
+            {
+                keynum = e.keyCode;
+            }
+            else if (e.which) // Netscape/Firefox/Opera
+            {
+                keynum = e.which;
+            }
+            if (keynum == 110) {
+                sender.value += ",";
+                return false;
+            }
+        }
+
+        function AddCalendar(inputField, button) {
+            Calendar.setup(
+                {
+                    inputField: inputField,
+                    ifFormat: "%d-%m-%Y",
+                    daFormat: "%d-%m-%Y",
+                    showsTime: false,
+                    button: button,
+                    step: 1,
+                    firstDay: 1
+                }
+            );
+        }
+    </script>
+
+    <!-- BEGIN VOOR JACCO -->
+    <!-- Versie 26 jan 14:27)
+    <!--  http://pdokserver/ vs http://demo-geoservices.rijkswaterstaat.nl/ -->`
+    <script type="text/javascript" src="http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/js/OpenLayers.js"></script>
+    <script type="text/javascript" src="http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/js/proj4js-compressed.js"></script>
+    <script type="text/javascript" src="http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/js/pdok-api.js"></script>
+    <script type="text/javascript" src="http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/js/geozetlib.js"></script>
+    <script type="text/javascript" src="http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/js/pdok-markers.js"></script>
+    <script type="text/javascript" src="http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/js/pdok-layers.js"></script>
+    <script type="text/javascript">
+        Pdok.addcss("http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/styles/default/style.css");
+        Pdok.addcss("http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/styles/api.css");
+
+        var X_INPUT = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X";
+        var Y_INPUT = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y";
+        var POLYGON_INPUT = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Coordinaten";
+
+        // Disable default ProxyHost (geocoder should work anyway because of CORS header at pdok)
+        OpenLayers.ProxyHost = "";
+
+        var config_561 = {
+            "mapdiv": "map_561",
+            "zoom": 12,
+            "showlayerswitcher": false,
+            "showzoom": false,
+            "showscaleline": true,
+            "showmouseposition": true,
+            "geocoder": "{}",
+            "loc": "82113.53, 453633.951875",
+            "baselayers": [
+              {
+                  "id": "BRT",
+                  "visible": true
+              },
+              {
+                  "id": "LUFO",
+                  "visible": false
+              }
+            ],
+            //"locationtool": true,
+            "locationtoolstyle": "mt0",
+            "locationtoolxfield": X_INPUT,
+            "locationtoolyfield": X_INPUT,
+            //"locationtoolurlfield": false,
+            "locationtoolzmin": 12,
+            "locationtoolzmax": 14,
+            "markersdef": "http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/js/pdok-markers.js",
+            "layersdef": "http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/js/pdok-layers.js"
+        };
+
+        var api_561;
+
+        function SelectPolygon() {
+            api_561.setLocationToolProps("pt0", 12, 14, false, POLYGON_INPUT, null);
+            api_561.enableLocationTool();
+            cleanLocationValues();
+        }
+
+        function SelectPoint() {
+            api_561.setLocationToolProps("mt8", 12, 14, false, X_INPUT, Y_INPUT);
+            api_561.enableLocationTool();
+            cleanLocationValues();
+        }
+
+        function DeleteDraw() {
+            api_561.map.layers[2].removeAllFeatures();
+            api_561.map.layers[3].removeAllFeatures();
+        }
+
+        function cleanLocationValues() {
+            document.getElementById(POLYGON_INPUT).value = '';
+            document.getElementById(X_INPUT).value = '';
+            document.getElementById(Y_INPUT).value = '';
+        }
+
+        Pdok.ready(
+            function () {
+
+                api_561 = new Pdok.Api(config_561);
+
+                // either get x,y or coordinates
+                var polygon = document.getElementById(POLYGON_INPUT).value;
+                var x = document.getElementById(X_INPUT).value;
+                var y = document.getElementById(Y_INPUT).value;
+
+                var wktFormat = new OpenLayers.Format.WKT();
+
+                var kmlFormat = new OpenLayers.Format.KML({
+                    'internalProjection': new OpenLayers.Projection("EPSG:28992"),
+                    'externalProjection': new OpenLayers.Projection("EPSG:4326")
+                });
+
+                if (polygon && polygon.length > 0) {
+                    // set location tool props to pt0 (== polygon type 0)
+                    api_561.setLocationToolProps("pt0", 0, 14, false, POLYGON_INPUT, null);
+                    // example polygon WKT:
+                    // Polygon ((135674 497761, 135628 497697, 135706 497615, 135773 497663, 135761 497726, 135716 497763, 135716 497763, 135674 497761))
+                    var features = wktFormat.read(polygon);
+                    // we have an x,y point (in epsg28992)
+                    var feature = wktFormat.read(polygon);
+                    // style the feature (based on locationtool style)
+                    feature.style = api_561.styles[api_561.locationtoolstyle];
+                    feature.attributes['styletype'] = api_561.locationtoolstyle;
+                    api_561.locationLayer.addFeatures([feature]);
+                    // zoom to data extent
+                    var totalFeaturesExtent = api_561.locationLayer.getDataExtent();
+                    api_561.disableLocationTool
+                    api_561.featuresLayer.map.zoomToExtent(totalFeaturesExtent);
+                }
+                else if ((x && x.length > 0) && (y && y.length > 0)) {
+                    // set location tool props to mt8 (== polygon type 0)
+                    api_561.setLocationToolProps("mt8", 0, 14, false, X_INPUT, Y_INPUT);
+                    // we have an x,y point (in epsg28992)
+                    var feature = wktFormat.read("POINT(" + x + " " + y + ")");
+                    // style the feature (based on locationtool style)
+                    feature.style = api_561.styles[api_561.locationtoolstyle];
+                    feature.attributes['styletype'] = api_561.locationtoolstyle;
+                    api_561.locationLayer.addFeatures([feature]);
+                    // zoom to data extent
+                    var totalFeaturesExtent = api_561.locationLayer.getDataExtent();
+                    api_561.featuresLayer.map.zoomToExtent(totalFeaturesExtent);
+                }
+                else {
+                    // we have nothing yet let user select point or polygon tool
+                }
+                // register a function to set x,y when a features is added to be able to set center of polygon
+                api_561.locationLayer.events.register("featureadded", null, function (evt) {
+                    var feature = evt.feature;
+                    if (feature.geometry.CLASS_NAME === 'OpenLayers.Geometry.Polygon') {
+                        // alert('Centrum van Gebied als XY ingevuld.');
+                        var center = feature.geometry.getCentroid();
+                        document.getElementById(X_INPUT).value = center.x;
+                        document.getElementById(Y_INPUT).value = center.y;
+                    }
+                });
+
+                // reset the default type of the search button from submit to button
+                // otherwise the form/page will be submitted
+                document.getElementById('gcr_26_button').setAttribute("type", "button");
+                // prevent submitting page when entering ENTER in search
+                var preventSubmit = function (e) {
+                    if (e.keyCode == 13) {
+                        e.preventDefault();
+                        return false;
+                    }
+                };
+                document.getElementById('gcr_26_input').addEventListener("keypress", preventSubmit);
+                document.getElementById('gcr_26_input').addEventListener("keydown", preventSubmit);
+                document.getElementById('gcr_26_input').addEventListener("keyup", preventSubmit);
+            }
+        );
+
+        function permalink(){
+            // move features from locationlayer to markerslayer
+            api_561.map.layers[2].features = api_561.map.layers[3].features;
+            api_561.map.layers[3].removeAllFeatures();
+            // create a link
+            link = api_561.createMapLink();
+            // replace the wrong host with the right one
+            link = link.replace(/^.*api\/api.html/, "http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/api.html");
+            //window.open(link, '_blank');
+            alert(link);
+            return link;
+        }
+        
+    </script>
+    <!-- EIND VOOR JACCO -->
+
+<link href="/WebResource.axd?d=94KamMHOaMZfFJIK1C-wRUMP6K8ABlPh_Qnix1uACHEUBHdwtyN4twsiZ50L0k1fEcib-Vcd_nOFkrcPdgCb4Uedxrwhk7Vx5c3-vx6Hf8zedKPr-A_5b_e_5zhdFQRNMKdiWCL2rT_INRnVVJ-UAbg-1EmDFrvAeApsS4ju--RmWTJn0&amp;t=635877742198566944" type="text/css" rel="stylesheet" /><link href="/WebResource.axd?d=3OB99MI1t2dWnHBtFCSTa1FqG5L_TKQj_P8tJ_kR5CYhdshHoJmDEJgcAvgNAilM_5X3hfrp8YCm0bQbxywz5chst_ZZgUszDsUGN7LlpByAr1VDgk5bPZkN0VRSp664O21XGEB7MshnkLZLF6WgLTlqNXI1&amp;t=635877742198566944" type="text/css" rel="stylesheet" /></head>
+<body onload="javascript:window.focus();" onunload="javascript:OnWindowClose(event);">
+    <form name="aspnetForm" method="post" action="ToepassingsLocatie.aspx" onsubmit="javascript:return WebForm_OnSubmit();" onkeypress="javascript:return WebForm_FireDefaultButton(event, 'ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_footer_next_button')" id="aspnetForm" enctype="multipart/form-data">
+<div>
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEyMTQ3OTUzNjMPZBYCZg9kFgJmD2QWAgIDDxYCHgdlbmN0eXBlBRNtdWx0aXBhcnQvZm9ybS1kYXRhFgoCDQ8PZBYCHgdvbmNsaWNrBdgBdGVzdHdpbmRvdz13aW5kb3cub3BlbigiaHR0cDovL2xvY2FsaG9zdDo4Mi8vUGFnZXMvSGVscC9IZWxwLmFzcHg/SGVscElkPTEiLCAiaGVscCIsICJ3aWR0aD05ODAsdG9vbGJhcj1ubyxtZW51YmFyPW5vLGxvY2F0aW9uPW5vLHJlc2l6YWJsZT15ZXMsc2Nyb2xsYmFycz15ZXMiKTt0ZXN0d2luZG93Lm1vdmVUbygwLDApO3Rlc3R3aW5kb3cuZm9jdXMoKTtyZXR1cm4gZmFsc2U7ZAIPDxYCHgRocmVmZGQCEQ9kFgYCAQ8PFgIeB1Zpc2libGVoZGQCAw8PFgIfA2hkZAIFDw8WAh8DaGRkAhMPDxYCHgRUZXh0BRJNZWxkbnVtbWVyIDM2MDMwLjBkZAIVD2QWAgIDD2QWAmYPZBYCZg9kFgQCBQ9kFgQCAQ9kFgYCCA8PFgQeCENzc0NsYXNzBQ1ibG9ja192aXNpYmxlHgRfIVNCAgJkZAILDw8WBB8FBQ1ibG9ja192aXNpYmxlHwYCAmRkAgwPDxYEHwUFD2Jsb2NrX2ludmlzaWJsZR8GAgJkZAIHD2QWAgIED2QWAmYPZBYGAgMPZBYCAgEPEA8WAh8DaGRkFgFmZAIFDw8WBB8FBQ9ibG9ja19pbnZpc2libGUfBgICZGQCBw8PFgQeDEVycm9yTWVzc2FnZQWwAURpZ2l0YWxlIGFhbmxldmVyaW5nIHZhbiBkZXplIGZpbGUgaXMgYWxsZWVuIG1vZ2VsaWprIGluIFBERi0sIEpQRy0sIEdJRi0sIFhMUy0sIERPQy0sIG9mIFRJRkYtZm9ybWFhdC4gQW5kZXJlIGZvcm1hdGVuIGt1bm5lbiBzY2hyaWZ0ZWxpamsgd29yZGVuIGFhbmdlbGV2ZXJkIGJpaiBkZSBtZWxka2FtZXIuHhRWYWxpZGF0aW9uRXhwcmVzc2lvbgVjXltcU1xzXStcLihqcGd8SlBHfEpwZ3xnaWZ8R0lGfEdpZnx4bHN8WExTfFhsc3xkb2N8RE9DfERvY3x0aWZ8VElGfFRpZnx0aWZmfFRJRkZ8VGlmZnxwZGZ8UERGfFBkZikkZGQCBw9kFgJmDxYCHwQFHEFhbnRhbCBnZXdlaWdlcmRlIHZlbGRlbjogMC5kZFryczDAxiwxAw4DmHf99+xUd+DV" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=SwCcMWJbC5HPR0GyMZBQBtBVcjnGUcMopW87tvl8Uit8R50NU80PEVSNB0QE3yO4gBE2-WhW3juPH3Ip9UUH7diWR5A1&amp;t=635720597516607420" type="text/javascript"></script>
+
+
+<script src="../../Assets/JSCalendar/calendar.js" type="text/javascript"></script>
+<script src="../../Assets/JSCalendar/calendar-setup.js" type="text/javascript"></script>
+<script src="../../Assets/JSCalendar/lang/calendar-du.js" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=jOGxQGN59jALlw_Z1PRxPfmS-Xppvs8izQfuNMHYj35_zT6Zd3JCd5GnuBy_KVgc3vcdXbkfuK0SsSvYck6nRpmvO8TXLM9OC4xICzx9PeHHLdOSU5QqsTI9r7E0Th_Q93wdoDZK-fkBBUtQNiHH9Sc4Pow1&amp;t=5bc3c2d1" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+var __cultureInfo = {"name":"nl-NL","numberFormat":{"CurrencyDecimalDigits":2,"CurrencyDecimalSeparator":",","IsReadOnly":true,"CurrencyGroupSizes":[3],"NumberGroupSizes":[3],"PercentGroupSizes":[3],"CurrencyGroupSeparator":".","CurrencySymbol":"","NaNSymbol":"NaN","CurrencyNegativePattern":12,"NumberNegativePattern":1,"PercentPositivePattern":0,"PercentNegativePattern":0,"NegativeInfinitySymbol":"-Infinity","NegativeSign":"-","NumberDecimalDigits":2,"NumberDecimalSeparator":",","NumberGroupSeparator":".","CurrencyPositivePattern":2,"PositiveInfinitySymbol":"Infinity","PositiveSign":"+","PercentDecimalDigits":2,"PercentDecimalSeparator":",","PercentGroupSeparator":".","PercentSymbol":"%","PerMilleSymbol":"","NativeDigits":["0","1","2","3","4","5","6","7","8","9"],"DigitSubstitution":1},"dateTimeFormat":{"AMDesignator":"","Calendar":{"MinSupportedDateTime":"\/Date(-62135596800000)\/","MaxSupportedDateTime":"\/Date(253402297199999)\/","AlgorithmType":1,"CalendarType":1,"Eras":[1],"TwoDigitYearMax":2029,"IsReadOnly":true},"DateSeparator":"-","FirstDayOfWeek":1,"CalendarWeekRule":2,"FullDateTimePattern":"dddd d MMMM yyyy HH:mm:ss","LongDatePattern":"dddd d MMMM yyyy","LongTimePattern":"HH:mm:ss","MonthDayPattern":"d MMMM","PMDesignator":"","RFC1123Pattern":"ddd, dd MMM yyyy HH\u0027:\u0027mm\u0027:\u0027ss \u0027GMT\u0027","ShortDatePattern":"d-M-yyyy","ShortTimePattern":"HH:mm","SortableDateTimePattern":"yyyy\u0027-\u0027MM\u0027-\u0027dd\u0027T\u0027HH\u0027:\u0027mm\u0027:\u0027ss","TimeSeparator":":","UniversalSortableDateTimePattern":"yyyy\u0027-\u0027MM\u0027-\u0027dd HH\u0027:\u0027mm\u0027:\u0027ss\u0027Z\u0027","YearMonthPattern":"MMMM yyyy","AbbreviatedDayNames":["zo","ma","di","wo","do","vr","za"],"ShortestDayNames":["zo","ma","di","wo","do","vr","za"],"DayNames":["zondag","maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag"],"AbbreviatedMonthNames":["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec",""],"MonthNames":["januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december",""],"IsReadOnly":true,"NativeCalendarName":"Gregoriaanse kalender","AbbreviatedMonthGenitiveNames":["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec",""],"MonthGenitiveNames":["januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december",""]},"eras":[1,"n.Chr.",null,0]};//]]>
+</script>
+
+<script src="/ScriptResource.axd?d=KUQ5QzCPc39yQrRqZ09wCtGl2hL_GgfGJ-PRbaHD0ZPg5Y7wt82h9bzxqPdyNS3Kdj6jTkxso_Xb5_mi_Ec-5Zgwzzl2vfDVEVGJ9ijYcDOjY_2BFY1J-emomwl_N8Gdwq_nDltG-WGvBrg50-IYDMj6ZgIthNsKzl11pOx_l065hjpS0&amp;t=79eb847f" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+if (typeof(Sys) === 'undefined') throw new Error('ASP.NET Ajax client-side framework failed to load.');
+//]]>
+</script>
+
+<script src="/ScriptResource.axd?d=mwTtg_Wai1zwdfVS8DMhG-CJF2EzezlMj6L_5JBaZ6e-vyB4Cowk489gZUKy1uUAINFHmtetDB3NkPofcY8cnG9wlosjKQWLl25xPeuoAl3_k4GiQqqE7HWnKsEcfYH2oW0whNQWHpmGFaTpCg9pJ27SMqxfbOF-RXd1Evl97j0XObZwckKRiBx85m1COhXAVB6_0w2&amp;t=79eb847f" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=t0scn8hADciB0_kgCQF31S6qUNcfbXlJYYp_O9t4kE963mnwKgU4_mC6cldiXqTfaPBAaqMXoNqUc1SMiZa72kX_36zV8BHOMGXoA7sxbVcmijzTPJrswo4xf2MMa-fxtHpUnbNkwbfxOpvVTeRUxuq1MPc1&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=ZpvaJYuLR0VvLu88yUquJUglORHNGR8J5nbT56qn2WgxXJbptYW79Qd5IrdTgFH0GKUn0F6DJMWV66ytEtN8quVo9HJnha2c-GSXPZIB7MPp688COaKgvNkTJr1J1ggD5WlyhtMnWkNLzTJaV2fxbn4awsI1&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=dAzKODkgvkC77bHISKwTIAg2PYpDpv0ISfR3bBIysGM45xOd9DXxaW5FyZ8zVHruG1aWPTPiSe-sMToVMb5O9hsB7HPXfUtDrjehpEluPKg1rDZjyt5g8qoP569XvgjairItaw2&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=IDFqQnrhnwtzpSqr7eU1j4HZ36FAjPwz-MtqzRLNCCD7R_pEG6BUkicUlyNhD0NhINz8g4KqqbhMGoQlS2B1J8ISmXlh1VeqZjqE5ueJlwqS4RDy3HpVqFWZt-et-eax88jVgQ2&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=V_9rBZttqJgQEUtEsd3SNLSZ4-aXEDezdCguTKyJgcuiQCyjv0KCeChSs1-ZqqYU0jLJOSirXvVgSe9zXzDHILhz98nhFTxCmaSJ34qRKNPvtSJsnc497FQOmks7SSeI7G1q5A2&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=kl2NORCKnoZR0cmxRQHAPKYfxTcapnBac-h_uyCJEQi-ElzrqIMp29MuGEPs9hYdhDbLs2c9lGG_JuDyQS7eG6jrI7wdfmW01FucZenj_3uAzNwUvbEesOjVfTA3EJxMdkAJdg2&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=GXF0UzBy2TkzoGa793PDn0xvwozxhfA87ibQZYtJULyxlh24ECHemcrBL_mRVHZKyqmmvc95q4Sb3CeK-WtNGg_Lzf1xe6OypytReDY2dPSN3iN4yMpuHA2DknWYMfjgCfX1tw2&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=n0qO4hwiFhchQE1g4HI_Cz9iTwgU0xLkYSZniIGPigZcUXQKoI2aoUzNhAfnDKA2lu96kHHPeDXmjg_oxepC4pVTw10FkEEpnC4tXH-VFLTqmDTUzQmcZz6MjOcrlt2VTj5dlA2&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=bGZ78G8DqyTXCPYE22OGEXF9ZRtrAWGrFAARPMZmxCgAK-X82LJHhptFCKGkvjjsAwaaLq4Vvp21j-_r8TvBPJdxAOLPf5VfsRjGMT9_am5HNNrCJ_h3D9_HFXjucyFQVUnJeg2&amp;t=ac64ff3" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=Y4YVnQYXSvrpbjWJDVGkFzL7SBA8oWPLaoN1YOs1H7dRijQbFuLSTvKGKzbDYyNFHsXdkck5Hx5j45qe3m2wgJtQwLEaTRoWY2o7Vf0hMixuMcReKm8acAJX2WTyTWpeuanlZg2&amp;t=ac64ff3" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+var PageMethods = function() {
+PageMethods.initializeBase(this);
+this._timeout = 0;
+this._userContext = null;
+this._succeeded = null;
+this._failed = null;
+}
+PageMethods.prototype = {
+_get_path:function() {
+ var p = this.get_path();
+ if (p) return p;
+ else return PageMethods._staticInstance.get_path();},
+ClearFlowFromSession:function(succeededCallback, failedCallback, userContext) {
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+return this._invoke(this._get_path(), 'ClearFlowFromSession',false,{},succeededCallback,failedCallback,userContext); }}
+PageMethods.registerClass('PageMethods',Sys.Net.WebServiceProxy);
+PageMethods._staticInstance = new PageMethods();
+PageMethods.set_path = function(value) {
+PageMethods._staticInstance.set_path(value); }
+PageMethods.get_path = function() { 
+/// <value type="String" mayBeNull="true">The service url.</value>
+return PageMethods._staticInstance.get_path();}
+PageMethods.set_timeout = function(value) {
+PageMethods._staticInstance.set_timeout(value); }
+PageMethods.get_timeout = function() { 
+/// <value type="Number">The service timeout.</value>
+return PageMethods._staticInstance.get_timeout(); }
+PageMethods.set_defaultUserContext = function(value) { 
+PageMethods._staticInstance.set_defaultUserContext(value); }
+PageMethods.get_defaultUserContext = function() { 
+/// <value mayBeNull="true">The service default user context.</value>
+return PageMethods._staticInstance.get_defaultUserContext(); }
+PageMethods.set_defaultSucceededCallback = function(value) { 
+ PageMethods._staticInstance.set_defaultSucceededCallback(value); }
+PageMethods.get_defaultSucceededCallback = function() { 
+/// <value type="Function" mayBeNull="true">The service default succeeded callback.</value>
+return PageMethods._staticInstance.get_defaultSucceededCallback(); }
+PageMethods.set_defaultFailedCallback = function(value) { 
+PageMethods._staticInstance.set_defaultFailedCallback(value); }
+PageMethods.get_defaultFailedCallback = function() { 
+/// <value type="Function" mayBeNull="true">The service default failed callback.</value>
+return PageMethods._staticInstance.get_defaultFailedCallback(); }
+PageMethods.set_enableJsonp = function(value) { PageMethods._staticInstance.set_enableJsonp(value); }
+PageMethods.get_enableJsonp = function() { 
+/// <value type="Boolean">Specifies whether the service supports JSONP for cross domain calling.</value>
+return PageMethods._staticInstance.get_enableJsonp(); }
+PageMethods.set_jsonpCallbackParameter = function(value) { PageMethods._staticInstance.set_jsonpCallbackParameter(value); }
+PageMethods.get_jsonpCallbackParameter = function() { 
+/// <value type="String">Specifies the parameter name that contains the callback function name for a JSONP request.</value>
+return PageMethods._staticInstance.get_jsonpCallbackParameter(); }
+PageMethods.set_path("ToepassingsLocatie.aspx");
+PageMethods.ClearFlowFromSession= function(onSuccess,onFailed,userContext) {
+/// <param name="succeededCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="failedCallback" type="Function" optional="true" mayBeNull="true"></param>
+/// <param name="userContext" optional="true" mayBeNull="true"></param>
+PageMethods._staticInstance.ClearFlowFromSession(onSuccess,onFailed,userContext); }
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+//]]>
+</script>
+
+    <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$scm', 'aspnetForm', ['tctl00$ctl00$FullPageContentPlaceHolder$MenuContentPlaceHolder$updMenu','','tctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$updQuestionPanel','','tctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$updPanel_XY','','tctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$sfuPlattegrond$updPnlBestanden',''], [], ['ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$sfuPlattegrond$btnToevoegen',''], 90, 'ctl00$ctl00');
+//]]>
+</script>
+
+    <div id="volledig">
+        <div id="paginabox">
+        <div id="servicemenu">
+                <div id="loginmenu">
+                    
+                    
+                </div>
+                <div id="contactmenu">
+                    <a id="ctl00_ctl00_aboutHyperLink" CausesValidation="false" href="http://www.rwsleefomgeving.nl/onderwerpen/bodem-ondergrond/bbk/meldpunt" target="_blank">Over Meldsysteem besluit bodemkwaliteit</a>
+                    <a id="ctl00_ctl00_faqHyperLink" CausesValidation="false" href="http://www.rwsleefomgeving.nl/onderwerpen/bodem-ondergrond/bbk/vragen" target="_blank">Veel gestelde vragen</a>
+                    <a id="ctl00_ctl00_contactHyperLink" CausesValidation="false" href="https://www.rwsleefomgeving.nl/helpdesk/slim/helpdeskformulier" target="_blank">Contact</a>
+                    <a id="ctl00_ctl00_helpHyperLink" onclick="testwindow=window.open(&quot;http://localhost:82//Pages/Help/Help.aspx?HelpId=1&quot;, &quot;help&quot;, &quot;width=980,toolbar=no,menubar=no,location=no,resizable=yes,scrollbars=yes&quot;);testwindow.moveTo(0,0);testwindow.focus();return false;" href="../../MasterPages/#">Help</a>
+                </div>
+            </div>
+            <div>
+                
+                <a id="ctl00_ctl00_hrefLogo">
+                    <img src="../../Assets/Img/Menu/RO_IM_RW_Logo.png" id="ctl00_ctl00_rijkslogo" class="rijkslogo" alt="Meldsysteem besluit bodemkwaliteit" />
+                </a>
+            </div>
+            <div id="kop">
+                <div id="kopmenu">
+                    <div id="ctl00_ctl00_kopmenuPanel">
+	
+                        
+                        
+                        
+                    
+</div>
+                     <span id="ctl00_ctl00_MeldNummerLabel" class="meldingnummer">Meldnummer 36030.0</span>
+                </div>
+            </div>
+            <div id="koprand">
+            </div>
+            <div id="pagina">
+                
+
+    <script type="text/javascript">
+
+        //This method is called whenever a browser window is closed. It calls the ClearFlowFromSession method in the BasePage.
+        function OnWindowClose(evt) {
+            var e = (window.event) ? window.event : evt;
+
+            if (e.clientY < 0) //Only works for IE but not for firefox.
+            {
+                //JdV 23-07-2013: Gaat fout in IE10
+                //PageMethods.ClearFlowFromSession();
+            }
+        }
+    </script>
+
+    <div id="menu" style="display:none;">
+        
+    <div id="ctl00_ctl00_FullPageContentPlaceHolder_MenuContentPlaceHolder_updMenu">
+	
+            <div id="ctl00_ctl00_FullPageContentPlaceHolder_MenuContentPlaceHolder_menuPanel">
+		<div>
+			<div class="menu">
+				<span class="menu_meldingtype">Toepassing partij</span>
+			</div><div class="visited_menu_step">
+				<a class="visitedmenulabel" href="javascript:__doPostBack(&#39;ctl00$ctl00$FullPageContentPlaceHolder$MenuContentPlaceHolder$ctl05&#39;,&#39;&#39;)">1. Gegevens toepasser / eigenaar</a>
+			</div><div class="visited_menu_step">
+				<a class="visitedmenulabel" href="javascript:__doPostBack(&#39;ctl00$ctl00$FullPageContentPlaceHolder$MenuContentPlaceHolder$ctl07&#39;,&#39;&#39;)">2. Gegevens toepasser / uitvoerder</a>
+			</div><div class="visited_menu_step">
+				<a class="visitedmenulabel" href="javascript:__doPostBack(&#39;ctl00$ctl00$FullPageContentPlaceHolder$MenuContentPlaceHolder$ctl09&#39;,&#39;&#39;)">3. Beoogde toepassing</a>
+			</div><div class="visited_menu_step">
+				<a class="visitedmenulabel" href="javascript:__doPostBack(&#39;ctl00$ctl00$FullPageContentPlaceHolder$MenuContentPlaceHolder$ctl11&#39;,&#39;&#39;)">4. Project details</a>
+			</div><div class="visited_menu_step">
+				<a class="visitedmenulabel" href="javascript:__doPostBack(&#39;ctl00$ctl00$FullPageContentPlaceHolder$MenuContentPlaceHolder$ctl13&#39;,&#39;&#39;)">5. Toepassing details</a>
+			</div><div class="selected_menu_step">
+				<span>6. Toepassingslocatie</span>
+			</div><div class="menulabel">
+				<span>7. Herkomstlocatie</span>
+			</div><div class="menulabel">
+				<span>8. Bevoegd gezag</span>
+			</div><div class="menulabel">
+				<span>9. Bodemfunctieklasse</span>
+			</div><div class="menulabel">
+				<span>10. Milieuhygiënische verklaringen</span>
+			</div><div class="menulabel">
+				<span>11. Melding voltooien</span>
+			</div><div class="menulabel">
+				<span>12. Melding verzonden</span>
+			</div>
+		</div>
+	</div>
+        
+</div>
+
+    </div>
+    <div id="content_3colright">
+        
+
+    <script type="text/javascript">
+        function ShowError(message) {
+            document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_lblWarning').innerHTML = message;
+            document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_DivErrorBlock').className = "error_block";
+        }
+
+        function ShowNoError() {
+            document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_lblWarning').innerHTML = "";
+            document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_DivErrorBlock').className = "block_invisible";
+        }
+    </script>
+
+    <div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_updQuestionPanel">
+	
+            <div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_headerPanel" class="header">
+		<span>6. Adresgegevens van de toepassingslocatie</span>
+	</div>
+            <div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_DivErrorBlock" class="block_invisible">
+                    <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_lblWarning" class="error_label">U heeft de toepassingslocatie XY handmatig gewijzigd. Hierdoor krijgt u geen kaart in de melding PDF</span>
+            </div>
+            <div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_contentPanel" class="content">
+		
+                
+    
+<style type="text/css">
+    #ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_updPanel_XY
+    {
+    display: inline;
+    }
+</style>
+        
+<div class="question_block">
+    <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Adres_Label" class="label">Adres</span>
+    <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Straat" type="text" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat" class="text" />
+    <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_Label" class="small_label">Nr</span>
+    <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Nummer" type="text" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer" class="text huisnummer" />
+    <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_Label" class="small_label">Huisletter</span>
+    <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Huisletter" type="text" maxlength="1" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter" class="smaller text" />
+    <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_Label" class="small_label">Toevoeging</span>
+    <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Toevoeging" type="text" maxlength="5" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging" class="nummertoevoeging text" />
+</div>
+
+<div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_BinnenLandPanel1" class="block_visible">
+			
+    <div class="fullsize">
+        <div class="question_block">
+            <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_Label" class="label">Postcode</span>
+            <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Postcode" type="text" value="      " maxlength="6" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode" class="text" />
+            <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_PostcodeFormatLabel" class="labelexample">(9999XX)</span>
+        </div>
+    </div>
+
+		</div>
+<div class="fullsize">
+    <div class="question_block">
+        <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_Label" class="label">Plaats</span>
+        <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Plaats" type="text" value="Capelle" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats" class="text" />
+    </div>
+</div>
+<div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_BinnenLandPanel2" class="block_visible">
+			
+    <div class="fullsize">
+        <div class="question_block">
+            <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_XY_label" class="label">XY-coördinaten</span>
+            <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$X" type="text" value="150000" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X" class="text" />
+            <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Y" type="text" value="450000" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y" class="text" />
+            <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Coordinaten" type="text" value="Polygon ((135674 497761, 135628 497697, 135706 497615, 135773 497663, 135761 497726, 135716 497763, 135716 497763, 135674 497761))" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Coordinaten" class="text" />
+
+            <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Image" type="text" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Image" class="block_invisible" />
+            <div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_updPanel_XY">
+				
+                    <input type="button" name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$btnSelecteerXY" value="Selecteer XY" onclick="javascript:OpenKaartPC();__doPostBack(&#39;ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$btnSelecteerXY&#39;,&#39;&#39;)" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_btnSelecteerXY" class="button" style="font-size: 110%" />
+                    <input type="button" name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$btnToonXY" value="Toon XY" onclick="javascript:OpenKaart();__doPostBack(&#39;ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$btnToonXY&#39;,&#39;&#39;)" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_btnToonXY" class="button" style="font-size: 110%" />
+                
+			</div>
+        </div>
+    </div>
+    <div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_PanelZCoordinaat">
+				
+        <div class="fullsize">
+            <div class="question_block">
+                <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Dieptetraject_Label" class="label">Bodemlaag hoogte t.o.v. maaiveld (meter)</span>
+                <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Z" type="text" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z" class="text" onkeydown="return callKey(event,this)" />
+            </div>
+        </div>
+    
+			</div>
+
+		</div>
+<div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_BuitenLandPanel" class="block_invisible">
+			
+    <div class="fullsize">
+        <div class="question_block">
+            <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Land_Label" class="label">Land</span>
+            <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Land" type="text" maxlength="24" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Land" class="text" />
+        </div>
+    </div>
+    <div class="fullsize">
+        <div class="question_block">
+            <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_EVOA_nummer" class="label">EVOA-nummer</span>
+            <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$EVOA" type="text" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_EVOA" class="text" />
+        </div>
+    </div>
+
+		</div>
+<div class="fullsize">
+    <div class="question_block">
+        <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_Label" class="label">Vrije tekst voor omschrijving van locatie</span>
+        <textarea name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$LocatieOmschrijving" rows="5" cols="20" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving" class="text_larger">
+</textarea>
+    </div>
+</div>
+<input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$OrigineelX" type="text" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_OrigineelX" class="block_invisible" />
+<input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$OrigineelY" type="text" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_OrigineelY" class="block_invisible" />
+<input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$OrigineelCoordinaten" type="text" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_OrigineelCoordinaten" class="block_invisible" />
+
+<script type="text/javascript">
+    function ResetImage() {
+        document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Image').value = '';
+
+        if (document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_OrigineelX').value != '') 
+        {
+            if (document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_OrigineelX').value != document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X').value ||
+                document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_OrigineelY').value != document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y').value) 
+                {
+                    ShowError("U heeft de toepassingslocatie XY handmatig gewijzigd. Hierdoor krijgt u geen kaart in de melding PDF");  
+                }
+            else 
+            {                 
+                ShowNoError();
+            }
+        }
+        else 
+        {
+            if (document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_OrigineelX').value != document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X').value ||
+                document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_OrigineelY').value != document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y').value) 
+                {
+                    ShowError("U heeft de toepassingslocatie XY handmatig ingevoerd. Hierdoor krijgt u geen kaart in de melding PDF");
+                }
+            else 
+            {
+                ShowNoError();           
+            }
+        }
+    }
+</script>
+
+
+                <div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_PdokControl_pdokpanel" class="block_visible">
+			
+
+    <div class="fullsize">
+        <div class="question_block">
+            <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_PdokControl_LocatieOmschrijving_Label" class="label">Selecteer de locatie</span>
+                
+            <div id="controls" class="column_right" style="width: 97%; float: right;">
+                <input type="radio" id="point_radio" name="group1" onclick="SelectPoint()" _checked="checked"/><label for="point_radio">Punt</label>
+                <br/>
+                <input type="radio" id="polygon_radio" name="group1" onclick="SelectPolygon()" /><label for="polygon_radio">Gebied</label>
+                <br/>
+                <button type="button" id="permalinkbtn" onclick="permalink()" >PERMALINK</button><!--<label for="permalinkbtn">PERMALINK IN ALERT</label>-->
+                <br/>
+                <div id="map_561" class="olMap big"></div>
+
+                <input type="button" id="delete_button" value="wis" onclick="DeleteDraw()" class="button" style="font-size: 110%; margin-top: 5px;" title="wis nieuwe locatie" disabled="disabled"/>
+                
+            </div>
+            <input type="hidden" name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$PdokControl$KmlCoordinates" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_PdokControl_KmlCoordinates" />
+        </div>
+    </div>
+
+
+		</div>              
+                <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_Label1" class="questionheader">Plattegrond:</span>
+                
+<!-- The following script links the FileUpload control to the dummy input so that it can 
+         copy the value of the dummy input to the FileUpload control so that we can make use of it 
+         in the code-behind file. -->
+
+<div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_pnlError" class="block_invisible">
+			
+    <div class="DivErrorBlock">
+        <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_lblErrorMessage" class="error_label"></span>
+    </div>
+
+		</div>
+<div class="question_block">
+    
+    <div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_updPnlBestanden">
+			
+            
+            <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_lblBestand" class="label">Voeg eventueel de plattegrond van de toepassing toe.</span>
+            <div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_pnlFileUpload" class="block_visible">
+				
+                
+                <input type="file" name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$sfuPlattegrond$fuBestand" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_fuBestand" class="text" style="width:350px;" />
+                <input type="submit" name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$sfuPlattegrond$btnToevoegen" value="Toevoegen" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$sfuPlattegrond$btnToevoegen&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_btnToevoegen" class="button" />
+            
+			</div>
+            <div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_pnlBestanden" class="block_invisible">
+				
+                
+            
+			</div>
+            
+            <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_revBestand" style="color:Red;display:none;"></span>
+            <input type="hidden" name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$sfuPlattegrond$vceBestand_ClientState" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_vceBestand_ClientState" />
+        
+		</div>
+</div>
+
+            
+	</div>
+            
+        
+</div>
+    
+<div id="footer">
+    
+    <input type="submit" name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$footer$prev_button" value="&lt;&lt; Terug" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_footer_prev_button" class="previous button" />
+    <div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_footer_pnlNextButton" class="block_visible">
+	
+    <input type="submit" name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$footer$next_button" value="Verder >>" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$footer$next_button&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_footer_next_button" class="next button" />       
+    
+</div>      
+</div>
+
+
+    </div>
+
+            </div>
+            <div id="voet">
+            </div>
+        </div>
+    </div>
+    <span id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidator" style="color:Red;display:none;"></span><input type="hidden" name="ctl00$ctl00$ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidatorCallOut_ClientState" id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidatorCallOut_ClientState" /><span id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidator" style="color:Red;display:none;"></span><input type="hidden" name="ctl00$ctl00$ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidatorCallOut_ClientState" id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidatorCallOut_ClientState" /><span id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidator" style="color:Red;display:none;"></span><input type="hidden" name="ctl00$ctl00$ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidatorCallOut_ClientState" id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidatorCallOut_ClientState" /><span id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidator" style="color:Red;display:none;"></span><input type="hidden" name="ctl00$ctl00$ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidatorCallOut_ClientState" id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidatorCallOut_ClientState" /><span id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidator" style="color:Red;display:none;"></span><input type="hidden" name="ctl00$ctl00$ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidatorCallOut_ClientState" id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidatorCallOut_ClientState" /><span id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator" style="color:Red;display:none;"></span><input type="hidden" name="ctl00$ctl00$ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidatorCallOut_ClientState" id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidatorCallOut_ClientState" /><span id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidator" style="color:Red;display:none;"></span><input type="hidden" name="ctl00$ctl00$ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidatorCallOut_ClientState" id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidatorCallOut_ClientState" /><span id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator" style="color:Red;display:none;"></span><input type="hidden" name="ctl00$ctl00$ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidatorCallOut_ClientState" id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidatorCallOut_ClientState" /><span id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidator" style="color:Red;display:none;"></span><input type="hidden" name="ctl00$ctl00$ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidatorCallOut_ClientState" id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidatorCallOut_ClientState" /><span id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator" style="color:Red;display:none;"></span><input type="hidden" name="ctl00$ctl00$ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidatorCallOut_ClientState" id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidatorCallOut_ClientState" /><span id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidator" style="color:Red;display:none;"></span><input type="hidden" name="ctl00$ctl00$ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidatorCallOut_ClientState" id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidatorCallOut_ClientState" /><span id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidator" style="color:Red;display:none;"></span><input type="hidden" name="ctl00$ctl00$ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidatorCallOut_ClientState" id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidatorCallOut_ClientState" /><span id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidator" style="color:Red;display:none;"></span><input type="hidden" name="ctl00$ctl00$ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidatorCallOut_ClientState" id="ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidatorCallOut_ClientState" />
+<script type="text/javascript">
+//<![CDATA[
+var Page_Validators =  new Array(document.getElementById("ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_revBestand"), document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidator"), document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidator"), document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidator"), document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidator"), document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidator"), document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator"), document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidator"), document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator"), document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidator"), document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator"), document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidator"), document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidator"), document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidator"));
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+var ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_revBestand = document.all ? document.all["ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_revBestand"] : document.getElementById("ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_revBestand");
+ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_revBestand.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_fuBestand";
+ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_revBestand.errormessage = "Digitale aanlevering van deze file is alleen mogelijk in PDF-, JPG-, GIF-, XLS-, DOC-, of TIFF-formaat. Andere formaten kunnen schriftelijk worden aangeleverd bij de meldkamer.";
+ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_revBestand.display = "None";
+ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_revBestand.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_revBestand.validationexpression = "^[\\S\\s]+\\.(jpg|JPG|Jpg|gif|GIF|Gif|xls|XLS|Xls|doc|DOC|Doc|tif|TIF|Tif|tiff|TIFF|Tiff|pdf|PDF|Pdf)$";
+var ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidator = document.all ? document.all["ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidator"] : document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidator");
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidator.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidator.errormessage = "Een \'adres\' veld mag niet meer dan 80 karakters bevatten.";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidator.display = "None";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidator.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidator.validationexpression = "^[\\s\\S]{0,80}$";
+var ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidator = document.all ? document.all["ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidator"] : document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidator");
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidator.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidator.errormessage = "Een \'huisnummer\' veld mag niet meer dan 5 getallen bevatten en het kan niet nul zijn.";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidator.display = "None";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidator.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidator.validationexpression = "^[1-9]{1}[0-9]{0,4}$";
+var ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidator = document.all ? document.all["ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidator"] : document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidator");
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidator.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidator.errormessage = "Een \'huisletter\' veld mag niet meer dan 1 karakter bevatten en dit moet een letter zijn.";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidator.display = "None";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidator.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidator.validationexpression = "^[a-zA-Z]{1}$";
+var ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidator = document.all ? document.all["ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidator"] : document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidator");
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidator.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidator.errormessage = "Een \'huisnummer toevoeging\' veld mag niet meer dan 5 karakters bevatten.";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidator.display = "None";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidator.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidator.validationexpression = "^[\\s\\S]{0,5}$";
+var ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidator = document.all ? document.all["ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidator"] : document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidator");
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidator.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidator.errormessage = "De opgegeven postcode voldoet niet aan de structuur (1234AA).";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidator.display = "None";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidator.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidator.validationexpression = "^(\\d{4}[A-Za-z]{2}){0,1}$";
+var ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator = document.all ? document.all["ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator"] : document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator");
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator.focusOnError = "t";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator.errormessage = "Het \'Plaats\' veld is verplicht.";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator.display = "None";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator.initialvalue = "";
+var ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidator = document.all ? document.all["ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidator"] : document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidator");
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidator.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidator.errormessage = "Een \'plaats\' veld mag niet meer dan 80 karakters bevatten.";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidator.display = "None";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidator.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidator.validationexpression = "^[\\s\\S]{0,80}$";
+var ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator = document.all ? document.all["ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator"] : document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator");
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator.focusOnError = "t";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator.errormessage = "Het \'X-Coördinaat\' veld is verplicht.";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator.display = "None";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator.initialvalue = "";
+var ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidator = document.all ? document.all["ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidator"] : document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidator");
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidator.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidator.errormessage = "Een \'X-coördinaat\' veld mag niet meer dan 6 getallen bevatten.";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidator.display = "None";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidator.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidator.validationexpression = "^\\d{0,6}$";
+var ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator = document.all ? document.all["ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator"] : document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator");
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator.focusOnError = "t";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator.errormessage = "Het \'Y-Coördinaat\' veld is verplicht.";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator.display = "None";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator.initialvalue = "";
+var ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidator = document.all ? document.all["ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidator"] : document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidator");
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidator.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidator.errormessage = "Een \'Y-coördinaat\' veld mag niet meer dan 6 getallen bevatten.";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidator.display = "None";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidator.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidator.validationexpression = "^\\d{0,6}$";
+var ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidator = document.all ? document.all["ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidator"] : document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidator");
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidator.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidator.errormessage = "De hoogte t.o.v. maaiveld moet een decimaal getal zijn met maximaal 3 cijfers voor de komma en 2 cijfers achter de komma.";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidator.display = "None";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidator.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidator.validationexpression = "^(\\-){0,1}\\d{1,3}(\\,\\d{1,2})?$";
+var ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidator = document.all ? document.all["ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidator"] : document.getElementById("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidator");
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidator.controltovalidate = "ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidator.errormessage = "Een \'locatieomschrijving\' veld mag niet meer dan 1000 karakters bevatten.";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidator.display = "None";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidator.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidator.validationexpression = "^[\\s\\S]{0,1000}$";
+//]]>
+</script>
+
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="BC0DEB8A" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdACvMTyqhvjbqQnXdIOWg+pTlL/nUf+cyZnU1h9q6Jk1ojtuqjbvk5Vt2zCGODSyx5WvAFDnxbCpgatCDp6zl1CfYuDNTY3c5jZBp3A0K+xurTc6ww5ZJ5PYSjAwGBcxEHq4xNJUjrVf4bfPq7UbHVobHw60cwt4rpfEU4qO7nYf34TIN3AQUIg0I5KWIhSOrIm+s6ho2OaJWkOHJeFZOSJTHYL5dG3JTEEN9j9Y1rqBWBYhJOh+GPpCLokaF9Nnl9SDb+2aYSC1W4kQu9eCWCmeZkHvjS3wdN2CM8V7i9An35XmfYwTbqa35X88trgn4blM3sQiysCcF70mfKeTIMe6z45jkf1Zbod+CQa5/vlNFlxgzB6Syv/yKpPXtanUyPlkbOjUWx6Bi1N6ZfNdJ1Pvm8bUscS563O/B52gGRiuPLtgDxZL0nR/KjUTRwc5Uk+v4ZvLQNsBVgTwbw+J7n1M7tU+eZXzmd19nkOBfPmh6zg86Ei2fu2pTgn83/wyeuqx5lD2SKncU96Q8A5RSnB5EVoLH2TxsPY90duF1y3JPcFeNOWVBDI+No8x9wpHQ42x68606n789grSgcwVzA81EH6wbmCz6XuVz8jfGn/8YGMFT1MP06zEfaqLgv7EMCbFNxeRqOav8n5aKYB2o/h7yik13AXPiFOphfzlcpbctWhWeezJSZA1AhZ0qDqAjO0oK2ssekLSKEa+Xhbzy2BzyKoYVvHFSDsSamDMiG81ccKuLU4qFDJzJzG/rgr2tfgGUdUCN0Yw/81NBZCPT1Xggx/CrAb0uImBhX27NYTntlnJKSDA+jB220brsGLlbZh0RY1ZOWIAVJIJwU/Y6/BHquvAx/ZDMo6Mb5s+uV4PPpJWEn3su2ZmMiKXe82lgTzYe+VDMoh3tMg/Hi0fH+KapHTxdke+mRYG/lXh6c6OYbibUUE4=" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+        Sys.Extended.UI.Localization.SetLocale("nl");
+document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_revBestand').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_revBestand'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_vceBestand_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_vceBestand","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_sfuPlattegrond_revBestand"));
+});
+
+document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidator').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidator'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidatorCallOut_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidatorCallOut","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Straat_RegularExpressionValidator"));
+});
+
+document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidator').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidator'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidatorCallOut_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidatorCallOut","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Nummer_RegularExpressionValidator"));
+});
+
+document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidator').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidator'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidatorCallOut_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidatorCallOut","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Huisletter_RegularExpressionValidator"));
+});
+
+document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidator').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidator'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidatorCallOut_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidatorCallOut","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Toevoeging_RegularExpressionValidator"));
+});
+
+document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidator').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidator'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidatorCallOut_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidatorCallOut","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Postcode_RegularExpressionValidator"));
+});
+
+document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidatorCallOut_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidatorCallOut","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RequiredFieldValidator"));
+});
+
+document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidator').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidator'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidatorCallOut_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidatorCallOut","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Plaats_RegularExpressionValidator"));
+});
+
+document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidatorCallOut_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidatorCallOut","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RequiredFieldValidator"));
+});
+
+document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidator').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidator'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidatorCallOut_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidatorCallOut","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X_RegularExpressionValidator"));
+});
+
+document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidatorCallOut_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidatorCallOut","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RequiredFieldValidator"));
+});
+
+document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidator').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidator'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidatorCallOut_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidatorCallOut","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y_RegularExpressionValidator"));
+});
+
+document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidator').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidator'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidatorCallOut_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidatorCallOut","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Z_RegularExpressionValidator"));
+});
+
+document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidator').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidator'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.ValidatorCalloutBehavior, {"ClientStateFieldID":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidatorCallOut_ClientState","closeImageUrl":"/WebResource.axd?d=Pmxcub1Xrwu7_mvMjbgTL0PyrQYtaC7Ek0IPhfFSwyPGQ2P53MqvOx6byUEq6rj0y9kgPV9Tr1ttgUo4RF83GLtJ05OIZiXYcCYEHUJcZy6sEcqXturJhp4EugiaxO0nmDmyDlT4eU0Pu7Tjqr-GYMWcqOCOymC5qRLvJ_hSTSUtoSrk0\u0026t=635877742198566944","highlightCssClass":"validatorCalloutHighlight","id":"ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidatorCallOut","warningIconImageUrl":"/WebResource.axd?d=X-nZvqc0rq-n8_XXacNov9qJYiIWHyZGghyvU84MtFPusUOFhTTgwDVlqtAtcYw5KbafgnszuP2Xa1Tx_26Blm5mpM-seqWbzs5S3-An4kPACRuehD0pJcdrbfsutO40lBLCVMNOsxxgOi2hrzwn6LyOQKTEeew2bc8qbKHsxVC-RnkF0\u0026t=635877742198566944"}, null, null, $get("ctl00_ctl00_ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_LocatieOmschrijving_RegularExpressionValidator"));
+});
+//]]>
+</script>
+</form>
+
+<!-- Visual Studio Browser Link -->
+<script type="application/json" id="__browserLink_initializationData">
+    {"appName":"Chrome","requestId":"5ac6a69ab4ee4240b6f33fa0bcec8b27"}
+</script>
+<script type="text/javascript" src="http://localhost:51014/3be9533422274e18b4e139e1c76fb7f0/browserLink" async="async"></script>
+<!-- End Browser Link -->
+
+</body>
+</html>
