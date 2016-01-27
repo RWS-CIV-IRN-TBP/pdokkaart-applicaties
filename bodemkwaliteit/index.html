@@ -56,6 +56,29 @@
     <script type="text/javascript" src="http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/js/geozetlib.js"></script>
     <script type="text/javascript" src="http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/js/pdok-markers.js"></script>
     <script type="text/javascript" src="http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/js/pdok-layers.js"></script>
+
+    <style type="text/css">
+        .olControlOverviewMapElement {
+            background-color: #ffffff;
+            padding: 5px 5px 5px 5px;
+        }
+        /* fix for overview map rectangle style */
+        .olControlOverviewMapRectReplacement {
+            background-image: url("img/overview_replacement.gif");
+            background-position: center center;
+            background-repeat: no-repeat;
+            border: 2px solid red;
+            cursor: move;
+            overflow: hidden;
+        }
+        .olControlOverviewMapExtentRectangle {
+            background-image: url("img/blank.gif");
+            border: 2px solid red;
+            cursor: move;
+            overflow: hidden;
+        }
+
+    </style>
     <script type="text/javascript">
         Pdok.addcss("http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/styles/default/style.css");
         Pdok.addcss("http://demo-geoservices.rijkswaterstaat.nl/pdokkaart/api/styles/api.css");
@@ -197,6 +220,53 @@
                 document.getElementById('gcr_26_input').addEventListener("keypress", preventSubmit);
                 document.getElementById('gcr_26_input').addEventListener("keydown", preventSubmit);
                 document.getElementById('gcr_26_input').addEventListener("keyup", preventSubmit);
+
+
+                // trying to set an overview map
+                var brtoverview = api_561.createWMTSLayer({
+                                            layertype: 'WMTS',
+                                            name: 'BRT Achtergrondkaart (WMTS)',
+                                            url: 'http://geodata.nationaalgeoregister.nl/wmts/',
+                                            layer: 'brtachtergrondkaart',
+                                            style: null,
+                                            matrixSet: 'EPSG:28992',
+                                            visibility: true,
+                                            isBaseLayer: true,
+                                            attribution: '(c) OSM & Kadaster'
+                                          })
+
+                var controlOptions = {
+                    maximized: true,
+                    size: new OpenLayers.Size(200, 200),
+                    mapOptions: {
+                        //maxResolution: 156543.0339,
+                        maxExtent: new OpenLayers.Bounds(-285401.92,22598.08,595401.9199999999,903401.9199999999),
+                        resolutions: [3440.64, 1720.32, 860.16, 430.08, 215.04, 107.52, 53.76, 26.88, 13.44, 6.72, 3.36, 1.68, 0.84, 0.42, 0.21],
+                        numZoomLevels: 15,
+                        units: 'm',
+                        projection: new OpenLayers.Projection("EPSG:28992"),
+                    },
+                    layers: [brtoverview]
+                };
+                var overview = new OpenLayers.Control.OverviewMap(controlOptions);
+                api_561.map.addControl(overview);
+                //overview.activate();
+
+    /*
+
+         controls: controls,
+        maxExtent: new OpenLayers.Bounds(-285401.92,22598.08,595401.9199999999,903401.9199999999),
+        theme: null,
+        resolutions: [3440.64, 1720.32, 860.16, 430.08, 215.04, 107.52, 53.76, 26.88, 13.44, 6.72, 3.36, 1.68, 0.84, 0.42, 0.21],
+        numZoomLevels: 15,
+        units: 'm',
+        projection: new OpenLayers.Projection("EPSG:28992"),
+        div: this.div
+
+    */
+
+
+
             }
         );
 
