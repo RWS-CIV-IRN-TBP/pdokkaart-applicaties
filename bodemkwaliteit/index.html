@@ -168,8 +168,6 @@
                     api_561.setLocationToolProps("pt0", 0, 14, false, POLYGON_INPUT, null);
                     // example polygon WKT:
                     // Polygon ((135674 497761, 135628 497697, 135706 497615, 135773 497663, 135761 497726, 135716 497763, 135716 497763, 135674 497761))
-                    var features = wktFormat.read(polygon);
-                    // we have an x,y point (in epsg28992)
                     var feature = wktFormat.read(polygon);
                     // style the feature (based on locationtool style)
                     feature.style = api_561.styles[api_561.locationtoolstyle];
@@ -202,8 +200,8 @@
                     if (feature.geometry.CLASS_NAME === 'OpenLayers.Geometry.Polygon') {
                         // alert('Centrum van Gebied als XY ingevuld.');
                         var center = feature.geometry.getCentroid();
-                        document.getElementById(X_INPUT).value = center.x;
-                        document.getElementById(Y_INPUT).value = center.y;
+                        document.getElementById(X_INPUT).value = Math.round(center.x);
+                        document.getElementById(Y_INPUT).value = Math.round(center.y);
                     }
                 });
 
@@ -220,7 +218,6 @@
                 document.getElementById('gcr_26_input').addEventListener("keypress", preventSubmit);
                 document.getElementById('gcr_26_input').addEventListener("keydown", preventSubmit);
                 document.getElementById('gcr_26_input').addEventListener("keyup", preventSubmit);
-
 
                 // trying to set an overview map
                 var brtoverview = api_561.createWMTSLayer({
@@ -251,22 +248,6 @@
                 var overview = new OpenLayers.Control.OverviewMap(controlOptions);
                 api_561.map.addControl(overview);
                 //overview.activate();
-
-    /*
-
-         controls: controls,
-        maxExtent: new OpenLayers.Bounds(-285401.92,22598.08,595401.9199999999,903401.9199999999),
-        theme: null,
-        resolutions: [3440.64, 1720.32, 860.16, 430.08, 215.04, 107.52, 53.76, 26.88, 13.44, 6.72, 3.36, 1.68, 0.84, 0.42, 0.21],
-        numZoomLevels: 15,
-        units: 'm',
-        projection: new OpenLayers.Projection("EPSG:28992"),
-        div: this.div
-
-    */
-
-
-
             }
         );
 
@@ -281,6 +262,15 @@
             //window.open(link, '_blank');
             alert(link);
             return link;
+        }
+
+        // round vertices of feature:
+        function roundVertices(feature) {
+            var v = feature.geometry.getVertices()
+            for (var i = 0; i < v.length; i++) {
+                v[i].x = Math.round(v[i].x)
+                v[i].y = Math.round(v[i].y)
+            }
         }
         
     </script>
@@ -571,10 +561,17 @@ Sys.WebForms.PageRequestManager._initialize('ctl00$ctl00$scm', 'aspnetForm', ['t
 			
     <div class="fullsize">
         <div class="question_block">
+            <!-- with input -->
+            <!--
             <span id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_XY_label" class="label">XY-coördinaten</span>
             <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$X" type="text" value="150000" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X" class="text" />
             <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Y" type="text" value="450000" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y" class="text" />
             <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Coordinaten" type="text" value="Polygon ((135674 497761, 135628 497697, 135706 497615, 135773 497663, 135761 497726, 135716 497763, 135716 497763, 135674 497761))" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Coordinaten" class="text" />
+            -->
+            <!-- empty inputs -->
+            <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$X" type="text" value="" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_X" class="text" />
+            <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Y" type="text" value="" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Y" class="text" />
+            <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Coordinaten" type="text" value="" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Coordinaten" class="text" />
 
             <input name="ctl00$ctl00$FullPageContentPlaceHolder$MainContentPlaceHolder$AdresControl$Image" type="text" id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_Image" class="block_invisible" />
             <div id="ctl00_ctl00_FullPageContentPlaceHolder_MainContentPlaceHolder_AdresControl_updPanel_XY">
