@@ -175,6 +175,13 @@ Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories
         if (featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')){
             featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')[0].decreaseCounter();
         }
+
+        // if there is a popupid in the parameters, get it and show the popup
+        if (OpenLayers.Util.getParameters().popupid){
+            featuresLayer.map.getControlsByClass("OpenLayers.Control.SelectFeature")[0].select(
+                    featuresLayer.getFeaturesByAttribute("ids", OpenLayers.Util.getParameters().popupid)[0])
+        }
+
     }
     // requests take some time sometimes
     if (featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')){
@@ -432,6 +439,61 @@ Geotool.legend = function(map, url){
         }
     }
     legend_toggle.onclick = legend_head.onclick;
+}
+
+
+/**
+ * Overriding the OpenLayers.Layer.Vector.getFeaturesByAttribute function because the rws attribute values
+ * (actually ID's) are sometimes arrays, like 'ids':["MAASLMWH10"] and we need this to be able to find the
+ * feature to open the window
+ */
+OpenLayers.Layer.Vector.prototype.getFeaturesByAttribute = function(attrName, attrValue) {
+    var i,
+        feature,
+        len = this.features.length,
+        foundFeatures = [];
+    for(i = 0; i < len; i++) {
+        feature = this.features[i];
+        if(feature && feature.attributes) {
+            if (feature.attributes[attrName] === attrValue ||
+                feature.attributes[attrName] instanceof Array && feature.attributes[attrName].indexOf(attrValue)>=0 ) {
+                foundFeatures.push(feature);
+            }
+        }
+    }
+    return foundFeatures;
+}
+
+OpenLayers.Control.Permalink.prototype.updateLink = function() {
+    var separator = this.anchor ? '#' : '?';
+    var href = this.base;
+    var anchor = null;
+    if (href.indexOf("#") != -1 && this.anchor == false) {
+        anchor = href.substring( href.indexOf("#"), href.length);
+    }
+    if (href.indexOf(separator) != -1) {
+        href = href.substring( 0, href.indexOf(separator) );
+    }
+    var splits = href.split("#");
+    var params = this.createParams();
+    // now check if there is a feature popup
+    if (this.map.popups.length>0){
+        var feature = this.map.popups[0].feature;
+        var id = feature.attributes.ids[0];
+        params.popupid = id;
+    }
+    href = splits[0] + separator+ OpenLayers.Util.getParameterString(params);
+    if (anchor) {
+        href += anchor;
+    }
+    if (this.anchor && !this.element) {
+        //window.location.href = href;
+    }
+    else {
+        this.element.href = href;
+        //window.location.href = href;
+    }
+    return false;
 }
 
 /**
