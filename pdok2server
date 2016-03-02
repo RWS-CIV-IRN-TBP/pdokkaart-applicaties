@@ -1,5 +1,6 @@
 #!/bin/bash
 
 APISERVER="zuidt.nl"
-sed -i "s/pdokserver/$APISERVER/g" **/*.html
+#sed -i "s/pdokserver/$APISERVER/g" **/*.html
+sed -i "s,http://pdokserver,https://$APISERVER,g" **/*.html
 
