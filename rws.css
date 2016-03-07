@@ -43,6 +43,7 @@ div .graphtablebtn {
 
 #legend {
     background: none repeat scroll 0 0 white;
+    border-radius: 5px;
     border: 1px solid #ccc;
     bottom: 50px;
     max-height: 75%;
@@ -79,18 +80,43 @@ div .graphtablebtn {
     clear: both;
 }
 
-.olControlPermalink {
-    background: url("img/permalink.gif") no-repeat center;
-    width: 54px;
-    height: 15px;
-    border: 1px solid #ccc;
-    top:3px;
-    right:3px;
-}
 .olControlLoadingPanel {
     left: 10px;
     top:65px;
 }
 div.olControlPermalink > a > img{
     border: 0;
+}
+
+
+.olControlPermalink {
+    background-color: white;
+    width: 54px;
+    height: 17px;
+    border: 1px solid #ccc;
+    top:3px;
+    right:3px;
+    z-index: 3000 !important;
+}
+
+#permalinkdiv {
+    display: none;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 2px;
+    position: absolute;
+    right: -2px;
+    top: 20px;
+    z-index: 5000;
+}
+#permalinkdiv, #permalinkdiv input {
+    border: 1px solid #ccc;
+    font-size: 1em;
+    margin: 0;
+    padding: 1px;
+    vertical-align: baseline;
+}
+#permalinkdiv p {
+    margin: 4px;
 }
