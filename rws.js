@@ -239,12 +239,8 @@ Geotool.createWaterPopup = function(f) {
     var request = OpenLayers.Request.GET({
         url: table_url,
         callback: function(request){
-
             var obj = JSON.parse(request.responseText);
-            //console.log(obj);
-
             var params = f.params;
-
             // creating a 'table' object,
             // with a 'row'-object for every timestamp ('tijd')
             // which get's 'record'-attributes for every param
@@ -271,9 +267,6 @@ Geotool.createWaterPopup = function(f) {
             }
             // sort all available timestamps
             timestamps = timestamps.sort();
-
-            //console.log(table)
-
             var html = '';
             function checkValue(val){
                 if (val == null || val == undefined){
@@ -379,7 +372,7 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
     // first try: get it from the mouseclick from the MousePosition control (NOT working on touch devices)
     var popupLoc = this.map.getLonLatFromPixel(this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy);
     // second try: see if this is a point geometry with an x and an y
-    if (popupLoc == null && feature.geometry && feature.geometry.x && feature.geometry.y) {
+    if (/*popupLoc == null && */feature.geometry && feature.geometry.x && feature.geometry.y) {
         popupLoc = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
     }
     // if still null (non point geometries?): try the center of bbox of geometry
@@ -387,14 +380,18 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
         // try to get a click from mouse control (not working on touch devices)
         popupLoc = feature.geometry.getBounds().getCenterLonLat();
     }
+    // still null?
+    if (popupLoc == null){ alert("popup without anchor location ???!!!") }
     popup = new OpenLayers.Popup.FramedCloud("featurePopup",
                 popupLoc,
                 new OpenLayers.Size(100,100),
                 content,
-                null, true, function(evt) {
-                    this.hide();
+                null,
+                true,
+                function(evt) {   // closing function !
                     // deselect ALL features to be able to select this one again
                     popup.feature.layer.selectedFeatures=[];
+                    this.hide();
                 }
             );
     feature.popup = popup;
@@ -464,6 +461,64 @@ OpenLayers.Layer.Vector.prototype.getFeaturesByAttribute = function(attrName, at
     return foundFeatures;
 }
 
+OpenLayers.Control.Permalink.prototype.draw = function() {
+        OpenLayers.Control.prototype.draw.apply(this, arguments);
+
+        if (!this.element && !this.anchor) {
+
+            this.element = document.createElement("a");
+            this.element.innerHTML = OpenLayers.i18n("Permalink");
+            this.element.href="";
+            this.wrapper = document.createElement("div");
+            this.wrapper.appendChild(this.element);
+            this.div.appendChild(this.wrapper);
+            /*
+            this.element = document.createElement("a");
+            this.div.appendChild(this.element);
+            this.element.innerHTML = '<a href="">'+OpenLayers.i18n("Permalink")+'</a>';
+            */
+            /*
+            #permalinkdiv {
+                display: block;
+                background-color: #ffffff;
+                border: 1px solid #000000;
+                padding: 2px;
+                position: absolute;
+                right: 15px;
+                top: 22px;
+                z-index: 5000;
+            }
+            <div id="permalinkdiv">
+                <div class="permalinkClose"><a onclick="document.getElementById('permalinkdiv').style.display = 'none'; return false;" href="#"><img border="0" title="Sluiten" src="_img/close_mini.gif"></a></div>
+                <p><label><b>Kopieer de volgende link:</b><br>
+                <input type="text" size="40" value="" name="permalinkinput" id="permalinkinput"></label> <br>
+                </p>
+            </div>
+            */
+            this.permalinkdiv = document.createElement("div");
+            this.permalinkdiv.id = "permalinkdiv";
+            var html =
+                //'<div class="permalinkClose">'+'<a onclick="document.getElementById(\'permalinkdiv\').style.display = \'none\'; return false;" href="#"><img border="0" title="Sluiten" src="_img/close_mini.gif"></a></div>'+
+                '<p><label><b>Kopieer de volgende link:</b><br>'+
+                '<input type="text" size="40" value="" name="permalinkinput" id="permalinkinput"></label> <br>'+
+                '</p>';
+            this.permalinkdiv.innerHTML = html;
+            this.wrapper.appendChild(this.permalinkdiv);
+        }
+        this.map.events.on({
+            'moveend': this.updateLink,
+            'changelayer': this.updateLink,
+            'changebaselayer': this.updateLink,
+            scope: this
+        });
+
+        // Make it so there is at least a link even though the map may not have
+        // moved yet.
+        this.updateLink();
+
+        return this.div;
+    }
+
 OpenLayers.Control.Permalink.prototype.updateLink = function() {
     var separator = this.anchor ? '#' : '?';
     var href = this.base;
@@ -477,21 +532,21 @@ OpenLayers.Control.Permalink.prototype.updateLink = function() {
     var splits = href.split("#");
     var params = this.createParams();
     // now check if there is a feature popup
-    if (this.map.popups.length>0){
+    if (this.map.popups.length>0 && this.map.popups[0].visible()){
         var feature = this.map.popups[0].feature;
         var id = feature.attributes.ids[0];
         params.popupid = id;
+    }
+    else {
+        // remove a '&popupid' from query parameters if in the url (to be sure we have a good permalink)?
+        delete params.popupid;
     }
     href = splits[0] + separator+ OpenLayers.Util.getParameterString(params);
     if (anchor) {
         href += anchor;
     }
-    if (this.anchor && !this.element) {
-        //window.location.href = href;
-    }
-    else {
-        this.element.href = href;
-        //window.location.href = href;
+    if (document.getElementById("permalinkinput")) {
+        document.getElementById("permalinkinput").value = href;
     }
     return false;
 }
@@ -506,6 +561,23 @@ Geotool.ready = function(api) {
     var permalinkControl = new OpenLayers.Control.Permalink();
     api.map.addControl(permalinkControl);
     permalinkControl.element.innerHTML='<img src="../img/permalink.gif">';
+    permalinkControl.element.onclick = function(evt){
+        api.map.getControlsByClass("OpenLayers.Control.Permalink")[0].updateLink();
+        if (document.getElementById("permalinkdiv").offsetParent == null){
+            // permalinkdiv is hidden currently... update and show it
+            var pmcontrol = api.map.getControlsByClass("OpenLayers.Control.Permalink")[0]
+            pmcontrol.updateLink();
+            document.getElementById("permalinkdiv").style.display='block';
+            window.setTimeout(function(){
+                document.getElementById("permalinkinput").setSelectionRange(0, 2000);document.getElementById("permalinkinput").focus();
+            }, 500);
+        }
+        else{
+            // hide it
+            document.getElementById("permalinkdiv").style.display='none';
+        }
+        return false;
+    }
 
     // change pdok names to rws names
     if (api.map.getLayersByName("BRT Achtergrondkaart (WMTS)").length>0) {
