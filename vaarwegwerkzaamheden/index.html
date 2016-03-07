@@ -76,10 +76,18 @@
                                 }
                         );
                         ff.attributes['description'] = f.description;
+                        ff.attributes['ids']= f.ids;
+
                         features.push(ff);
                     }
                 }
                 api780.featuresLayer.addFeatures(features);
+
+               // if there is a popupid in the parameters, get it and show the popup
+               if (OpenLayers.Util.getParameters().popupid){
+                   api780.featuresLayer.map.getControlsByClass("OpenLayers.Control.SelectFeature")[0].select(
+                           api780.featuresLayer.getFeaturesByAttribute("ids", OpenLayers.Util.getParameters().popupid)[0])
+               }
 
                 // add legend
                 Geotool.legend(api780.map, 'legenda_vaarwegwerkzaamheden.png');

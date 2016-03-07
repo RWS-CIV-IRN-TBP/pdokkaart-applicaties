@@ -538,8 +538,10 @@ OpenLayers.Control.Permalink.prototype.updateLink = function() {
     // now check if there is a feature popup
     if (this.map.popups.length>0 && this.map.popups[0].visible()){
         var feature = this.map.popups[0].feature;
-        var id = feature.attributes.ids[0];
-        params.popupid = id;
+        if (feature.attributes.ids) {
+            var id = feature.attributes.ids[0];
+            params.popupid = id;
+        }
     }
     else {
         // remove a '&popupid' from query parameters if in the url (to be sure we have a good permalink)?

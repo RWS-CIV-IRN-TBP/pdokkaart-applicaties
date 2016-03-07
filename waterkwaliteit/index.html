@@ -109,6 +109,7 @@
                     getfeatureinfo: function(event) {
                         if (event.features[0]) {
                             var feature = event.features[0];
+                            console.log(feature)
                             // first try: get it from the mouseclick from the MousePosition control (NOT working on touch devices)
                             var popupLoc = this.map.getLonLatFromPixel(this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy);
                             // second try: see if this is a point geometry with an x and an y

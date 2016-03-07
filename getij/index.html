@@ -73,9 +73,17 @@
                         }
                     );
                     ff.attributes['description']= createFeatureDescription(f);
+                    // donar_locatie_code
+                    ff.attributes['ids']= [f.donar_locatie_code]
                     features.push(ff);
                 }
                 api100.featuresLayer.addFeatures(features);
+
+                // if there is a popupid in the parameters, get it and show the popup
+                if (OpenLayers.Util.getParameters().popupid){
+                    api100.featuresLayer.map.getControlsByClass("OpenLayers.Control.SelectFeature")[0].select(
+                            api100.featuresLayer.getFeaturesByAttribute("ids", OpenLayers.Util.getParameters().popupid)[0])
+                }
             }
 
             // rws getij
