@@ -357,6 +357,7 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
 
     if (Geotool.useWaterPopup) {
         Geotool.createWaterPopup(feature);
+        this.map.getControlsByClass("OpenLayers.Control.Permalink")[0].updateLink();
     }
 
     var content = "";
@@ -392,11 +393,13 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
                     // deselect ALL features to be able to select this one again
                     popup.feature.layer.selectedFeatures=[];
                     this.hide();
+                    popup.map.getControlsByClass("OpenLayers.Control.Permalink")[0].updateLink();
                 }
             );
     feature.popup = popup;
     popup.feature = feature;
     this.map.addPopup(popup, true);
+    this.map.getControlsByClass("OpenLayers.Control.Permalink")[0].updateLink();
 };
 
 /**
@@ -503,7 +506,8 @@ OpenLayers.Control.Permalink.prototype.draw = function() {
                 '<input type="text" size="40" value="" name="permalinkinput" id="permalinkinput"></label> <br>'+
                 '</p>';
             this.permalinkdiv.innerHTML = html;
-            this.wrapper.appendChild(this.permalinkdiv);
+            //this.wrapper.appendChild(this.permalinkdiv);
+            this.map.div.appendChild(this.permalinkdiv);
         }
         this.map.events.on({
             'moveend': this.updateLink,
