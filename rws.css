@@ -106,13 +106,13 @@ div.olControlPermalink > a > img{
     border-radius: 5px;
     padding: 2px;
     position: absolute;
-    right: -2px;
-    top: 20px;
+    right: 3px;
+    top: 22px;
     z-index: 5000;
 }
 #permalinkdiv, #permalinkdiv input {
     border: 1px solid #ccc;
-    font-size: 1em;
+    font-size: 0.9em;
     margin: 0;
     padding: 1px;
     vertical-align: baseline;
