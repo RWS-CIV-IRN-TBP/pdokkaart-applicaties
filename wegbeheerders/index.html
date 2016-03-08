@@ -22,14 +22,13 @@
     Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
 
     var Geotool = Geotool || {};
+
     /**
-     * Method: selectWMSLayer
-     * Callback for the zoomend event of the Map, that will select the correct
-     * WMS layer for getFeatureInfo requests. The idea is to query only
-     * the roads that are visible in the underlying tilecache. E.g. when
-     * zoomed out, only rijkswegen are visible.
+     * Overriding WMSGetFeatureInfo.findLayers to determine the right layer for the GetFeatureInfo request
+     *
+     * @returns {[OpenLayers.Vector.Layer]}
      */
-    Geotool.selectWMSLayer = function() {
+    OpenLayers.Control.WMSGetFeatureInfo.prototype.findLayers = function() {
         var zoom = api_762.map.getZoom();
         var layer = api_762.wmsLayer;
         if (zoom < 5) {
@@ -37,11 +36,9 @@
         } else if (zoom < 8) {
             layer = api_762.wmsLayer_PR;
         }
-        // Set the map property (without adding the layer to the map), because
-        // that is needed to know the projection in the WMS URL.
-        layer.setMap(api_762.map);
-        api_762.map.activeLayer = layer;
+        return [layer];
     }
+
 
     Geotool.formatMarkerDescription = function(attrs, streetName) {
         var html = "<div class='olPopupContentDescription'>";
@@ -121,8 +118,6 @@
             api_762.wmsLayer = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo', 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo', 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
             api_762.wmsLayer_PR = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo_PR', 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo' + "_PR", 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
             api_762.wmsLayer_R = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo_R', 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo' + "_R", 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
-            // as we are on NL zoomlevel, we set the active info layer to R (Rijkswegen only)
-            api_762.map.activeLayer = api_762.wmsLayer_R;
             // Make sure it is never visible, so it is not drawn. It is only needed
             // for the getFeatureInfo control to know which WMS to query.
             // For this reason, the wmsLayer is also not added to the group or map,
@@ -138,20 +133,15 @@
                     strokeColor:'#ffff00',
                     pointRadius:'3'
                 });
-
-            api_762.map.events.on({ 'zoomend': Geotool.selectWMSLayer });
-
             var info = new OpenLayers.Control.WMSGetFeatureInfo({
                 url: 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/wegbeheerders',
                 title: 'Klik voor info over wegbeheerder',
                 queryVisible: false,
                 // hover: true, // no hovering for now...
-                layers: [api_762.map.activeLayer],
                 infoFormat: 'application/vnd.ogc.gml',
                 eventListeners: {
                     beforegetfeatureinfo: function() {
                         api_762.featuresLayer.removeAllFeatures();
-                        this.layers = [api_762.map.activeLayer];
                     },
                     getfeatureinfo: function(event) {
                         if (event.features[0]) {
@@ -196,6 +186,10 @@
                             api_762.featuresLayer.addFeatures(feature);
                             api_762.selectControl.select(feature);
 
+                            // adding a popupxy property to be able to use the popupLoc in the permalink
+                            feature.popupxy = Geotool.getPopupLoc(feature, this.map);
+                            // and update the permalink (in case the map did not fire a mapmove or other event to update it)
+                            this.map.getControlsByClass("OpenLayers.Control.Permalink")[0].updateLink();
                         }
                     }
                 }
@@ -207,6 +201,13 @@
             // add legend
             Geotool.legend(api_762.map, 'legenda_wegbeheerders.png')
 
+            // check for popupxy query in url parameters
+            // if there is a popupxy in the parameters, get it and show the popup
+            if (OpenLayers.Util.getParameters().popupxy){
+                var xy = OpenLayers.Util.getParameters().popupxy;
+                var pixel = api_762.map.getPixelFromLonLat(new OpenLayers.LonLat(xy[0],xy[1]))
+                info.request(pixel, {});
+            }
         }
     );
 </script>

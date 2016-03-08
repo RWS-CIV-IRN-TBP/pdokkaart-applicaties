@@ -370,19 +370,8 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
     if (!content || content.length === 0) {
         content = '&nbsp;';
     }
-    // first try: get it from the mouseclick from the MousePosition control (NOT working on touch devices)
-    var popupLoc = this.map.getLonLatFromPixel(this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy);
-    // second try: see if this is a point geometry with an x and an y
-    if (/*popupLoc == null && */feature.geometry && feature.geometry.x && feature.geometry.y) {
-        popupLoc = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
-    }
-    // if still null (non point geometries?): try the center of bbox of geometry
-    if (popupLoc == null){
-        // try to get a click from mouse control (not working on touch devices)
-        popupLoc = feature.geometry.getBounds().getCenterLonLat();
-    }
-    // still null?
-    if (popupLoc == null){ alert("popup without anchor location ???!!!") }
+
+    var popupLoc = Geotool.getPopupLoc(feature, this.map);
     popup = new OpenLayers.Popup.FramedCloud("featurePopup",
                 popupLoc,
                 new OpenLayers.Size(100,100),
@@ -441,6 +430,32 @@ Geotool.legend = function(map, url){
     legend_toggle.onclick = legend_head.onclick;
 }
 
+/**
+ * Generic function to find out the location of a Geotool Popup, based on the feature from the
+ * click/touch event, of if that fails try to get it from the last mouse position.
+ * @param map current map
+ * @param feature feature from event
+ * @return a OpenLayers.LonLat object
+ */
+Geotool.getPopupLoc = function(feature, map) {
+
+    // first (faulty) try: get it from the mouseclick from the MousePosition control (NOT working on touch devices)
+    var popupLoc = map.getLonLatFromPixel(map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy);
+
+    // second better try: see if this is a point geometry with an x and an y
+    if (//popupLoc == null &&
+            feature.geometry && feature.geometry.x && feature.geometry.y) {
+        popupLoc = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
+    }
+    // if still null (non point geometries?): try the center of bbox of geometry
+    if (popupLoc == null){
+        popupLoc = feature.geometry.getBounds().getCenterLonLat();
+    }
+    // still null?
+    if (popupLoc == null){ alert("popup without anchor location ???!!!") }
+
+    return popupLoc;
+}
 
 /**
  * Overriding the OpenLayers.Layer.Vector.getFeaturesByAttribute function because the rws attribute values
