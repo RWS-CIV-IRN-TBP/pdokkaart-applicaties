@@ -109,9 +109,7 @@
                     getfeatureinfo: function(event) {
                         if (event.features[0]) {
                             var feature = event.features[0];
-                            console.log(feature)
-                            // first try: get it from the mouseclick from the MousePosition control (NOT working on touch devices)
-                            var popupLoc = this.map.getLonLatFromPixel(this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy);
+                            var popupLoc;
                             // second try: see if this is a point geometry with an x and an y
                             if (popupLoc == null && feature.geometry && feature.geometry.x && feature.geometry.y) {
                                 popupLoc = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
@@ -121,6 +119,12 @@
                                 // try to get a click from mouse control (not working on touch devices)
                                 popupLoc = feature.geometry.getBounds().getCenterLonLat();
                             }
+                            if (popupLoc == null){
+                                // try: get it from the mouseclick from the MousePosition control (NOT working on touch devices)
+                                popupLoc = this.map.getLonLatFromPixel(this.map.getControlsByClass("OpenLayers.Control.MousePosition")[0].lastXy);
+                            }
+                            // still null?
+                            if (popupLoc == null){ alert("popup without anchor location ???!!!") }
                             popup = new OpenLayers.Popup.FramedCloud("featurePopup",
                                         popupLoc,
                                         new OpenLayers.Size(100,100),
@@ -130,9 +134,12 @@
                                         }
                                     );
                             feature.popup = popup;
+                            // adding a popupxy property to be able to use the popupLoc in the permalink
+                            feature.popupxy = popupLoc;
                             popup.feature = feature;
                             this.map.addPopup(popup, true);
-
+                            // and update the permalink (in case the map did not fire a mapmove or other event to update it)
+                            this.map.getControlsByClass("OpenLayers.Control.Permalink")[0].updateLink();
                         }
                     }
                 }
@@ -142,6 +149,14 @@
 
             // add legend
             Geotool.legend(api_762.map, 'legenda_waterkwaliteit.png');
+
+            // check for popupxy query in url parameters
+            // if there is a popupid in the parameters, get it and show the popup
+            if (OpenLayers.Util.getParameters().popupxy){
+                var xy = OpenLayers.Util.getParameters().popupxy;
+                var pixel = api_762.map.getPixelFromLonLat(new OpenLayers.LonLat(xy[0],xy[1]))
+                info.request(pixel, {});
+            }
         }
     );
 
