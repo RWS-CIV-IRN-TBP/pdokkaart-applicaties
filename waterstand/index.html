@@ -30,9 +30,8 @@
         "geocoder":{},
         "loc":"122650.88, 487337.6",
         "showlayerswitcher":true,
-        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}]
+        }
     var api_101;
     Pdok.ready(
         function(){
@@ -42,19 +41,18 @@
             Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
             // NAP meetpunten url
-            var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=waterstanden&loadprojects=1";
+            var data_uri = "https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=waterstanden&loadprojects=1";
 
             var icons = [{},Geotool.icons.label_1,Geotool.icons.label_2,Geotool.icons.label_3,Geotool.icons.label_4] // only iconnr 1, 2, 3, 4
             var params = [ {key:'H10',name:'Waterhoogte',units:'cm NAP'},
                            {key:'H10A',name:'Astronomisch getij',units:'cm NAP'},
                            {key:'H10V',name:'Verwachte waterstand',units:'cm NAP'}];
 
-            Geotool.getWaterData(data_uri, api_101.featuresLayer, 'waterstanden', [1,2,3,4], icons, params);
-            /*
-            setInterval(function() {
-                  Geotool.getWaterData(data_uri, api_101.featuresLayer, 'waterstanden', [1,2,3,4], icons, params);
-                }, 20000);
-            */
+            Geotool.refreshData(
+                function(){
+                    Geotool.getWaterData(data_uri, api_101.featuresLayer, 'waterstanden', [1,2,3,4], icons, params);
+                });
+
             // add legend
             Geotool.legend(api_101.map, 'legenda_waterstand.png');
 
