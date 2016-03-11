@@ -188,7 +188,7 @@ Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories
             featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')[0].increaseCounter();
         }
     var request = OpenLayers.Request.GET({
-        url: data_uri,
+        url: data_uri+'#'+new Date().getTime(),
         callback: handler
     });
 
@@ -223,9 +223,9 @@ Geotool.createWaterPopup = function(f) {
         paramname = f.data.parameternaam;
     }
     f.attributes['name'] = '<b>' + paramname +': ' + waarde + ' ' + f.data.eenheid + '</b>';
-
-    var graph_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+ f.projecttype+'&category='+ f.category;
-    var table_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=data&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+ f.projecttype+'&category='+ f.category;
+    // we add a #timestamp to the url to be sure the images are updated in a popup every refresh time
+    var graph_url = 'https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=grafiek&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+ f.projecttype+'&category='+ f.category+'#'+new Date().getTime();
+    var table_url = 'https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/awd.php?mode=data&loc=' + f.data.loc + '&net=' + f.data.net + '&projecttype='+ f.projecttype+'&category='+ f.category+'#'+new Date().getTime();
     var meettijd = Geotool.Calendar.formatAsLongDate(f.data.meettijd)  + ' - ' +  Geotool.Calendar.formatAsTime(f.data.meettijd) + '&nbsp;uur';
 
     var html = '<div id="description"><p>'+meettijd+ ' - ' + f.data.locatienaam+'</p></div>';
@@ -343,6 +343,16 @@ Geotool.createWaterPopup = function(f) {
     return true;
 }
 
+/**
+ * Method to give a getWaterData function, and it keeps calling this function for given interval
+ * Needed to keep updating the waterdata
+ */
+// interval time in milliseconds
+Geotool.dataInterval = 10000;
+Geotool.refreshData = function(fnc) {
+    fnc(); // call function NOW
+    return(setInterval(fnc, Geotool.dataInterval)); // keep calling it every dataInterval milliseconds
+}
 
 /**
  * Overriding the PDOK's onPopupFeatureSelect to be able to squeeze in the createWaterPopup on a select.
@@ -573,6 +583,8 @@ OpenLayers.Control.Permalink.prototype.updateLink = function() {
     }
     if (document.getElementById("permalinkinput")) {
         document.getElementById("permalinkinput").value = href;
+        // set new link also in browser location field, needed for permalink to pick up an opened popup
+        window.history.pushState("", "PDOKKaart", href);
     }
     return false;
 }
