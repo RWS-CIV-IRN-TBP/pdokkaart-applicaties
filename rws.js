@@ -348,7 +348,8 @@ Geotool.createWaterPopup = function(f) {
  * Needed to keep updating the waterdata
  */
 // interval time in milliseconds
-Geotool.dataInterval = 10000;
+Geotool.dataInterval = 5*60*1000;
+
 Geotool.refreshData = function(fnc) {
     fnc(); // call function NOW
     return(setInterval(fnc, Geotool.dataInterval)); // keep calling it every dataInterval milliseconds
@@ -489,6 +490,9 @@ OpenLayers.Layer.Vector.prototype.getFeaturesByAttribute = function(attrName, at
     return foundFeatures;
 }
 
+/**
+ * Overriding draw function of permalink to be able to draw our own button + input
+ */
 OpenLayers.Control.Permalink.prototype.draw = function() {
         OpenLayers.Control.prototype.draw.apply(this, arguments);
 
@@ -547,7 +551,9 @@ OpenLayers.Control.Permalink.prototype.draw = function() {
 
         return this.div;
     }
-
+/**
+ * Overriding the updateLink function of Permalink class to add our own functionality
+ */
 OpenLayers.Control.Permalink.prototype.updateLink = function() {
     var separator = this.anchor ? '#' : '?';
     var href = this.base;
