@@ -30,9 +30,8 @@
         "geocoder":{},
         "loc":"122650.88, 487337.6",
         "showlayerswitcher":true,
-        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}]
+    };
     var api_202;
     Pdok.ready(
         function(){
@@ -41,7 +40,7 @@
             Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
             // afvoer meetpunten url
-            var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=afvoer_en_stroomsnelheid&loadprojects=1";
+            var data_uri = "https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=afvoer_en_stroomsnelheid&loadprojects=1";
 
             // http://rws.nl/geotool/geotool_afvoer_stroomsnelheid.aspx?cookieload=false
 
@@ -50,7 +49,10 @@
             // afvoer is category 1 en 3 !
             var icons = [{},Geotool.icons.label_1_xl,{},Geotool.icons.label_2_xl] // only iconnr 1 en 3
             var params = [ {key:'Q10',name:'Afvoer',units:'m3/sec'}, {key:'Q10V',name:'Afvoer Verwacht',units:'m3/sec'}];
-            Geotool.getWaterData(data_uri, api_202.featuresLayer, 'afvoer_en_stroomsnelheid', [1,3], icons, params);
+            Geotool.refreshData(
+                function(){
+                    Geotool.getWaterData(data_uri, api_202.featuresLayer, 'afvoer_en_stroomsnelheid', [1,3], icons, params);
+                });
 
             // add legend
             Geotool.legend(api_202.map, 'legenda_stromingafvoer.png');

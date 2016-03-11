@@ -30,9 +30,8 @@
         "zoom":3,
         "loc":"122650.88, 487337.6",
         "showlayerswitcher":true,
-        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}]
+    };
     var api780;
     var Geotool = Geotool || {};
 
@@ -40,8 +39,8 @@
         function(){
             api780 = new Pdok.Api(config_780, Geotool.ready);
 
-            var tilecache_files_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/tilecache/';
-            var attribution = '<span style="color:black">&copy; &nbsp; <a href="http://creativecommons.org/licenses/by-sa/2.0/" title="Creative Commons Attribution-ShareAlike 2.0">OpenStreetMap</a></span>';
+            var tilecache_files_url = 'https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/tilecache/';
+            var attribution = '<span style="color:black">&copy; &nbsp; <a href="https://creativecommons.org/licenses/by-sa/2.0/" title="Creative Commons Attribution-ShareAlike 2.0">OpenStreetMap</a></span>';
             /*
             var layer = new OpenLayers.Layer.TileCache( 'RWS Kaart', tilecache_files_url, 'vaarww_topo2',
               {
@@ -102,7 +101,7 @@
             var period = 365 * 24 * 60 * 60; // one year of milliseconds
             var end = Geotool.Calendar.formatAsLongUSDate(now+period);
             //var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=vaarwegen&loadprojects=1&startdate=2015-03-24&enddate=2015-06-22";
-            var data_uri = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=vaarwegen&loadprojects=1&startdate='+today+'&enddate='+end;
+            var data_uri = 'https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=vaarwegen&loadprojects=1&startdate='+today+'&enddate='+end;
             var request = OpenLayers.Request.GET({
                 url: data_uri,
                 callback: handler

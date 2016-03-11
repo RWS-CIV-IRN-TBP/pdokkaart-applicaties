@@ -30,9 +30,8 @@
         "zoom":3,
         "loc":"122650.88, 487337.6",
         "showlayerswitcher":true,
-        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}]
+    };
     var api_762;
 
     Pdok.ready(
@@ -68,7 +67,7 @@
             }
 
             // create wmslayers
-            var wms = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/bprw?';
+            var wms = 'https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/wms.php/rwsnl/bprw?';
             var leefgebied = api_762.createWMSLayer(
                 {
                     name: 'Leefgebied',

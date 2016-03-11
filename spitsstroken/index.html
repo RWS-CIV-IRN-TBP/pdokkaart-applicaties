@@ -30,9 +30,7 @@
         "zoom":3,
         "loc":"122650.88, 487337.6",
         "showlayerswitcher":true,
-        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}]
     };
 
     var api_547;
@@ -43,7 +41,7 @@
             var spitsstroken = api_547.createWMSLayer(
             {
                 name: 'Spitsstroken',
-                url: 'http://geoservices.rijkswaterstaat.nl/weggeg',
+                url: 'https://geoservices.rijkswaterstaat.nl/weggeg',
                 layers: 'AAA78',
                 transparent:true,
                 singleTile: false

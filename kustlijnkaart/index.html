@@ -30,9 +30,7 @@
         "geocoder":{},
         "loc":"100737.64303244, 472026.42380819",
         "showlayerswitcher":true,
-        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}]
     };
 
     var api_1703;
@@ -45,7 +43,7 @@
             var kustlijnlayer = api_1703.createWMSLayer(
               {
                 name: 'Kustlijnkaart 2016',
-                url: 'http://geoservices.rijkswaterstaat.nl/nis_kustlijnkaart',
+                url: 'https://geoservices.rijkswaterstaat.nl/nis_kustlijnkaart',
                 // 2014
                 //layers: 'tr_25_14,tr_50_14,tr_100_14,lab_25_14,lab_50_14,lab_100_14,j_lab_25_14,j_lab_50_14,j_lab_100_14,j_raai_14,bkl_14,rsp_14',
                 // 2015

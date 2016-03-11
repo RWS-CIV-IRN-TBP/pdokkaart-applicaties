@@ -31,9 +31,8 @@
         "geocoder":{},
         "loc":"85017,443520",
         "showlayerswitcher":true,
-        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}]
+    };
     var api_251;
     Pdok.ready(
         function(){
@@ -41,15 +40,17 @@
 
             Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
-            var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=chlorositeit&loadprojects=0";
+            var data_uri = "https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=chlorositeit&loadprojects=0";
 
             // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=chlorositeit&center=85757%2C403218&mapscale=1536000&height=530&width=670
 
             // 1 = chlorositeit / zoutgehalte
             var icons = [{}, Geotool.icons.label_5_xl,{},{},{}] // only iconnr 1 used
             var params = [ {key:'CL10',name:'Zoutgehalte',units:'mg Cl/l'}];
-            Geotool.getWaterData(data_uri, api_251.featuresLayer, 'chlorositeit', [1], icons, params);
-
+            Geotool.refreshData(
+                function(){
+                    Geotool.getWaterData(data_uri, api_251.featuresLayer, 'chlorositeit', [1], icons, params);
+                });
         }
     );
 </script>

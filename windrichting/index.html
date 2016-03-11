@@ -30,9 +30,8 @@
         "geocoder":{},
         "loc":"122650.88, 487337.6",
         "showlayerswitcher":true,
-        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}]
+    };
     var api_764;
     Pdok.ready(
         function(){
@@ -43,11 +42,14 @@
             // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=windsnelheden_en_windstoten&center=140377%2C475043&mapscale=3072000&legend=1&height=530&width=670&cookieload=true
 
             // wind meetpunten url
-            var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=windsnelheden_en_windstoten&loadprojects=1";
+            var data_uri = "https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=windsnelheden_en_windstoten&loadprojects=1";
 
             var icons =[{},{},Geotool.icons.label_5,{},{}]; // windrichting = category 2, iconnr 2
             var params = [ {key:'WR10',name:'Windrichting',units:'graden'} ];
-            Geotool.getWaterData(data_uri, api_764.featuresLayer, 'windsnelheden_en_windstoten', [2], icons, params);
+            Geotool.refreshData(
+                function(){
+                    Geotool.getWaterData(data_uri, api_764.featuresLayer, 'windsnelheden_en_windstoten', [2], icons, params);
+                });
         } 
     );
 </script>

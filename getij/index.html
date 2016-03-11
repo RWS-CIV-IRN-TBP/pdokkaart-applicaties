@@ -31,9 +31,8 @@
         "geocoder":"{}",
         "loc":"122650.88, 487337.6",
         "showlayerswitcher":true,
-        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}]
+    };
     var api100;
     Pdok.ready(
         function(){
@@ -87,7 +86,7 @@
             }
 
             // rws getij
-            var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=getij&loadprojects=0";
+            var data_uri = "https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=getij&loadprojects=0";
             var request = OpenLayers.Request.GET({
                 url: data_uri,
                 callback: handler

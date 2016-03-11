@@ -30,9 +30,8 @@
         "geocoder":{},
         "loc":"122650.88, 487337.6",
         "showlayerswitcher":true,
-        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}],
-        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}]
+    };
     var api_271;
     Pdok.ready(
         function(){
@@ -40,15 +39,17 @@
 
             Geotool.useWaterPopup = true;  // one of the RWS waterparameter viewers: special popup
 
-            var data_uri = "http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=luchtgegevens&loadprojects=1";
+            var data_uri = "https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?mode=features&projecttype=luchtgegevens&loadprojects=1";
 
             // http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/?baselayer=KAART&projecttype=luchtgegevens&center=140377%2C475043&mapscale=3072000&legend=1&height=530&width=670&cookieload=true
 
             // 1 = luchttemperatuur
             var icons = [{}, Geotool.icons.label_5,{},{},{}] // only iconnr 1 used
             var params = [ {key:'TL10',name:'Luchttemperatuur',units:'grad.C'}];
-            Geotool.getWaterData(data_uri, api_271.featuresLayer, 'luchtgegevens', [1], icons, params);
-
+            Geotool.refreshData(
+                function(){
+                    Geotool.getWaterData(data_uri, api_271.featuresLayer, 'luchtgegevens', [1], icons, params);
+                });
         }
     );
 </script>

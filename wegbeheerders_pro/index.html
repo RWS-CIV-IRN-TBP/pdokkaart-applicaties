@@ -76,7 +76,7 @@
             title = title.replace(/<[bB][rR]\/?>/, '\n');
             title = title.replace(/<[^>]*>/, ' ');
             title = title.replace(/"/, '&quot;');
-            html += '<img class="kustwerkfoto" src="http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/fotos/kunstwerken/' + attrs.DISKFOTO + '" border="0" title="' + title + '">';
+            html += '<img class="kustwerkfoto" src="https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/fotos/kunstwerken/' + attrs.DISKFOTO + '" border="0" title="' + title + '">';
         }
         html += "</div>";
         return html;
@@ -92,16 +92,15 @@
         "geocoder":{},
         "zoom":3,
         "loc":"122650.88, 487337.6",
-        "baselayers":[{"id":"BRT","visible":true}],
-        "markersdef":"http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-        "layersdef":"http://pdokserver/pdokkaart/api/js/pdok-layers.js"};
+        "baselayers":[{"id":"BRT","visible":true}]
+    };
     var api_763;
     Pdok.ready(
         function(){
             api_763 = new Pdok.Api(config_763, Geotool.ready);
     
-            var tilecache_files_url = 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/tilecache/';
-            var attribution = '<span style="color:black">&copy; &nbsp; <a href="http://creativecommons.org/licenses/by-sa/2.0/" title="Creative Commons Attribution-ShareAlike 2.0">OpenStreetMap</a></span>';
+            var tilecache_files_url = 'https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/tilecache/';
+            var attribution = '<span style="color:black">&copy; &nbsp; <a href="https://creativecommons.org/licenses/by-sa/2.0/" title="Creative Commons Attribution-ShareAlike 2.0">OpenStreetMap</a></span>';
             var layer = new OpenLayers.Layer.TileCache( 'RWS Kaart', tilecache_files_url, 'wegbeheerders_topo2',
               {
                 'format':'image/jpeg',
@@ -114,9 +113,9 @@
             api_763.map.setBaseLayer(layer);
     
             // make wmslayers for different zoomlevels
-            api_763.wmsLayer = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo', 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/pro/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo', 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
-            api_763.wmsLayer_PR = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo_PR', 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/pro/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo' + "_PR", 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
-            api_763.wmsLayer_R = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo_R', 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/pro/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo' + "_R", 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
+            api_763.wmsLayer = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo', 'https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/pro/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo', 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
+            api_763.wmsLayer_PR = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo_PR', 'https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/pro/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo' + "_PR", 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
+            api_763.wmsLayer_R = new OpenLayers.Layer.WMS( 'wegbeheerdersinfo_R', 'https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/pro/wms.php/rwsnl/wegbeheerders', {layers: 'wegbeheerderinfo' + "_R", 'format':'image/gif', transparent:true}, {'buffer': 0, isBaseLayer:false, 'projection':'EPSG:28992', 'units':'m', singleTile:true } );
             // Make sure it is never visible, so it is not drawn. It is only needed
             // for the getFeatureInfo control to know which WMS to query.
             // For this reason, the wmsLayer is also not added to the group or map,
@@ -134,7 +133,7 @@
                 });
     
             var info = new OpenLayers.Control.WMSGetFeatureInfo({
-                url: 'http://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/pro/wms.php/rwsnl/wegbeheerders',
+                url: 'https://www.rijkswaterstaat.nl/apps/geoservices/rwsnl/pro/wms.php/rwsnl/wegbeheerders',
                 title: 'Klik voor info over wegbeheerder',
                 queryVisible: false,
                 // hover: true, // no hovering for now...
