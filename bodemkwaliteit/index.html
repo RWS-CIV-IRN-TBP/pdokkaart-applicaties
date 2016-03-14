@@ -97,7 +97,7 @@
             "showzoom": false,
             "showscaleline": true,
             "showmouseposition": true,
-            "geocoder": "{}",
+            "geocoder": {},
             "loc": "82113.53, 453633.951875",
             "baselayers": [
               {
@@ -248,6 +248,9 @@
                 var overview = new OpenLayers.Control.OverviewMap(controlOptions);
                 api_561.map.addControl(overview);
                 //overview.activate();
+
+                // tijdelijke hack om de geocoder control nu een https te geven
+                api_561.map.getControlsByClass("OpenLayers.Control.GeocoderControl")[0].geocoderUrl="https://geodata.nationaalgeoregister.nl/geocoder/Geocoder?";
             }
         );
 
