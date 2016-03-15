@@ -590,7 +590,10 @@ OpenLayers.Control.Permalink.prototype.updateLink = function() {
     if (document.getElementById("permalinkinput")) {
         document.getElementById("permalinkinput").value = href;
         // set new link also in browser location field, needed for permalink to pick up an opened popup
-        window.history.pushState("", "PDOKKaart", href);
+        if (window.history.pushState){
+            // older IE doe not have this...
+            window.history.pushState("", "PDOKKaart", href);
+        }
     }
     return false;
 }
