@@ -335,8 +335,9 @@ Geotool.createWaterPopup = function(f) {
                 '<tbody>' + html;
 
             html+='</tbody></table>';
-
-            document.querySelectorAll('.table')[0].innerHTML = html;
+            if (document.querySelectorAll('.table').length>0) {
+                document.querySelectorAll('.table')[0].innerHTML = html;
+            }
         }
     });
 
@@ -393,7 +394,7 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
                     // deselect ALL features to be able to select this one again
                     popup.feature.layer.selectedFeatures=[];
                     this.hide();
-                    popup.map.getControlsByClass("OpenLayers.Control.Permalink")[0].updateLink();
+                    popup.map.getControlsByClass("OpenLayers.Control.Permalink")[0].updateLink(true);
                 }
             );
     feature.popup = popup;
@@ -401,6 +402,25 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
     this.map.addPopup(popup, true);
     this.map.getControlsByClass("OpenLayers.Control.Permalink")[0].updateLink();
 };
+
+/**
+ * Overriding Map's removePopup so we can update the permalink
+ * NOTE: closing the popup is done in two ways: via removePopup and via the closing function above
+ * @param popup
+ */
+OpenLayers.Map.prototype.removePopup = function(popup) {
+    OpenLayers.Util.removeItem(this.popups, popup);
+    if (popup.div) {
+        try { this.layerContainerDiv.removeChild(popup.div); }
+        catch (e) { } // Popups sometimes apparently get disconnected
+                  // from the layerContainerDiv, and cause complaints.
+    }
+    popup.map = null;
+    // only line below is custom
+    if (this.getControlsByClass("OpenLayers.Control.Permalink")[0]) {
+        this.getControlsByClass("OpenLayers.Control.Permalink")[0].updateLink(true);
+    }
+}
 
 /**
  * VERY simple legend: just one image
@@ -554,7 +574,7 @@ OpenLayers.Control.Permalink.prototype.draw = function() {
 /**
  * Overriding the updateLink function of Permalink class to add our own functionality
  */
-OpenLayers.Control.Permalink.prototype.updateLink = function() {
+OpenLayers.Control.Permalink.prototype.updateLink = function(cleanup) {
     var separator = this.anchor ? '#' : '?';
     var href = this.base;
     var anchor = null;
@@ -578,7 +598,7 @@ OpenLayers.Control.Permalink.prototype.updateLink = function() {
             params.popupxy = feature.popupxy.lon+","+feature.popupxy.lat;
         }
     }
-    else{
+    else if (cleanup===true){
         // remove a '&popupid' or '&popupxy' from query parameters if in the url (to be sure we have a good permalink)?
         delete params.popupid;
         delete params.popupxy;
