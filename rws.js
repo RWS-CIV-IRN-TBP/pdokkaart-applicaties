@@ -395,11 +395,13 @@ Pdok.Api.prototype.onPopupFeatureSelect = function(evt) {
                     popup.feature.layer.selectedFeatures=[];
                     this.hide();
                     popup.map.getControlsByClass("OpenLayers.Control.Permalink")[0].updateLink(true);
+                    Geotool.toggleControls(popup.map, true);
                 }
             );
     feature.popup = popup;
     popup.feature = feature;
     this.map.addPopup(popup, true);
+    Geotool.toggleControls(popup.map, false);
     this.map.getControlsByClass("OpenLayers.Control.Permalink")[0].updateLink();
 };
 
@@ -420,6 +422,7 @@ OpenLayers.Map.prototype.removePopup = function(popup) {
     if (this.getControlsByClass("OpenLayers.Control.Permalink")[0]) {
         this.getControlsByClass("OpenLayers.Control.Permalink")[0].updateLink(true);
     }
+    Geotool.toggleControls(this, true);
 }
 
 /**
@@ -618,6 +621,21 @@ OpenLayers.Control.Permalink.prototype.updateLink = function(cleanup) {
     return false;
 }
 
+Geotool.toggleControls = function(map, visible){
+    // test: only when mapwidth < 400
+    if (map.size.w <= 400) {
+        var display = 'block';
+        if (!visible) {
+            display = 'none';
+        }
+        document.getElementById('legend').style.display = display;
+        map.getControlsByClass("OpenLayers.Control.Permalink")[0].div.style.display = display;
+        map.getControlsByClass("OpenLayers.Control.GeocoderControl")[0].div.style.display = display;
+        map.getControlsByClass("OpenLayers.Control.LayerSwitcher")[0].div.style.display = display;
+        map.getControlsByClass("OpenLayers.Control.Zoom")[0].div.style.display = display;
+    }
+}
+
 /**
  * generic Geotool ready function, called after Pdok.ready is finished (as callback)
  * to be used for some general rws functions, like renaming layers, etc
@@ -660,3 +678,4 @@ Geotool.ready = function(api) {
     }
 
 }
+
