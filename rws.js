@@ -628,11 +628,21 @@ Geotool.toggleControls = function(map, visible){
         if (!visible) {
             display = 'none';
         }
-        document.getElementById('legend').style.display = display;
-        map.getControlsByClass("OpenLayers.Control.Permalink")[0].div.style.display = display;
-        map.getControlsByClass("OpenLayers.Control.GeocoderControl")[0].div.style.display = display;
-        map.getControlsByClass("OpenLayers.Control.LayerSwitcher")[0].div.style.display = display;
-        map.getControlsByClass("OpenLayers.Control.Zoom")[0].div.style.display = display;
+        if (document.getElementById('legend')){
+            document.getElementById('legend').style.display = display;
+        }
+        if (map.getControlsByClass("OpenLayers.Control.Permalink").length>0) {
+            map.getControlsByClass("OpenLayers.Control.Permalink")[0].div.style.display = display;
+        }
+        if (map.getControlsByClass("OpenLayers.Control.GeocoderControl").length>0) {
+            map.getControlsByClass("OpenLayers.Control.GeocoderControl")[0].div.style.display = display;
+        }
+        if (map.getControlsByClass("OpenLayers.Control.LayerSwitcher").length>0) {
+            map.getControlsByClass("OpenLayers.Control.LayerSwitcher")[0].div.style.display = display;
+        }
+        if (map.getControlsByClass("OpenLayers.Control.Zoom").length>0) {
+            map.getControlsByClass("OpenLayers.Control.Zoom")[0].div.style.display = display;
+        }
     }
 }
 
