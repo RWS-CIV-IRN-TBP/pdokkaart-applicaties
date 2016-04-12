@@ -164,6 +164,10 @@ Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories
                 features.push(feature);
             }
         }
+        var popupId = false;
+        if (OpenLayers.Util.getParameters().popupid){
+            popupId = OpenLayers.Util.getParameters().popupid;
+        }
         // close popups
         while( featuresLayer.map.popups.length ) {
             featuresLayer.map.removePopup(featuresLayer.map.popups[0]);
@@ -175,14 +179,13 @@ Geotool.getWaterData = function(data_uri, featuresLayer, projecttype, categories
         if (featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')){
             featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')[0].decreaseCounter();
         }
-
-        // if there is a popupid in the parameters, get it and show the popup
-        if (OpenLayers.Util.getParameters().popupid){
+        // if there was a popupid in the parameters, get it and show the popup
+        if (popupId){
             featuresLayer.map.getControlsByClass("OpenLayers.Control.SelectFeature")[0].select(
-                    featuresLayer.getFeaturesByAttribute("ids", OpenLayers.Util.getParameters().popupid)[0])
+                    featuresLayer.getFeaturesByAttribute("ids", popupId)[0])
         }
-
     }
+
     // requests take some time sometimes
     if (featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')){
             featuresLayer.map.getControlsByClass('OpenLayers.Control.LoadingPanel')[0].increaseCounter();
