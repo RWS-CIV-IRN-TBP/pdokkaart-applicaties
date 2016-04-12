@@ -45,6 +45,8 @@
         function(){
             api_101 = new Pdok.Api(config_101, Geotool.ready);
             api_101.map.removeLayer( api_101.map.getLayersByName("Markers")[0] );
+            // prevent zooming to too much detail:
+            api_101.map.getNumZoomLevels = function(){return 10;};
             // now add geluidskaart layers (in plaats van met wmsurl/wmslayers)
             var etmaal = api_101.createWMSLayer(
                 {
@@ -54,7 +56,7 @@
                     url: 'https://geoservices.rijkswaterstaat.nl/dvs_geluidskaarten',
                     layers: 'AAA500',
                     transparent:true,
-                    singleTile: false,
+                    singleTile: true,
                     visibility: true
                 })
             api_101.map.addLayer(etmaal);
