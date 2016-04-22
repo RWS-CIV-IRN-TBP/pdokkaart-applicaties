@@ -232,7 +232,7 @@ Geotool.createWaterPopup = function(f) {
     var meettijd = Geotool.Calendar.formatAsLongDate(f.data.meettijd)  + ' - ' +  Geotool.Calendar.formatAsTime(f.data.meettijd) + '&nbsp;uur';
 
     var html = '<div id="description"><p>'+meettijd+ ' - ' + f.data.locatienaam+'</p></div>';
-    html += '<div class="graph" style="display:block;"><img src="' + graph_url + '" alt="Grafiek wordt opgehaald..."/></div>';
+    html += '<div class="graph" style="display:block;"><a target="graph" href="'+graph_url+'"><img src="' + graph_url + '" alt="Grafiek wordt opgehaald..."/></a></div>';
     html += '<div class="table" style="display:none;">Data ophalen...</div>';
     html += '<div class="graphtablebtn" onclick="Geotool.graphtableswitch(this)">Tabel <img src="../img/tabel.gif"/></div>';
 
