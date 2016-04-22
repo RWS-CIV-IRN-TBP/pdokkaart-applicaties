@@ -150,6 +150,9 @@
             function () {
 
                 api_561 = new Pdok.Api(config_561);
+                api_561.map.isValidZoomLevel = function(zoomLevel) {
+                    return ((zoomLevel != null) && (zoomLevel >= 0) && (zoomLevel <= 12));
+                }
 
                 // either get x,y or coordinates
                 var polygon = document.getElementById(POLYGON_INPUT).value;
