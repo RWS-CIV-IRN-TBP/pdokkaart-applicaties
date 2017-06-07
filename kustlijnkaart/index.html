@@ -40,23 +40,33 @@
             // remove the obsolete Markers layer
             api_1703.map.removeLayer( api_1703.map.getLayersByName("Markers")[0] );
             // now add kustlijnkaart layers (in plaats van met wmsurl/wmslayers)
-            var kustlijnlayer = api_1703.createWMSLayer(
+            var kustlijnzorglayer = api_1703.createWMSLayer(
               {
-                name: 'Kustlijnkaart 2016',
-                url: 'https://geoservices.rijkswaterstaat.nl/nis_kustlijnkaart',
+                name: 'Kustlijnzorg 2017',
+                //url: 'https://geoservices.rijkswaterstaat.nl/nis_kustlijnkaart',
                 // 2014
                 //layers: 'tr_25_14,tr_50_14,tr_100_14,lab_25_14,lab_50_14,lab_100_14,j_lab_25_14,j_lab_50_14,j_lab_100_14,j_raai_14,bkl_14,rsp_14',
                 // 2015
                 //layers: 'tr_25_15,tr_50_15,tr_100_15,lab_25_15,lab_50_15,lab_100_15,j_lab_25_15,j_lab_50_15,j_lab_100_15,j_raai_15,bkl_15,rsp_15',
                 // 2016
-                layers: 'tr_25_16,tr_50_16,tr_100_16,lab_25_16,lab_50_16,lab_100_16,j_lab_25_16,j_lab_50_16,j_lab_100_16,j_raai_16,bkl_15,rsp_16',
+                //layers: 'tr_25_16,tr_50_16,tr_100_16,lab_25_16,lab_50_16,lab_100_16,j_lab_25_16,j_lab_50_16,j_lab_100_16,j_raai_16,bkl_15,rsp_16',
+                url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/kustlijnzorg/wms',
+                layers: 'kustlijnzorg:rijksstrandpalen_l,kustlijnzorg:jarkusraaien,kustlijnzorg:basiskustlijn',
                 transparent:true,
                 singleTile: false
               })
-            api_1703.map.addLayer(kustlijnlayer);
-
+            api_1703.map.addLayer(kustlijnzorglayer);
+            var kustlijnkaartlayer = api_1703.createWMSLayer(
+              {
+                name: 'Kustlijnkaart 2017',
+                url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/kustlijnkaart/wms',
+                layers: 'kustlijnkaart:trend_2017_25,kustlijnkaart:trend_2017_50,kustlijnkaart:trend_2017_100',
+                transparent:true,
+                singleTile: false
+              })
+            api_1703.map.addLayer(kustlijnkaartlayer);
             // add legend
-            Geotool.legend(api_1703.map, 'legenda_kustlijnkaart.png');
+            //Geotool.legend(api_1703.map, 'legenda_kustlijnkaart.png');
         }
     );
 </script>
