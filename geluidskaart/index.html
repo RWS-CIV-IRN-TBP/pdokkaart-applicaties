@@ -48,59 +48,74 @@
             // prevent zooming to too much detail:
             api_101.map.getNumZoomLevels = function(){return 10;};
             // now add geluidskaart layers (in plaats van met wmsurl/wmslayers)
-            var etmaal = api_101.createWMSLayer(
+            /*
+            var lden2016 = api_101.createWMSLayer(
                 {
-                    name: 'Geluidskaarten etmaal',
-                    // url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
-                    // layers: 'geluidskaartenetmaal',
-                    url: 'https://geoservices.rijkswaterstaat.nl/dvs_geluidskaarten',
-                    layers: 'AAA500',
+                    name: 'Lden 2016',
+                    url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/geluidsbelasting/wms',
+                    //layers: 'geluidsbelasting:gemiddeld_etmaal',
+                    layers: 'geluidsbelasting:Lden_2016',
                     transparent:true,
                     singleTile: false,
                     visibility: true
                 })
-            api_101.map.addLayer(etmaal);
-            var nacht = api_101.createWMSLayer(
+            api_101.map.addLayer(lden2016);
+            var lnight2016 = api_101.createWMSLayer(
                 {
-                    name: 'Geluidskaarten nacht',
-                    // url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
-                    // layers: 'geluidskaartennacht',
-                    url: 'https://geoservices.rijkswaterstaat.nl/dvs_geluidskaarten',
-                    layers: 'AAA600',
+                    name: 'Lnight 2016',
+                    url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/geluidsbelasting/wms',
+                    layers: 'geluidsbelasting:Lnight_2016',
                     transparent:true,
                     singleTile: false,
                     visibility: false
                 })
-            api_101.map.addLayer(nacht);
-            var etmaal2006 = api_101.createWMSLayer(
+            api_101.map.addLayer(lnight2016);
+            */
+            var lden2011 = api_101.createWMSLayer(
                 {
-                    name: 'Geluidskaarten etmaal 2006',
-                    // url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
-                    // layers: 'geluidskaartenetmaal2006',
-                    url: 'https://geoservices.rijkswaterstaat.nl/dvs_geluidskaarten',
-                    layers: 'gm_et_2007',
+                    name: 'Lden 2011',
+                    url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/geluidsbelasting/wms',
+                    layers: 'geluidsbelasting:Lden_2011',
                     transparent:true,
                     singleTile: false,
                     visibility: false
                 })
-            api_101.map.addLayer(etmaal2006);
-            var nacht2006 = api_101.createWMSLayer(
+            api_101.map.addLayer(lden2011);
+            var lnight2011 = api_101.createWMSLayer(
                 {
-                    name: 'Geluidskaarten nacht 2006',
-                    // url: 'http://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/wms',
-                    // layers: 'geluidskaartennacht2006',
-                    url: 'https://geoservices.rijkswaterstaat.nl/dvs_geluidskaarten',
-                    layers: 'gm_nacht_2007',
+                    name: 'Lnight 2011',
+                    url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/geluidsbelasting/wms',
+                    layers: 'geluidsbelasting:Lnight_2011',
                     transparent:true,
                     singleTile: false,
                     visibility: false
                 })
-            api_101.map.addLayer(nacht2006);
+            api_101.map.addLayer(lnight2011);
+            var lden2006 = api_101.createWMSLayer(
+                {
+                    name: 'Lden 2006',
+                    url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/geluidsbelasting/wms',
+                    layers: 'geluidsbelasting:Lden_2006',
+                    transparent:true,
+                    singleTile: false,
+                    visibility: false
+                })
+            api_101.map.addLayer(lden2006);
+            var lnight2006 = api_101.createWMSLayer(
+                {
+                    name: 'Lnight 2006',
+                    url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/geluidsbelasting/wms',
+                    layers: 'geluidsbelasting:Lnight_2006',
+                    transparent:true,
+                    singleTile: false,
+                    visibility: false
+                })
+            api_101.map.addLayer(lnight2006);
 
             // add legend
             //Geotool.legend(api_101.map, 'legenda_geluidskaart.png');
             // get legend from wms
-            Geotool.legend(api_101.map, 'https://geoservices.rijkswaterstaat.nl/dvs_geluidskaarten?version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=AAA600&format=image/png&STYLE=DEFAULT');
+            // Geotool.legend(api_101.map, 'https://geoservices.rijkswaterstaat.nl/dvs_geluidskaarten?version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=AAA600&format=image/png&STYLE=DEFAULT');
         }
     );
 
