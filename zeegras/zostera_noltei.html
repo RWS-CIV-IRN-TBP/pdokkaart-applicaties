@@ -19,10 +19,10 @@ Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
 var api_517;
 var config_517={
   "mapdiv": "map_517",
-  "zoom": 7,
+  //"zoom": 7, // sept 2017 zoom naar heel NL omdat 2016 op een andere plek is gemonsterd
+  //"loc": "119747.84, 547852.8613239",
   "showscaleline": true,
   "showmouseposition": true,
-  "loc": "119747.84, 547852.8613239",
   "baselayers": [
     {
       "id": "BRT",
@@ -39,27 +39,31 @@ var config_517={
 
 Pdok.ready( function(){
 
-   var zeegras_service = 'https://geoservices.rijkswaterstaat.nl/zeegras';
+   var zeegras_service = 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/zeegras/ows';
    var single_tile = true;
    var transparant = true;
    var visibility = false;
 
    api_517 = new Pdok.Api(config_517);
    api_517.map.removeLayer( api_517.map.getLayersByName("Markers")[0] );
-   var nolt_2014 = api_517.createWMSLayer({
-        name: 'Zostera noltei 2014', layers: 'nolt_2014',
+   var nolt_2016 = api_517.createWMSLayer({
+        name: 'Zostera noltei 2016', layers: 'zeegras:zostera_noltei_2016',
         url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: true})
+   api_517.map.addLayer(nolt_2016);
+   var nolt_2014 = api_517.createWMSLayer({
+        name: 'Zostera noltei 2014', layers: 'zeegras:zostera_noltei_2014',
+        url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_517.map.addLayer(nolt_2014);
    var nolt_2013 = api_517.createWMSLayer({
-        name: 'Zostera noltei 2013', layers: 'nolt_2013',
+        name: 'Zostera noltei 2013', layers: 'zeegras:zostera_noltei_2013',
         url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_517.map.addLayer(nolt_2013);
    var nolt_2011 = api_517.createWMSLayer({
-        name: 'Zostera noltei 2011', layers: 'nolt_2011',
+        name: 'Zostera noltei 2011', layers: 'zeegras:zostera_noltei_2011',
         url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_517.map.addLayer(nolt_2011);
    var nolt_2010 = api_517.createWMSLayer({
-        name: 'Zostera noltei 2010', layers: 'nolt_2010',
+        name: 'Zostera noltei 2010', layers: 'zeegras:zostera_noltei_2010',
         url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_517.map.addLayer(nolt_2010);
 
