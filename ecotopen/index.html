@@ -47,19 +47,19 @@ Pdok.ready( function(){
    api_101 = new Pdok.Api(config_101);
    api_101.map.removeLayer( api_101.map.getLayersByName("Markers")[0] );
    var vegstructuur3 = api_101.createWMSLayer({
-        name: 'Vegetatiestructuur 3e cyclus', layers: 'ecotopen_cyclus_3',
+        name: 'Ecotopen cyclus 3', layers: 'ecotopen_cyclus_3',
         //wmsinfoformat: 'text/plain',  // text/plain, application/vnd.ogc.gml, application/vnd.ogc.gml/3.1.1, text/html
         url: ecotopen_service, transparent:transparant, singleTile: single_tile, visibility: true})
    api_101.map.addLayer(vegstructuur3);
    
    var vegstructuur2 = api_101.createWMSLayer({
-        name: 'Vegetatiestructuur 2e cyclus', layers: 'ecotopen_cyclus_2',
+        name: 'Ecotopen cyclus 2', layers: 'ecotopen_cyclus_2',
         //wmsinfoformat: 'text/plain',  // text/plain, application/vnd.ogc.gml, application/vnd.ogc.gml/3.1.1, text/html
        url: ecotopen_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_101.map.addLayer(vegstructuur2);
    
    var vegstructuur1 = api_101.createWMSLayer({
-        name: 'Vegetatiestructuur 1e cyclus', layers: 'ecotopen_cyclus_1',
+        name: 'Ecotopen cyclus 1', layers: 'ecotopen_cyclus_1',
         //wmsinfoformat: 'text/plain',  // text/plain, application/vnd.ogc.gml, application/vnd.ogc.gml/3.1.1, text/html
         url: ecotopen_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_101.map.addLayer(vegstructuur1);
