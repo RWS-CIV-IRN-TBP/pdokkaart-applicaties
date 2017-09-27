@@ -39,7 +39,7 @@ var config_101={
 
 Pdok.ready( function(){
 
-   var ecotopen_service = 'https://geoservices.rijkswaterstaat.nl/ecotopen';
+   var ecotopen_service = 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/ecotopen/ows'
    var single_tile = true;
    var transparant = true;
    var visibility = false;
@@ -47,17 +47,20 @@ Pdok.ready( function(){
    api_101 = new Pdok.Api(config_101);
    api_101.map.removeLayer( api_101.map.getLayersByName("Markers")[0] );
    var vegstructuur3 = api_101.createWMSLayer({
-        name: 'Vegetatiestructuur 3e cyclus', layers: 'vegstructuur3',
+        name: 'Vegetatiestructuur 3e cyclus', layers: 'ecotopen_cyclus_3',
+        //wmsinfoformat: 'text/plain',  // text/plain, application/vnd.ogc.gml, application/vnd.ogc.gml/3.1.1, text/html
         url: ecotopen_service, transparent:transparant, singleTile: single_tile, visibility: true})
    api_101.map.addLayer(vegstructuur3);
    
    var vegstructuur2 = api_101.createWMSLayer({
-        name: 'Vegetatiestructuur 2e cyclus', layers: 'vegstructuur2',
-        url: ecotopen_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
+        name: 'Vegetatiestructuur 2e cyclus', layers: 'ecotopen_cyclus_2',
+        //wmsinfoformat: 'text/plain',  // text/plain, application/vnd.ogc.gml, application/vnd.ogc.gml/3.1.1, text/html
+       url: ecotopen_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_101.map.addLayer(vegstructuur2);
    
    var vegstructuur1 = api_101.createWMSLayer({
-        name: 'Vegetatiestructuur 1e cyclus', layers: 'vegstructuur1',
+        name: 'Vegetatiestructuur 1e cyclus', layers: 'ecotopen_cyclus_1',
+        //wmsinfoformat: 'text/plain',  // text/plain, application/vnd.ogc.gml, application/vnd.ogc.gml/3.1.1, text/html
         url: ecotopen_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_101.map.addLayer(vegstructuur1);
   // add legend
