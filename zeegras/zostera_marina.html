@@ -19,10 +19,10 @@ Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
 var api_516;
 var config_516={
   "mapdiv": "map_516",
-  "zoom": 7,
+  //"zoom": 7, // sept 2017 zoom naar heel NL omdat 2016 op een andere plek is gemonsterd
+  //"loc": "119747.84, 547852.8613239",
   "showscaleline": true,
   "showmouseposition": true,
-  "loc": "119747.84, 547852.8613239",
   "baselayers": [
     {
       "id": "BRT",
@@ -39,31 +39,35 @@ var config_516={
 
 Pdok.ready( function(){
 
-   var zeegras_service = 'https://geoservices.rijkswaterstaat.nl/zeegras';
+   var zeegras_service = 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/zeegras/ows';
    var single_tile = true;
    var transparant = true;
    var visibility = false;
 
    api_516 = new Pdok.Api(config_516);
    api_516.map.removeLayer( api_516.map.getLayersByName("Markers")[0] );
-   var mar_2014 = api_516.createWMSLayer({
-        name: 'Zostera marina 2014', layers: 'mar_2014',
+   var mar_2016 = api_516.createWMSLayer({
+        name: 'Zostera marina 2016', layers: 'zeegras:zostera_marina_2016',
         url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: true})
+   api_516.map.addLayer(mar_2016);
+   var mar_2014 = api_516.createWMSLayer({
+        name: 'Zostera marina 2014', layers: 'zeegras:zostera_marina_2014',
+        url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_516.map.addLayer(mar_2014);
    var mar_2013 = api_516.createWMSLayer({
-        name: 'Zostera marina 2013', layers: 'mar_2013',
+        name: 'Zostera marina 2013', layers: 'zeegras:zostera_marina_2013',
         url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_516.map.addLayer(mar_2013);
    var mar_2011 = api_516.createWMSLayer({
-        name: 'Zostera marina 2011', layers: 'mar_2011',
+        name: 'Zostera marina 2011', layers: 'zeegras:zostera_marina_2011',
         url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_516.map.addLayer(mar_2011);
    var mar_2010 = api_516.createWMSLayer({
-        name: 'Zostera marina 2010', layers: 'mar_2010',
+        name: 'Zostera marina 2010', layers: 'zeegras:zostera_marina_2010',
         url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_516.map.addLayer(mar_2010);
    var mar_2009 = api_516.createWMSLayer({
-        name: 'Zostera marina 2009', layers: 'mar_2009',
+        name: 'Zostera marina 2009', layers: 'zeegras:zostera_marina_2009',
         url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_516.map.addLayer(mar_2009);
 
