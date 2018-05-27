@@ -42,7 +42,7 @@
             // now add kustlijnkaart layers (in plaats van met wmsurl/wmslayers)
             var kustlijnzorglayer = api_1703.createWMSLayer(
               {
-                name: 'Kustlijnzorg 2017',
+                name: 'Kustlijnzorg 2018',
                 //url: 'https://geoservices.rijkswaterstaat.nl/nis_kustlijnkaart',
                 // 2014
                 //layers: 'tr_25_14,tr_50_14,tr_100_14,lab_25_14,lab_50_14,lab_100_14,j_lab_25_14,j_lab_50_14,j_lab_100_14,j_raai_14,bkl_14,rsp_14',
@@ -51,6 +51,7 @@
                 // 2016
                 //layers: 'tr_25_16,tr_50_16,tr_100_16,lab_25_16,lab_50_16,lab_100_16,j_lab_25_16,j_lab_50_16,j_lab_100_16,j_raai_16,bkl_15,rsp_16',
                 url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/kustlijnzorg/wms',
+                // https://geoservices.rijkswaterstaat.nl/apps/geoserver/kustlijnzorg/wms?service=WMS&request=getcapabilities&version=1.3.0
                 layers: 'kustlijnzorg:rijksstrandpalen_l,kustlijnzorg:jarkusraaien,kustlijnzorg:basiskustlijn',
                 transparent:true,
                 singleTile: false
@@ -58,9 +59,12 @@
             api_1703.map.addLayer(kustlijnzorglayer);
             var kustlijnkaartlayer = api_1703.createWMSLayer(
               {
-                name: 'Kustlijnkaart 2017',
+                name: 'Kustlijnkaart 2018',
                 url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/kustlijnkaart/wms',
-                layers: 'kustlijnkaart:trend_2017_25,kustlijnkaart:trend_2017_50,kustlijnkaart:trend_2017_100',
+                // https://geoservices.rijkswaterstaat.nl/apps/geoserver/kustlijnkaart/wms?service=WMS&request=getcapabilities&version=1.3.0
+                // 2017
+                //layers: 'kustlijnkaart:trend_2017_25,kustlijnkaart:trend_2017_50,kustlijnkaart:trend_2017_100',
+                layers: 'kustlijnkaart:trend_2018_25,kustlijnkaart:trend_2018_50,kustlijnkaart:trend_2018_100',
                 transparent:true,
                 singleTile: false
               })
