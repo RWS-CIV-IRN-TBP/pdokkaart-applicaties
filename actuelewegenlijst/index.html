@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width" name="viewport"/>
+<meta charset="utf-8"/>
+</head>
+
+<body>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-api.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
+<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
+<script type="text/javascript" src="../rws.js"></script>
+<script type="text/javascript">
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
+    Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+    Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
+
+    var config_wegenkaart={
+        "mapdiv":"map_wegenkaart",
+        "showzoom":false,
+        "shownavigation":false,
+        "showscaleline":false,
+        "showmouseposition":false,
+        //"geocoder":{},
+        "zoom":3,
+        "loc":"122650.88, 487337.6",
+        "showlayerswitcher":false,
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}]
+    };
+
+	function getParameterByName(name, url) {
+		if (!url) url = window.location.href;
+		name = name.replace(/[\[\]]/g, "\\$&");
+		var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+			results = regex.exec(url);
+		if (!results) return null;
+		if (!results[2]) return '';
+		return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+
+    var api_wegenkaart;
+    Pdok.ready(
+        function(){
+
+            api_wegenkaart = new Pdok.Api(config_wegenkaart, Geotool.ready);
+            api_wegenkaart.map.removeLayer( api_wegenkaart.map.getLayersByName("Markers")[0] );
+
+            // https://geoservices.rijkswaterstaat.nl/apps/geoserver/actuele_wegenlijst/wfs?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAMES=actuele_wegenlijst:actuele_wegenlijst&SRSNAME=urn:ogc:def:crs:EPSG::28992&cql_filter=A_N_NR='A44'
+
+            var actuelewegenkaart = api_wegenkaart.createWMSLayer(
+            {
+                name: 'Actuele Wegenlijst',
+                url: "https://geoservices.rijkswaterstaat.nl/apps/geoserver/actuele_wegenlijst/wms",
+                layers: 'actuele_wegenlijst:'+getParameterByName('wegnaam'),
+                transparent:true,
+                singleTile: true,
+                visibility: true,
+            })
+            // NOT using a cql filter to filter the wegen, but using the layername!!
+			//actuelewegenkaart.mergeNewParams({'cql_filter':"A_N_NR='"+getParameterByName('wegnaam').toUpperCase()+"'"});
+            api_wegenkaart.map.addLayer(actuelewegenkaart);
+
+            wfs_protocol = OpenLayers.Protocol.WFS.fromWMSLayer(actuelewegenkaart);
+
+			styleMap = new OpenLayers.StyleMap({
+				strokeColor: "white",
+				strokeWidth: 1,
+				strokeOpacity: 0.01,
+				fillOpacity: 0.01
+			});
+
+            // NOT using a cql filter to filter the wegen, but using the layername!!
+			/*var propertyFilter = new OpenLayers.Filter.Comparison({
+				type: OpenLayers.Filter.Comparison.EQUAL_TO,
+				property: 'A_N_NR',
+				value: getParameterByName('wegnaam').toUpperCase()
+			});*/
+
+			var options = {	
+					styleMap: styleMap,
+					strategies: [new OpenLayers.Strategy.BBOX()],
+					protocol: wfs_protocol,
+					//filter: propertyFilter,
+					visibility: true,
+                    displayInLayerSwitcher:false  // NOT showing in Layerswitcher
+			};
+			wfs_layer = new OpenLayers.Layer.Vector('Actuele Wegenlijst (WFS)', options);
+			api_wegenkaart.map.addLayer(wfs_layer);
+
+            // it takes some time to retrieve the gml, so wait for featuresadded to set extent:
+			wfs_layer.events.register('featuresadded', null, function(obj){
+				api_wegenkaart.map.zoomToExtent(wfs_layer.getDataExtent());
+			});
+        }
+    );
+</script>
+
+<div id="map_wegenkaart" class="olMap fullscreen"></div>
+
+
+</body>
+</html>
