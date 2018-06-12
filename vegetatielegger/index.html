@@ -20,8 +20,8 @@
     Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
     Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
 
-    var config_5477={
-        "mapdiv":"map_5477",
+    var config_vegetatielegger={
+        "mapdiv":"map_vegetatielegger",
         "showzoom":true,
         "shownavigation":true,
         "showscaleline":true,
@@ -34,57 +34,108 @@
         //"baselayers":[{"id":"BRTGRIJSTIJDELIJK","visible":true},{"id":"LUFO","visible":false}]
     };
 
-    var api_5477;
+    var api_vegetatielegger;
     Pdok.ready(
         function(){
-            api_5477 = new Pdok.Api(config_5477, Geotool.ready);
-            api_5477.map.removeLayer( api_5477.map.getLayersByName("Markers")[0] );
-
-            // http://geoservices.rijkswaterstaat.nl/rws_vegetatielegger?LAYERS=rwsvl_boom%2Crwsvl_heg&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG%3A28992&BBOX=-449315.2,174857.6,789315.2,765142.4&WIDTH=2880&HEIGHT=1372
-            // http://geoservices.rijkswaterstaat.nl/rws_vegetatielegger?LAYERS=rwsvl_perc&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG%3A28992&BBOX=118605.44,407685.44,196019.84,444578.24&WIDTH=2880&HEIGHT=1372
-            // http://geoservices.rijkswaterstaat.nl/rws_vegetatielegger?LAYERS=BG&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&SRS=EPSG%3A28992&BBOX=118605.44,407685.44,196019.84,444578.24&WIDTH=2880&HEIGHT=1372
+            api_vegetatielegger = new Pdok.Api(config_vegetatielegger, Geotool.ready);
+            api_vegetatielegger.map.removeLayer( api_vegetatielegger.map.getLayersByName("Markers")[0] );
 
 
-            var vegetatielegger = api_5477.createWMSLayer(
+            var vegetatievlakken = api_vegetatielegger.createWMSLayer(
             {
-                name: 'Vegetatielegger',
-                url: 'http://geoservices.rijkswaterstaat.nl/rws_vegetatielegger',
-                layers: 'BG',
+                name: 'Vegetatievlakken',
+                url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/rws_vegetatielegger/ows?version=1.3.0',
+                layers: 'rws_vegetatielegger:vegetatievlakken',
                 transparent:true,
                 singleTile: true,
                 visibility: true
             })
-            api_5477.map.addLayer(vegetatielegger);
+            api_vegetatielegger.map.addLayer(vegetatievlakken);
 
-            var bomenheggen = api_5477.createWMSLayer(
+            var vrijstelling = api_vegetatielegger.createWMSLayer(
             {
-                name: 'Bomen en Heggen',
-                url: 'http://geoservices.rijkswaterstaat.nl/rws_vegetatielegger',
-                layers: 'rwsvl_boom,rwsvl_heg',
+                name: 'Vrijstelling vergunningplicht',
+                url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/rws_vegetatielegger/ows?version=1.3.0',
+                layers: 'rws_vegetatielegger:vrijstelling_vergunningplicht_gebruik_waterstaatswerken',
                 transparent:true,
                 singleTile: true,
                 visibility: true
             })
-            api_5477.map.addLayer(bomenheggen);
+            api_vegetatielegger.map.addLayer(vrijstelling);
 
-            var perceelgrenzen = api_5477.createWMSLayer(
+            var dtbperceelgrens = api_vegetatielegger.createWMSLayer(
             {
-                name: 'Perceelgrenzen',
-                url: 'http://geoservices.rijkswaterstaat.nl/rws_vegetatielegger',
-                layers: 'rwsvl_perc',
+                name: 'DTB perceelgrens',
+                url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/rws_vegetatielegger/ows?version=1.3.0',
+                layers: 'rws_vegetatielegger:dtb_perceelgrens',
                 transparent:true,
                 singleTile: true,
                 visibility: true
             })
-            api_5477.map.addLayer(perceelgrenzen);
+            api_vegetatielegger.map.addLayer(dtbperceelgrens);
+
+            var kadastergrens = api_vegetatielegger.createWMSLayer(
+            {
+                name: 'Kadastergrens',
+                url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/rws_vegetatielegger/ows?version=1.3.0',
+                layers: 'rws_vegetatielegger:kadastrale_grens',
+                transparent:true,
+                singleTile: true,
+                visibility: true
+            })
+            api_vegetatielegger.map.addLayer(kadastergrens);
+
+            var beheergrens = api_vegetatielegger.createWMSLayer(
+            {
+                name: 'Beheergrens',
+                url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/rws_vegetatielegger/ows?version=1.3.0',
+                layers: 'rws_vegetatielegger:beheergrens',
+                transparent:true,
+                singleTile: true,
+                visibility: true
+            })
+            api_vegetatielegger.map.addLayer(beheergrens);
+
+            var kmmarkering = api_vegetatielegger.createWMSLayer(
+            {
+                name: 'Kilometer',
+                url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/rws_vegetatielegger/ows?version=1.3.0',
+                layers: 'rws_vegetatielegger:rivierkilometer',
+                transparent:true,
+                singleTile: true,
+                visibility: true
+            })
+            api_vegetatielegger.map.addLayer(kmmarkering);
+
+            var heggen = api_vegetatielegger.createWMSLayer(
+            {
+                name: 'Heggen',
+                url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/rws_vegetatielegger/ows?version=1.3.0',
+                layers: 'rws_vegetatielegger:heggen',
+                transparent:true,
+                singleTile: true,
+                visibility: true
+            })
+            api_vegetatielegger.map.addLayer(heggen);
+
+            var bomen = api_vegetatielegger.createWMSLayer(
+            {
+                name: 'Bomen',
+                url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/rws_vegetatielegger/ows?version=1.3.0',
+                layers: 'rws_vegetatielegger:bomen',
+                transparent:true,
+                singleTile: true,
+                visibility: true
+            })
+            api_vegetatielegger.map.addLayer(bomen);
 
             // add legend
-            Geotool.legend(api_5477.map, 'vegetatieleggerlegenda.png');
+            //Geotool.legend(api_vegetatielegger.map, 'vegetatieleggerlegenda.png');
         }
     );
 </script>
 
-<div id="map_5477" class="olMap fullscreen"></div>
+<div id="map_vegetatielegger" class="olMap fullscreen"></div>
 
 
 </body>
