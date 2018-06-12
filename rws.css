@@ -144,3 +144,13 @@ div.olControlPermalink > a > img{
     border-radius: 10px;
     background-color: #ffffff;
 }
+
+#pdoksearch form input[type="text"]{
+    width:245px;
+}
+.geozetSuggestions li {
+    margin-top: 4px;
+    list-style-type: none;
+    width: 100%;
+}
+

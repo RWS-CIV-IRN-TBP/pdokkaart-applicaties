@@ -690,5 +690,26 @@ Geotool.ready = function(api) {
         api.map.getControlsByClass("OpenLayers.Control.LayerSwitcher")[0].minimizeControl();
     }
 
+
+    // overriding the PDOK geocoder to be able to search for non default search types 'perceel' en 'hectometerpaal'
+    // IF kadaster updates PDOKKaart api (and &fq=+type:* is added there...) this part can be removed
+    var currentGeocoders = api.map.getControlsByClass('OpenLayers.Control.GeocoderControl');
+    for (var i = 0; i < currentGeocoders.length; i++) {
+        currentGeocoders[i].geocoderUrl+='&fq=+type:*';
+        currentGeocoders[i].zoomScale = {
+            hectometerpaal: 14,
+            perceel: 14,
+            adres: 13,
+            postcode: 11,
+            weg: 11,
+            woonplaats: 8,
+            gemeente: 8,
+            provincie: 5,
+            standaard: 9
+        }
+
+    }
+
+
 }
 
