@@ -3,39 +3,31 @@
 </head>
 <body>
 
-<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/OpenLayers.js"></script>
-<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/proj4js-compressed.js"></script>
-<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-api.js"></script>
-<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/geozetlib.js"></script>
-<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-markers.js"></script>
-<script type="text/javascript" src="http://pdokserver/pdokkaart/api/js/pdok-layers.js"></script>
+<script type="text/javascript" src="//zuidt.nl/pdokkaart/api/js/OpenLayers.js"></script>
+<script type="text/javascript" src="//zuidt.nl/pdokkaart/api/js/proj4js-compressed.js"></script>
+<script type="text/javascript" src="//zuidt.nl/pdokkaart/api/js/pdok-api.js"></script>
+<script type="text/javascript" src="//zuidt.nl/pdokkaart/api/js/geozetlib.js"></script>
+<script type="text/javascript" src="//zuidt.nl/pdokkaart/api/js/pdok-markers.js"></script>
+<script type="text/javascript" src="//zuidt.nl/pdokkaart/api/js/pdok-layers.js"></script>
 <script type="text/javascript" src="../rws.js"></script>
 
 <script type="text/javascript">
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/default/style.css");
-Pdok.addcss("http://pdokserver/pdokkaart/api/styles/api.css");
+Pdok.addcss("//zuidt.nl/pdokkaart/api/styles/default/style.css");
+Pdok.addcss("//zuidt.nl/pdokkaart/api/styles/api.css");
 Pdok.addcss("../rws.css");  // NOTE: to be loaded AFTER api.css !!
 
 var api_516;
 var config_516={
-  "mapdiv": "map_516",
-  //"zoom": 7, // sept 2017 zoom naar heel NL omdat 2016 op een andere plek is gemonsterd
-  //"loc": "119747.84, 547852.8613239",
-  "showscaleline": true,
-  "showmouseposition": true,
-  "geocoder":"{}",
-  "baselayers": [
-    {
-      "id": "BRT",
-      "visible": true
-    },
-    {
-      "id": "LUFO",
-      "visible": false
-    }
-  ],
-  "markersdef": "http://pdokserver/pdokkaart/api/js/pdok-markers.js",
-  "layersdef": "http://pdokserver/pdokkaart/api/js/pdok-layers.js"
+        "mapdiv":"map_516",
+        "zoom":7,
+        "showzoom":true,
+        "shownavigation":true,
+        "showscaleline":true,
+        "showmouseposition":true,
+        "geocoder":"{}",
+        "loc":"122650.88, 487337.6",
+        "showlayerswitcher":true,
+        "baselayers":[{"id":"BRT","visible":true},{"id":"LUFO","visible":false}]
 };
 
 Pdok.ready( function(){
@@ -45,11 +37,15 @@ Pdok.ready( function(){
    var transparant = true;
    var visibility = false;
 
-   api_516 = new Pdok.Api(config_516);
+   api_516 = new Pdok.Api(config_516, Geotool.ready);
    api_516.map.removeLayer( api_516.map.getLayersByName("Markers")[0] );
+   var mar_2017 = api_516.createWMSLayer({
+        name: 'Zostera marina 2017', layers: 'zeegras:zostera_marina_2017',
+        url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: true})
+   api_516.map.addLayer(mar_2017);
    var mar_2016 = api_516.createWMSLayer({
         name: 'Zostera marina 2016', layers: 'zeegras:zostera_marina_2016',
-        url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: true})
+        url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_516.map.addLayer(mar_2016);
    var mar_2014 = api_516.createWMSLayer({
         name: 'Zostera marina 2014', layers: 'zeegras:zostera_marina_2014',
@@ -63,18 +59,6 @@ Pdok.ready( function(){
         name: 'Zostera marina 2011', layers: 'zeegras:zostera_marina_2011',
         url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
    api_516.map.addLayer(mar_2011);
-   var mar_2010 = api_516.createWMSLayer({
-        name: 'Zostera marina 2010', layers: 'zeegras:zostera_marina_2010',
-        url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
-   api_516.map.addLayer(mar_2010);
-   var mar_2009 = api_516.createWMSLayer({
-        name: 'Zostera marina 2009', layers: 'zeegras:zostera_marina_2009',
-        url: zeegras_service, transparent:transparant, singleTile: single_tile, visibility: visibility})
-   api_516.map.addLayer(mar_2009);
-
-  // add legend
-//   Geotool.legend(api_516.map, 'http://geoservices.rijkswaterstaat.nl/zeegras?version=1.3.0&service=WMS&request=GetLegendGraphic&sld_version=1.1.0&layer=mar_2014&format=image/png&STYLE=DEFAULT');
-
 
 } );
 </script>
