@@ -6,6 +6,9 @@ var Geotool = Geotool || {};
 
 Geotool.version = '1.2.4'
 
+// RWS proxy (needed for WFS and cross domain requests)
+OpenLayers.ProxyHost='https://geoservices.rijkswaterstaat.nl/apps/pdokkaart/proxy.ashx?'
+
 Geotool.Calendar = {
 
     monthNames: [ "januari",
