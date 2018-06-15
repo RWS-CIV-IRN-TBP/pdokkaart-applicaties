@@ -1,7 +1,10 @@
 #!/bin/bash
 
-APISERVER="zuidt.nl"
-#APISERVER="kaart.pdok.nl"
-#sed -i "s/pdokserver/$APISERVER/g" **/*.html
-sed -i "s,http://pdokserver,//$APISERVER,g" **/*.html
+# To use dev proxy
+sed -i "s,https://geoservices.rijkswaterstaat.nl/apps/pdokkaart/proxy.ashx?,/cgi-bin/proxy?url=,g" *.js
+
+# TO USE LOCAL (DEV) pdokkaart api:
+#sed -i "s,https://kaart.pdok.nl,https://zuidt.nl/pdokkaart,g" **/*.html
+
+
 
