@@ -50,8 +50,6 @@
             api_wegenkaart = new Pdok.Api(config_wegenkaart, Geotool.ready);
             api_wegenkaart.map.removeLayer( api_wegenkaart.map.getLayersByName("Markers")[0] );
 
-            // https://geoservices.rijkswaterstaat.nl/apps/geoserver/actuele_wegenlijst/wfs?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAMES=actuele_wegenlijst:actuele_wegenlijst&SRSNAME=urn:ogc:def:crs:EPSG::28992&cql_filter=A_N_NR='A44'
-
             var actuelewegenkaart = api_wegenkaart.createWMSLayer(
             {
                 name: 'Actuele Wegenlijst',
@@ -61,41 +59,32 @@
                 singleTile: true,
                 visibility: true,
             })
-            // NOT using a cql filter to filter the wegen, but using the layername!!
-			//actuelewegenkaart.mergeNewParams({'cql_filter':"A_N_NR='"+getParameterByName('wegnaam').toUpperCase()+"'"});
             api_wegenkaart.map.addLayer(actuelewegenkaart);
+            // fetching the weg as geojson to be able to zoom to it's extent
+            function handler(request) {
+               var features = new OpenLayers.Format.GeoJSON().read(request.responseText);
+               var extent = false;
+               for (var i in features){
+                   var f = features[i];
+                   if (extent) {
+                       f.geometry.extendBounds(extent);
+                       extent = f.geometry.getBounds();
+                   }
+                   else{
+                       extent = f.geometry.getBounds();
+                   }
+               }
+               if (extent){
+                   api_wegenkaart.map.zoomToExtent(extent);
+                }
+            }
 
-            wfs_protocol = OpenLayers.Protocol.WFS.fromWMSLayer(actuelewegenkaart);
-
-			styleMap = new OpenLayers.StyleMap({
-				strokeColor: "white",
-				strokeWidth: 1,
-				strokeOpacity: 0.01,
-				fillOpacity: 0.01
-			});
-
-            // NOT using a cql filter to filter the wegen, but using the layername!!
-			/*var propertyFilter = new OpenLayers.Filter.Comparison({
-				type: OpenLayers.Filter.Comparison.EQUAL_TO,
-				property: 'A_N_NR',
-				value: getParameterByName('wegnaam').toUpperCase()
-			});*/
-
-			var options = {	
-					styleMap: styleMap,
-					strategies: [new OpenLayers.Strategy.BBOX()],
-					protocol: wfs_protocol,
-					//filter: propertyFilter,
-					visibility: true,
-                    displayInLayerSwitcher:false  // NOT showing in Layerswitcher
-			};
-			wfs_layer = new OpenLayers.Layer.Vector('Actuele Wegenlijst (WFS)', options);
-			api_wegenkaart.map.addLayer(wfs_layer);
-
-            // it takes some time to retrieve the gml, so wait for featuresadded to set extent:
-			wfs_layer.events.register('featuresadded', null, function(obj){
-				api_wegenkaart.map.zoomToExtent(wfs_layer.getDataExtent());
-			});
+            var data_uri = "https://geoservices.rijkswaterstaat.nl/apps/geoserver/actuele_wegenlijst/wfs?"+
+                "request=GetFeature&service=WFS&version=1.0.0&outputFormat=application/json&typeName=actuele_wegenlijst:"+getParameterByName('wegnaam').toUpperCase();
+            var request = OpenLayers.Request.GET({
+                url: data_uri,
+                callback: handler
+            });
         }
     );
 </script>
