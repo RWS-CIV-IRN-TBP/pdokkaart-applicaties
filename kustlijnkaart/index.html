@@ -59,12 +59,15 @@
             api_1703.map.addLayer(kustlijnzorglayer);
             var kustlijnkaartlayer = api_1703.createWMSLayer(
               {
-                name: 'Kustlijnkaart 2018',
+                name: 'Kustlijnkaart 2019',
                 url: 'https://geoservices.rijkswaterstaat.nl/apps/geoserver/kustlijnkaart/wms',
                 // https://geoservices.rijkswaterstaat.nl/apps/geoserver/kustlijnkaart/wms?service=WMS&request=getcapabilities&version=1.3.0
                 // 2017
                 //layers: 'kustlijnkaart:trend_2017_25,kustlijnkaart:trend_2017_50,kustlijnkaart:trend_2017_100',
-                layers: 'kustlijnkaart:trend_2018_25,kustlijnkaart:trend_2018_50,kustlijnkaart:trend_2018_100',
+                // 2018
+                //layers: 'kustlijnkaart:trend_2018_25,kustlijnkaart:trend_2018_50,kustlijnkaart:trend_2018_100',
+                // 2019
+                layers: 'kustlijnkaart:trend_2019_25,kustlijnkaart:trend_2019_50,kustlijnkaart:trend_2019_100',
                 transparent:true,
                 singleTile: false
               })
